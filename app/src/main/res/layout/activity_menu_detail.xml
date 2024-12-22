@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022" />
+
+    <TextView
+        android:id="@+id/titleReese"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="Reese's Fudge"
+        android:textSize="27sp"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.010" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="350dp"
+        android:layout_height="240dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/detail1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleReese" />
+
+    <TextView
+        android:id="@+id/tvHarga"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/alata_reguler"
+        android:text="Rp 27.000"
+        android:textColor="#652B27"
+        android:textSize="32sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <TextView
+        android:id="@+id/tvDeskripsi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="Lorem ipsum dolor sit omet, consectur adipiscing \n elit. Donec ut orci tempus, accumson ex eget, \n vestibulum orci. Sed tincidunt, ex in ulfrices vehicula, \n ligula arcu fermentum metus, eu luctus eros enim eu \n lacus. Duis hendrerit quam at mauris luctus aliquam. \n Morbi ac suscipit lorem, eu screlerisque ligula."
+        android:textColor="#464646"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/tvHarga"
+        app:layout_constraintTop_toBottomOf="@+id/tvHarga" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/line2"
+        app:layout_constraintTop_toBottomOf="@+id/tvDeskripsi"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="Notes"
+        android:textColor="#1E1E1E"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="@+id/tvDeskripsi"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+
+    <TextView
+        android:id="@+id/textOptional"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="Optional"
+        android:textColor="#949494"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/textOptional"
+        app:layout_constraintTop_toBottomOf="@+id/textOptional"
+        app:layout_constraintVertical_bias="0.100">
+
+        <Button
+            android:layout_width="363dp"
+            android:layout_height="42dp"
+            android:backgroundTint="#E3E2DD" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/chat" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="430dp"
+        android:layout_height="100dp"
+        android:background="#D9CCC4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Item Quantity"
+            android:textSize="18sp"
+            android:textColor="#1E1E1E"
+            android:textStyle="bold"
+            android:fontFamily="@font/alata_reguler"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="5dp"/>
+        
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/kurang"
+            android:layout_marginStart="290dp"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="17sp"
+            android:fontFamily="@font/alata_reguler"
+            android:textColor="#1E1E1E"
+            android:layout_marginStart="330dp"
+            android:layout_marginTop="5dp"/>
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/tambah"
+            android:layout_marginStart="350dp"
+            android:layout_marginTop="8dp"/>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="42dp">
+            <Button
+                android:layout_width="321dp"
+                android:layout_height="58dp"
+                android:backgroundTint="#652B27"/>
+            
+            <ImageView
+                android:layout_width="26.67dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_bag"
+                android:layout_marginTop="13dp"
+                android:layout_marginStart="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4 Item Selected"
+                android:textSize="16sp"
+                android:fontFamily="@font/alata_reguler"
+                android:textColor="#EFEFEF"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="108.000"
+                android:textColor="#EFEFEF"
+                android:textSize="21sp"
+                android:fontFamily="@font/alata_reguler"
+                android:layout_marginStart="210dp"
+                android:layout_marginTop="10dp"/>
+        </FrameLayout>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
