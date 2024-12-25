@@ -1,4 +1,6 @@
 package project.uas.sweetparadise
 
-class BillAfterActivity L {
+import androidx.appcompat.app.AppCompatActivity
+
+class BillAfterActivity : AppCompatActivity()  {
 }

@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity(){
 
     private lateinit var inputUsername: EditText
     private lateinit var inputPassword: EditText
