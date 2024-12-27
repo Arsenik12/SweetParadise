@@ -41,6 +41,7 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/alata_reguler"
@@ -135,32 +136,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- Carousel Item 1 -->
-                        <ImageView
-                            android:layout_width="300dp"
-                            android:layout_height="160dp"
-                            android:layout_marginEnd="8dp"
-                            android:contentDescription="Carousel Image 1"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/carousel1" />
-
-                        <!-- Carousel Item 2 -->
-                        <ImageView
-                            android:layout_width="300dp"
-                            android:layout_height="160dp"
-                            android:layout_marginEnd="8dp"
-                            android:contentDescription="Carousel Image 2"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/carousel1" />
-
-                        <!-- Carousel Item 3 -->
-                        <ImageView
-                            android:layout_width="300dp"
-                            android:layout_height="160dp"
-                            android:layout_marginEnd="8dp"
-                            android:contentDescription="Carousel Image 3"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/carousel1" />
+                        <!-- Carousel Section -->
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/carouselViewPager"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="16dp" />
 
                     </LinearLayout>
                 </HorizontalScrollView>
@@ -189,6 +171,7 @@
                         android:weightSum="3">
 
                         <ImageView
+                            android:id="@+id/btnDelivery"
                             android:layout_width="0dp"
                             android:layout_height="100dp"
                             android:layout_marginEnd="8dp"
@@ -198,6 +181,7 @@
                             android:src="@drawable/dine_in" />
 
                         <ImageView
+                            android:id="@+id/btnDineIn"
                             android:layout_width="0dp"
                             android:layout_height="100dp"
                             android:layout_marginEnd="8dp"
@@ -207,6 +191,7 @@
                             android:src="@drawable/take_away" />
 
                         <ImageView
+                            android:id="@+id/btnTakeAway"
                             android:layout_width="0dp"
                             android:layout_height="100dp"
                             android:layout_weight="1"

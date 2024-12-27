@@ -34,7 +34,7 @@ class RegisterActivity : AppCompatActivity(){
         }
 
         btnGoToLogin.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
     }
@@ -46,7 +46,7 @@ class RegisterActivity : AppCompatActivity(){
                 AppDatabase.getDatabase(this@RegisterActivity).userDao().insertUser(user)
                 runOnUiThread {
                     Toast.makeText(this@RegisterActivity, "Registrasi Berhasil!", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
