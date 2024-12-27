@@ -1,12 +1,18 @@
 package project.uas.sweetparadise
 
+import android.content.Context
 import android.content.Intent
+import android.location.LocationManager
+import android.media.audiofx.BassBoost
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import androidx.viewpager2.widget.ViewPager2
 
 class HomeActivity : AppCompatActivity() {
@@ -40,28 +46,43 @@ class HomeActivity : AppCompatActivity() {
         // Start auto-scroll
         startAutoScroll()
 
-
-        val _btnDelivery = findViewById<ImageView>(R.id.btnDelivery)
+        // Setup tombol Dine In, Take Away, dan Delivery
         val _btnDineIn = findViewById<ImageView>(R.id.btnDineIn)
-        val _btnTakeAway = findViewById<ImageView>(R.id.btnTakeAway)
-
-        _btnDelivery.setOnClickListener {
-            val intent = Intent(this, MenuActivity::class.java)
-            startActivity(intent)
-        }
-
         _btnDineIn.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)
             startActivity(intent)
         }
 
+        val _btnTakeAway = findViewById<ImageView>(R.id.btnTakeAway)
         _btnTakeAway.setOnClickListener {
-            // Handle Take Away button click
+            val intent = Intent(this, MenuActivity::class.java)
+            startActivity(intent)
+        }
+
+        val btnDelivery = findViewById<ImageView>(R.id.btnDelivery)
+        btnDelivery.setOnClickListener {
+            if (isLocationEnabled()) {
+                // Jika lokasi aktif maka lanjut ke MenuActivity
+                val intent = Intent(this, MenuActivity::class.java)
+                startActivity(intent)
+            } else {
+                // Jika lokasi tidak aktif maka minta user diminta untuk menyalakan lokasi
+                Toast.makeText(this, "Harap aktifkan lokasi Anda untuk melanjutkan!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
         }
 
     }
 
-    // Mengubah carousel image setiap 3 detik menggunakan handler
+    // Fungsi untuk memeriksa apakah lokasi aktif
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
+
+    // Fungsi untuk mengubah carousel image setiap 3 detik menggunakan handler
     private fun startAutoScroll() {
         val runnable = object : Runnable {
             override fun run() {
@@ -75,7 +96,7 @@ class HomeActivity : AppCompatActivity() {
         handler.postDelayed(runnable, 3000)
     }
 
-    // Menghentikan Handler untuk mencegah kebocoran memori saat activity dihancurkan
+    // Fungsi untuk menghentikan auto-scroll
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)
