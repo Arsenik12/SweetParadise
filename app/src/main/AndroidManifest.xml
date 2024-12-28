@@ -23,6 +23,11 @@
         <activity android:name=".MenuActivity" android:exported="false"/>
         <activity android:name=".NotificationActivity" android:exported="false"/>
         <activity android:name=".OSMAddressActivity" android:exported="false"/>
+        <activity android:name=".CartOrderActivity" android:exported="false"/>
+        <activity android:name=".MenuDetailActivity" android:exported="false"/>
+        <activity android:name=".BillAfterActivity" android:exported="false"/>
+        <activity android:name=".addMenu" android:exported="false"/>
+
         <activity
             android:name=".LoginActivity"
             android:exported="true">
