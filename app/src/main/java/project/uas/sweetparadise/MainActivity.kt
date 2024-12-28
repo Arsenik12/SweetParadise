@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnGoToRegister: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_login)
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 
     private fun login(username: String, password: String) {
         if (username.isNotEmpty() && password.isNotEmpty()) {

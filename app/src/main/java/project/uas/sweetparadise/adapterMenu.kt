@@ -66,7 +66,6 @@ class adapterMenu(private val daftarMenu: MutableList<Menu>) :
             intent.putExtra("name", dtMenu.name)
             intent.putExtra("description", dtMenu.description)
             intent.putExtra("price", dtMenu.price)
-            intent.putExtra("image", dtMenu.image)
             holder.itemView.context.startActivity(intent)
         }
     }
