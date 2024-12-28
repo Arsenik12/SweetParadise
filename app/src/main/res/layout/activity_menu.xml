@@ -75,6 +75,7 @@
     </FrameLayout>
 
     <HorizontalScrollView
+        android:id="@+id/horizontalScroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
@@ -173,13 +174,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMenu"
         android:layout_width="match_parent"
-        android:layout_height="430dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="450dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9">
+        app:layout_constraintStart_toStartOf="@id/horizontalScroll"
+        app:layout_constraintTop_toBottomOf="@id/horizontalScroll">
     </androidx.recyclerview.widget.RecyclerView>
 
     <FrameLayout

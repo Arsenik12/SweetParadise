@@ -28,9 +28,12 @@ data class Cart(
     @ColumnInfo(name = "menuId")
     val menuId: Int,
 
+    @ColumnInfo(name = "price")
+    val price: Int,
+
     @ColumnInfo(name = "quantity")
     val quantity: Int,
 
     @ColumnInfo(name = "menuNote")
-val menuNote: String? = null
+    val menuNote: String? = null
 )

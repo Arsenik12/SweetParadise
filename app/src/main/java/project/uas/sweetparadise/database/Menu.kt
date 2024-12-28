@@ -29,7 +29,7 @@ data class Menu(
     val description: String,
 
     @ColumnInfo(name = "price")
-    val price: Double,
+    val price: Int,
 
     @ColumnInfo(name = "image")
     val image: ByteArray,
