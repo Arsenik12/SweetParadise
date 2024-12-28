@@ -1,9 +1,11 @@
-package project.uas.sweetparadise
+package project.uas.sweetparadise.Database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import project.uas.sweetparadise.DAO.UserDAO
+import project.uas.sweetparadise.Entity.User
 
 @Database(entities = [User::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {

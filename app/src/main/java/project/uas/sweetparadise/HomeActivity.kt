@@ -64,20 +64,25 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val btnDelivery = findViewById<ImageView>(R.id.btnDelivery)
-        btnDelivery.setOnClickListener {
-            if (isLocationEnabled()) {
-                // Jika lokasi aktif maka lanjut ke MenuActivity
-                val intent = Intent(this, MenuActivity::class.java)
-                startActivity(intent)
-            } else {
-                // Jika lokasi tidak aktif maka minta user diminta untuk menyalakan lokasi
-                Toast.makeText(this, "Harap aktifkan lokasi Anda untuk melanjutkan!", Toast.LENGTH_SHORT).show()
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
-            }
-        }
+//        val btnDelivery = findViewById<ImageView>(R.id.btnDelivery)
+//        btnDelivery.setOnClickListener {
+//            if (isLocationEnabled()) {
+//                // Jika lokasi aktif maka lanjut ke MenuActivity
+//                val intent = Intent(this, MenuActivity::class.java)
+//                startActivity(intent)
+//            } else {
+//                // Jika lokasi tidak aktif maka minta user diminta untuk menyalakan lokasi
+//                Toast.makeText(this, "Harap aktifkan lokasi Anda untuk melanjutkan!", Toast.LENGTH_SHORT).show()
+//                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+//                startActivity(intent)
+//            }
+//        }
 
+        val _btnDelivery = findViewById<ImageView>(R.id.btnDelivery)
+        _btnDelivery.setOnClickListener {
+            val intent = Intent(this, OSMAddressActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     // Fungsi untuk memeriksa apakah lokasi aktif

@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import project.uas.sweetparadise.Database.AppDatabase
+import project.uas.sweetparadise.Entity.User
 
 class RegisterActivity : AppCompatActivity(){
 
