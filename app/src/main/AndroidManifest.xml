@@ -13,13 +13,13 @@
         android:theme="@style/Theme.SweetParadise"
         tools:targetApi="31">
         <activity
-            android:name=".MenuDetailActivity"
+            android:name=".MenuActivity"
             android:exported="false" />
         <activity
             android:name=".addMenu"
             android:exported="false" />
         <activity
-            android:name=".MenuActivity"
+            android:name=".MenuDetailActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"

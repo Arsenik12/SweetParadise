@@ -7,7 +7,7 @@ import androidx.room.Query
 @Dao
 interface CategoryDAO {
     @Insert
-    suspend fun insertCategory(category: Category)
+    fun insertCategory(category: Category)
 
     @Query("SELECT * FROM category")
     fun getAllCategories(): List<Category>

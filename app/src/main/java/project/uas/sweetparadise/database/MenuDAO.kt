@@ -13,9 +13,8 @@ interface MenuDAO {
     fun getAllMenus(): List<Menu>
 
     @Query("SELECT * FROM menus WHERE id = :menuId")
-    fun addmenu(menuId: Int): Menu?
+    fun getmenu(menuId: Int): Menu?
 
     @Query("SELECT * FROM menus WHERE categoryId = :categoryId")
-    fun addmenu(categoryId: String): Menu?
-
+    fun getmenu(categoryId: String): Menu?
 }

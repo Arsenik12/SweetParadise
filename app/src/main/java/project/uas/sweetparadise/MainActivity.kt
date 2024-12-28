@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_login)
 
         inputUsername = findViewById(R.id.inputUsername)
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (user != null) {
                         Toast.makeText(this@MainActivity, "Login Berhasil!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@MainActivity, HomeActivity::class.java)
+                        val intent = Intent(this@MainActivity, MenuActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {

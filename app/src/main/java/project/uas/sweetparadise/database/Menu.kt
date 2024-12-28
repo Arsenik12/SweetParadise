@@ -32,7 +32,7 @@ data class Menu(
     val price: Double,
 
     @ColumnInfo(name = "image")
-    val imageResourceId: Int,
+    val image: ByteArray,
 
    @ColumnInfo(name = "favorite")
     var favorite: Boolean = false,
