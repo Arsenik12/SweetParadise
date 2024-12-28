@@ -3,7 +3,6 @@ package project.uas.sweetparadise
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
-import android.media.audiofx.BassBoost
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import androidx.viewpager2.widget.ViewPager2
 
 class HomeActivity : AppCompatActivity() {
@@ -38,6 +36,13 @@ class HomeActivity : AppCompatActivity() {
         // Setup username ke TextView
         usernameTextView = findViewById(R.id.tvUsername)
         usernameTextView.text = "$username"
+
+        // Setup tombol notifikasi
+        val _btnNotif = findViewById<ImageView>(R.id.btnNotification)
+        _btnNotif.setOnClickListener {
+            val intent = Intent(this, NotificationActivity::class.java)
+            startActivity(intent)
+        }
 
         // Setup ViewPager2
         viewPager = findViewById(R.id.carouselViewPager)
