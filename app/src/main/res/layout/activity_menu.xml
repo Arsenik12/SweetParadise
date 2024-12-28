@@ -99,6 +99,7 @@
                 android:background="@drawable/border_button_chosen">
 
                 <TextView
+                    android:id="@+id/tvCake"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cake"
@@ -118,6 +119,7 @@
                 android:layout_marginStart="12dp">
 
                 <TextView
+                    android:id="@+id/tvSnack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Snack"
@@ -137,6 +139,7 @@
                 android:layout_marginStart="12dp">
 
                 <TextView
+                    android:id="@+id/tvBeverage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Beverage"
@@ -156,6 +159,7 @@
                 android:layout_marginStart="12dp">
 
                 <TextView
+                    android:id="@+id/tvOther"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Other"
@@ -205,9 +209,10 @@
             android:layout_marginStart="20dp"/>
 
         <TextView
+            android:id="@+id/tvItems"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Item Selected"
+            android:text="0 Item Selected"
             android:textSize="16sp"
             android:fontFamily="@font/alata_reguler"
             android:textColor="#EFEFEF"
@@ -215,10 +220,10 @@
             android:layout_marginTop="15dp"/>
 
         <TextView
-            android:id="@+id/tvCart"
+            android:id="@+id/tvAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="0"
             android:textColor="#EFEFEF"
             android:textSize="21sp"
             android:fontFamily="@font/alata_reguler"

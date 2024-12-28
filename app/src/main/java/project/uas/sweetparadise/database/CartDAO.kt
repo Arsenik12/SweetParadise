@@ -19,6 +19,9 @@ interface CartDAO {
     @Query("SELECT * FROM carts")
     fun getCartItems(): List<Cart>
 
+    @Query("SELECT * FROM carts WHERE userId = :userId")
+    fun getUserCart(userId : Int): List<Cart>
+
     @Query("""
     SELECT carts.id, carts.userId, carts.menuId, carts.quantity, 
            carts.menuNote as menuNote, menus.name as menuName, menus.price as menuPrice

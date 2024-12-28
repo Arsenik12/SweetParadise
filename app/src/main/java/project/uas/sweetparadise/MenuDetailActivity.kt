@@ -1,5 +1,6 @@
 package project.uas.sweetparadise
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.Button
@@ -71,6 +72,9 @@ class MenuDetailActivity : AppCompatActivity() {
         }
 
         _btnAddCart.setOnClickListener {
+//            val intent = Intent(this, MenuDetailActivity::class.java)
+//            intent.putExtra("quantity", _tvQuantity.text.toString().toInt())
+//            intent.putExtra("amount", menuPrice.toString().toInt() * _tvQuantity.text.toString().toInt())
             CoroutineScope(Dispatchers.IO).launch {
                 db.cartDao().insertCart(
                     Cart(
@@ -87,9 +91,9 @@ class MenuDetailActivity : AppCompatActivity() {
                         "Menu berhasil ditambahkan ke Cart",
                         Toast.LENGTH_SHORT
                     ).show()
-                    finish()
                 }
             }
+//            startActivity(intent)
         }
 
         _btnAdd.setOnClickListener {

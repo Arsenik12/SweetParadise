@@ -34,7 +34,7 @@ data class Menu(
     @ColumnInfo(name = "image")
     val image: ByteArray,
 
-   @ColumnInfo(name = "favorite")
+    @ColumnInfo(name = "favorite")
     var favorite: Boolean = false,
 
     @ColumnInfo(name = "categoryId")
