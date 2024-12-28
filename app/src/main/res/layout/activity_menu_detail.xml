@@ -140,7 +140,7 @@
             android:fontFamily="@font/alata_reguler"
             android:layout_marginStart="32dp"
             android:layout_marginTop="5dp"/>
-        
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -174,7 +174,7 @@
                 android:layout_width="321dp"
                 android:layout_height="58dp"
                 android:backgroundTint="#652B27"/>
-            
+
             <ImageView
                 android:layout_width="26.67dp"
                 android:layout_height="30dp"

@@ -1,6 +1,4 @@
 package project.uas.sweetparadise
 
-import androidx.appcompat.app.AppCompatActivity
-
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity {
 }
