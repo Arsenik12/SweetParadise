@@ -24,5 +24,12 @@ interface UserDAO {
 
     @Query("SELECT username FROM users WHERE id = :userId LIMIT 1")
     suspend fun getUsernameById(userId: Int): String
+
+    @Query("SELECT point FROM users WHERE id = :userId")
+    suspend fun getUserPoints(userId: Int): Int
+
+    @Query("UPDATE users SET point = :updatedPoints WHERE id = :userId")
+    fun updateUserPoints(userId: Int, updatedPoints: Int)
+
 }
 
