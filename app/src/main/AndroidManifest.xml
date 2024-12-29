@@ -22,6 +22,12 @@
             android:name=".MenuDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".CartOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BillAfterActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivity"
             android:exported="false" />
         <activity

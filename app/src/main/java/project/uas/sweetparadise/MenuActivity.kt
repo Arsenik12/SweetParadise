@@ -2,6 +2,7 @@ package project.uas.sweetparadise
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -42,6 +43,13 @@ class MenuActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        val userId = intent.getIntExtra("USER_ID", -1)  // Mengambil userId, default -1 jika tidak ada
+        if (userId != -1) {
+            Log.d("ReceivedUserId", "User ID received: $userId")  // Menampilkan userId untuk debugging
+        } else {
+            Log.e("ReceivedUserId", "No User ID found.")
+        }
+
         val _buttonBack = findViewById<ImageView>(R.id.back)
         val _btnSearch = findViewById<ImageView>(R.id.search)
         val _etSearch = findViewById<EditText>(R.id.search_bar)
@@ -56,6 +64,7 @@ class MenuActivity : AppCompatActivity() {
         val _tvSnack = findViewById<TextView>(R.id.tvSnack)
         val _tvBeverage = findViewById<TextView>(R.id.tvBeverage)
         val _tvOther = findViewById<TextView>(R.id.tvOther)
+        val _btnCart = findViewById<FrameLayout>(R.id.btnCart)
 
         _buttonBack.setOnClickListener {
             finish()
@@ -147,6 +156,21 @@ class MenuActivity : AppCompatActivity() {
                 _tvItems.text = "No items in cart"
                 _tvAmount.text = "Rp. 0"
             }
+        }
+
+        _btnCart.setOnClickListener {
+
+            val intent = Intent(this, addMenu::class.java)
+            startActivity(intent)
+
+//            try {
+//                val intent = Intent(this@MenuActivity, CartOrderActivity::class.java)
+//                intent.putExtra("USER_ID", userId)  // Mengirimkan userId ke CartOrderActivity
+//                Log.d("MenuActivity", "Sending USER_ID: $userId")  // Log untuk memastikan userId dikirim
+//                startActivity(intent)
+//            } catch (e: Exception) {
+//                Log.e("MenuActivity", "Error starting activity: ${e.message}")
+//            }
         }
     }
 

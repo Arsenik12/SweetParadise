@@ -33,12 +33,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOrderMenu"
-        android:layout_width="wrap_content"
+        android:layout_width="390dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/titleOrder"
-        app:layout_constraintStart_toStartOf="@id/back"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="15dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
 
     <ImageView
         android:id="@+id/line1"
@@ -98,16 +98,20 @@
         android:layout_marginTop="10dp"/>
 
     <FrameLayout
+        android:id="@+id/btnCashier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView5">
         <ImageView
             android:layout_width="145dp"
             android:layout_height="86dp"
-            android:src="@drawable/payment_border" />
+            android:src="@drawable/payment_toggle_selector"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -120,16 +124,19 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/btnOther"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="30dp"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="@+id/checkbox"
         app:layout_constraintTop_toBottomOf="@+id/textView5">
         <ImageView
             android:layout_width="145dp"
             android:layout_height="86dp"
-            android:src="@drawable/payment_border" />
+            android:src="@drawable/payment_toggle_selector" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -163,6 +170,7 @@
             android:layout_marginTop="5dp"/>
 
         <TextView
+            android:id="@+id/totalOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rp 108.000"
@@ -173,7 +181,7 @@
             android:layout_marginTop="5dp"/>
 
         <FrameLayout
-            android:id="@+id/btnAddCart"
+            android:id="@+id/btnOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"

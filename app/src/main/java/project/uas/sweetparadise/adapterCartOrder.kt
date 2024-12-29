@@ -7,17 +7,21 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import project.uas.sweetparadise.database.AppDatabase
 import project.uas.sweetparadise.database.Cart
-import project.uas.sweetparadise.database.CartWithMenu
 
-class adapterCartOrder(private val daftarOrder : MutableList<CartWithMenu>) :
+class adapterCartOrder(private val daftarOrder : MutableList<Cart>, private val db: AppDatabase) :
     RecyclerView.Adapter<adapterCartOrder.ListViewHolder>() {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     interface OnItemClickCallback {
-        fun minData(dtOrder: CartWithMenu, quantity: Int)
-        fun plusData(dtOrder: CartWithMenu, quantity: Int)
+        fun minData(dtOrder: Cart, quantity: Int)
+        fun plusData(dtOrder: Cart, quantity: Int)
     }
 
     fun setOnItemClickCallBack(onItemClickCallBack: OnItemClickCallback) {
@@ -37,8 +41,8 @@ class adapterCartOrder(private val daftarOrder : MutableList<CartWithMenu>) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): adapterCartOrder.ListViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.activity_cart_order, parent, false)
+    ): ListViewHolder {
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.rec_cart, parent, false)
         return ListViewHolder(view)
     }
 
@@ -48,20 +52,42 @@ class adapterCartOrder(private val daftarOrder : MutableList<CartWithMenu>) :
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val dtOrder = daftarOrder[position]
-        holder._menuName.text = dtOrder.menuName
-        holder._menuNote.text = dtOrder.menuNote?.takeIf { it.isNotEmpty() } ?: "(no notes)"
-        holder._menuNote.setTextColor(Color.parseColor("#949494"))
-        holder._menuPrice.text = "Rp ${dtOrder.menuPrice * dtOrder.quantity}"
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val menu = db.menuDao().getMenuById(dtOrder.menuId) // Ambil data menu berdasarkan menuId
+
+            if (menu != null) {
+                withContext(Dispatchers.Main) {
+                    holder._menuName.text = menu.name // Menampilkan nama menu
+                    holder._menuNote.text = dtOrder.menuNote?.takeIf { it.isNotEmpty() } ?: "(no notes)" // Menampilkan menuNote
+                    holder._menuNote.setTextColor(Color.parseColor("#949494"))
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    holder._menuName.text = "Menu Tidak Ditemukan" // Tampilkan pesan jika menu tidak ditemukan
+                    holder._menuNote.text = "(no notes)" // Default jika tidak ada catatan
+                    holder._menuNote.setTextColor(Color.parseColor("#949494"))
+                }
+            }
+        }
+
+        holder._menuPrice.text = "Rp ${dtOrder.price * dtOrder.quantity}"
         holder._menuQuantity.text = dtOrder.quantity.toString()
 
         holder._btnMin.setOnClickListener {
             if (dtOrder.quantity > 1) {
-                onItemClickCallback.minData(dtOrder, dtOrder.quantity)
+                val newQuantity = dtOrder.quantity - 1
+                dtOrder.quantity = newQuantity
+                onItemClickCallback.minData(dtOrder, newQuantity) // Update data
+                notifyItemChanged(position) // Notify adapter for UI update
             }
         }
 
         holder._btnMax.setOnClickListener {
-            onItemClickCallback.plusData(dtOrder, dtOrder.quantity + 1)
+            val newQuantity = dtOrder.quantity + 1
+            dtOrder.quantity = newQuantity
+            onItemClickCallback.plusData(dtOrder, newQuantity) // Update data
+            notifyItemChanged(position) // Notify adapter for UI update
         }
     }
 
