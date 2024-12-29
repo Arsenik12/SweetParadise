@@ -171,7 +171,7 @@ class CartOrderActivity : AppCompatActivity() {
             val options = JSONObject()
             options.put("name", "Sweet Paradise")
             options.put("description", "Order Payment")
-            options.put("currency", "INR")
+            options.put("currency", "IDR")
             options.put(
                 "amount",
                 calculateTotalOrder() * 100

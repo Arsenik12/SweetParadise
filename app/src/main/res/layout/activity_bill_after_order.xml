@@ -31,7 +31,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.010" />
 
-    <TextView
+    <EditText
         android:id="@+id/billBG"
         android:layout_width="347dp"
         android:layout_height="630dp"

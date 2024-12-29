@@ -76,17 +76,9 @@ class MenuActivity : AppCompatActivity() {
         val _tvSnack = findViewById<TextView>(R.id.tvSnack)
         val _tvBeverage = findViewById<TextView>(R.id.tvBeverage)
         val _tvOther = findViewById<TextView>(R.id.tvOther)
-        val _btnCart = findViewById<FrameLayout>(R.id.btnCart)
         val _buttonAdd = findViewById<FloatingActionButton>(R.id.btnAdd)
         val _btnCart = findViewById<Button>(R.id.btnCart)
-        val _btnCake = findViewById<FrameLayout>(R.id.btnCake)
-        val _btnSnack = findViewById<FrameLayout>(R.id.btnSnack)
-        val _btnBeverage = findViewById<FrameLayout>(R.id.btnBeverage)
-        val _btnOther = findViewById<FrameLayout>(R.id.btnOther)
-        val _tvCake = findViewById<TextView>(R.id.tvCake)
-        val _tvSnack = findViewById<TextView>(R.id.tvSnack)
-        val _tvBeverage = findViewById<TextView>(R.id.tvBeverage)
-        val _tvOther = findViewById<TextView>(R.id.tvOther)
+
 
         // Tombol kembali
         _buttonBack.setOnClickListener {
@@ -184,11 +176,7 @@ class MenuActivity : AppCompatActivity() {
             }
         }
 
-        _btnCart.setOnClickListener {
-            val intent = Intent(this, CartOrderActivity::class.java)
-            intent.putExtra("USER_ID", userId)
-            startActivity(intent)
-        }
+
     }
 
     // Mengupdate data keranjang
