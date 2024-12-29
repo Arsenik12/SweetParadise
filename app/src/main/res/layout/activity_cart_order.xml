@@ -120,6 +120,7 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/btnOnlinePayment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -134,11 +135,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PayPal"
+            android:text="Online Payment"
             android:textSize="18sp"
             android:fontFamily="@font/alata_reguler"
             android:layout_marginTop="25dp"
-            android:layout_marginStart="50dp"/>
+            android:layout_marginStart="8dp"/>
     </FrameLayout>
 
     <FrameLayout

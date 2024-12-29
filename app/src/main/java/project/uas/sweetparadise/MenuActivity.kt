@@ -3,6 +3,7 @@ package project.uas.sweetparadise
 import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,6 +46,12 @@ class MenuActivity : AppCompatActivity() {
 
         _buttonAdd.setOnClickListener {
             val intent = Intent(this, addMenu::class.java)
+            startActivity(intent)
+        }
+
+        val _btnCart = findViewById<FrameLayout>(R.id.btnCart)
+        _btnCart.setOnClickListener {
+            val intent = Intent(this, CartOrderActivity::class.java)
             startActivity(intent)
         }
     }

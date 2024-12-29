@@ -16,7 +16,6 @@ import androidx.room.PrimaryKey
         )
     ]
 )
-
 data class Menu(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

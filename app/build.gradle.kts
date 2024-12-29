@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.osmdroid)
     implementation(libs.glide)
+    implementation(libs.razorpay)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
