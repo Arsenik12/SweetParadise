@@ -30,4 +30,9 @@ interface CartDAO {
 """)
     fun getCartWithMenuDetails(): List<CartWithMenu>
 
+    @Query("UPDATE carts SET quantity = :quantity, menuNote = :menuNote WHERE id = :id")
+    suspend fun updateCart(id: Int, quantity: Int, menuNote: String?)
+
+    @Query("SELECT * FROM carts WHERE userId = :userId AND menuId = :menuId LIMIT 1")
+    suspend fun getCartItemByMenuId(userId: Int, menuId: Int): Cart?
 }

@@ -1,5 +1,6 @@
 package project.uas.sweetparadise
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import project.uas.sweetparadise.database.Menu
 
-class adapterMenu(private val daftarMenu: MutableList<Menu>) :
+class adapterMenu(private val daftarMenu: MutableList<Menu>,
+                  private val activity: Activity) :
     RecyclerView.Adapter<adapterMenu.ListViewHolder>() {
+
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val _menu = itemView.findViewById<ConstraintLayout>(R.id.Menu)
@@ -66,11 +69,13 @@ class adapterMenu(private val daftarMenu: MutableList<Menu>) :
             intent.putExtra("name", dtMenu.name)
             intent.putExtra("description", dtMenu.description)
             intent.putExtra("price", dtMenu.price)
-            holder.itemView.context.startActivity(intent)
+            activity.startActivityForResult(intent, MenuActivity.REQUEST_CODE_ADD_TO_CART)
         }
     }
+
 
     fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
+
 }

@@ -41,6 +41,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+
+//        applicationContext.deleteDatabase("app_database")
     }
 
 
@@ -50,7 +52,12 @@ class MainActivity : AppCompatActivity() {
                 val user = AppDatabase.getDatabase(this@MainActivity).userDao().login(username, password)
                 withContext(Dispatchers.Main) {
                     if (user != null) {
+                        val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putInt("CURRENT_USER_ID", user.id)
+                        editor.apply()
                         Toast.makeText(this@MainActivity, "Login Berhasil!", Toast.LENGTH_SHORT).show()
+
                         val intent = Intent(this@MainActivity, MenuActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -63,5 +70,6 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Masukkan Username dan Password Anda!", Toast.LENGTH_SHORT).show()
         }
     }
+
 }
 
