@@ -91,7 +91,9 @@ class CartOrderActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     "Other" -> {
-                        showToast("Other payment method is not implemented yet.")
+                        _btnOther.setOnClickListener {
+                            startPayment()
+                        }
                     }
                 }
             }
@@ -161,6 +163,30 @@ class CartOrderActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun startPayment() {
+        val checkout = Checkout()
+        checkout.setKeyID("rzp_test_sg_wvZZ1erqsP9kRk") // Ganti dengan Test Key ID dari Razorpay Dashboard
+        try {
+            val options = JSONObject()
+            options.put("name", "Sweet Paradise")
+            options.put("description", "Order Payment")
+            options.put("currency", "INR")
+            options.put("amount", calculateTotalOrder() * 100) // Razorpay memerlukan nilai dalam paise
+
+            checkout.open(this, options)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error in payment: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+
+//    fun onPaymentSuccess(razorpayPaymentID: String?) {
+//        Toast.makeText(this, "Payment Successful: $razorpayPaymentID", Toast.LENGTH_LONG).show()
+//    }
+//    fun onPaymentError(code: Int, response: String?) {
+//        Toast.makeText(this, "Payment Failed: $response", Toast.LENGTH_LONG).show()
+//    }
 
     private fun calculateTotalOrder(): Int {
         var total = 0
