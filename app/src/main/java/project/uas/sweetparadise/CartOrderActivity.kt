@@ -42,7 +42,7 @@ class CartOrderActivity : AppCompatActivity() {
         Log.d(
             "CartOrderActivity",
             "Received USER_ID: $userId"
-        )  // Log untuk memastikan userId diterima dengan benar
+        )  // Log untuk menampilkan userID
         if (userId != -1) {
             Log.d("ReceivedUserId", "User ID received: $userId")
         } else {
@@ -59,6 +59,7 @@ class CartOrderActivity : AppCompatActivity() {
 
         _buttonBack.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)
+            intent.putExtra("USER_ID", userId)
             startActivity(intent)
         }
 
