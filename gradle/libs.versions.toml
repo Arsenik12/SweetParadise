@@ -14,7 +14,7 @@ vroom = "2.6.1"
 viewpager2 = "1.0.0"
 osmdroid = "6.1.14"
 glide = "4.15.1"
-razorpay = "1.6.19"
+razorpay = "1.6.40"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

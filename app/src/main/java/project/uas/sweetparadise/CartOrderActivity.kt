@@ -90,6 +90,7 @@ class CartOrderActivity : AppCompatActivity() {
                         intent.putExtra("USER_ID", userId)
                         startActivity(intent)
                     }
+
                     "Other" -> {
                         _btnOther.setOnClickListener {
                             startPayment()
@@ -172,7 +173,10 @@ class CartOrderActivity : AppCompatActivity() {
             options.put("name", "Sweet Paradise")
             options.put("description", "Order Payment")
             options.put("currency", "INR")
-            options.put("amount", calculateTotalOrder() * 100) // Razorpay memerlukan nilai dalam paise
+            options.put(
+                "amount",
+                calculateTotalOrder() * 100
+            ) // Razorpay memerlukan nilai dalam paise
 
             checkout.open(this, options)
         } catch (e: Exception) {
@@ -202,61 +206,11 @@ class CartOrderActivity : AppCompatActivity() {
     }
 
     // Fungsi untuk hitung total jika menggunakan poin
-    private fun updateTotalBasedOnPoints(checkboxPoint: CheckBox, _totalOrder: TextView, userPoints: Int) {
-        if (checkboxPoint.isChecked) {
-            val totalAfterDiscount = calculateTotalOrder() - userPoints
-            _totalOrder.text = "Rp ${formatToRupiah(totalAfterDiscount)}"
-        } else {
-            _totalOrder.text = "Rp ${formatToRupiah(calculateTotalOrder())}"
-        }
-    }
-
-    // Fungsi untuk memberikan efek visual pada metode pembayaran yang dipilih
-    private fun highlightSelectedPaymentMethod(selected: FrameLayout, other: FrameLayout) {
-        selected.setBackgroundResource(R.drawable.payment_selected_border)
-        other.setBackgroundResource(R.drawable.payment_border)
-    }
-
-    // Fungsi untuk menampilkan toast
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun updateCartQuantity(
-        db: AppDatabase,
-        dtOrder: Cart,
-        quantity: Int,
+    private fun updateTotalBasedOnPoints(
         checkboxPoint: CheckBox,
         _totalOrder: TextView,
-        userId: Int
+        userPoints: Int
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            // Update database
-            db.cartDao().updateCartQuantity(dtOrder.id, quantity)
-            val userPoints = db.userDao().getUserById(userId)?.point ?: 0
-            withContext(Dispatchers.Main) {
-                dtOrder.quantity = quantity
-                adapter.notifyItemChanged(cartItems.indexOf(dtOrder))
-                updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
-            }
-        }
-    }
-
-    private fun calculateTotalOrder(): Int {
-        var total = 0
-        for (item in cartItems) {
-            total += item.price * item.quantity
-        }
-        return total
-    }
-
-    private fun formatToRupiah(amount: Int): String {
-        val format = NumberFormat.getInstance(Locale("id", "ID")) // Format Rupiah
-        return format.format(amount)
-    }
-
-    // Fungsi untuk hitung total jika menggunakan poin
-    private fun updateTotalBasedOnPoints(checkboxPoint: CheckBox, _totalOrder: TextView, userPoints: Int) {
         if (checkboxPoint.isChecked) {
             val totalAfterDiscount = calculateTotalOrder() - userPoints
             _totalOrder.text = "Rp ${formatToRupiah(totalAfterDiscount)}"
@@ -275,4 +229,5 @@ class CartOrderActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
 }
