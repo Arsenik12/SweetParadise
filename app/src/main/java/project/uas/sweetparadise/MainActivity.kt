@@ -57,6 +57,15 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this@MainActivity, "Login Berhasil!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@MainActivity, CartOrderActivity::class.java)
                         intent.putExtra("USER_ID", user.id)  // utk kirim userId ke MenuActivity
+
+                        
+                        val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putInt("CURRENT_USER_ID", user.id)
+                        editor.apply()
+                        Toast.makeText(this@MainActivity, "Login Berhasil!", Toast.LENGTH_SHORT).show()
+
+                        val intent = Intent(this@MainActivity, MenuActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
@@ -68,5 +77,6 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Masukkan Username dan Password Anda!", Toast.LENGTH_SHORT).show()
         }
     }
+
 }
 

@@ -33,8 +33,6 @@
         android:textColor="#666666"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@+id/titleMasuk"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.232" />
@@ -60,13 +58,9 @@
         android:layout_height="49dp"
         android:background="@drawable/input_border"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/titleUsername"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.395"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="278dp">
+        app:layout_constraintVertical_bias="0.395">
 
         <ImageView
             android:layout_width="27dp"
@@ -84,7 +78,7 @@
             android:inputType="text"
             android:layout_marginStart="70dp"
             android:layout_marginTop="12dp"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:fontFamily="@font/alata_reguler"/>
     </FrameLayout>
 
@@ -109,13 +103,9 @@
         android:layout_height="49dp"
         android:background="@drawable/input_border"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/titlePassword"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.545"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="278dp">
+        app:layout_constraintVertical_bias="0.545">
 
         <ImageView
             android:layout_width="27dp"
@@ -130,10 +120,10 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:hint="Password"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:layout_marginStart="70dp"
             android:layout_marginTop="12dp"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:fontFamily="@font/alata_reguler"/>
     </FrameLayout>
 
@@ -143,8 +133,6 @@
         android:layout_height="49dp"
         android:background="@drawable/input_border"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/Password"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.714">
@@ -171,8 +159,7 @@
         android:textStyle="bold"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="@+id/frameLayout"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
     <TextView
         android:id="@+id/Registrasi"
@@ -183,12 +170,9 @@
         android:textColor="#1877F2"
         android:textSize="16sp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="@+id/frameLayout"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

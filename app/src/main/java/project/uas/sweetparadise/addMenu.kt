@@ -1,5 +1,6 @@
 package project.uas.sweetparadise
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -48,24 +49,24 @@ class addMenu : AppCompatActivity() {
                 val imageBytes = bitmapToByteArray(bitmap)
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    db.menuDao().insertMenu(
-                        Menu(
-                            name = _etNama.text.toString(),
-                            description = _etDescription.text.toString(),
-                            price = _etPrice.text.toString().toInt(),
-                            categoryId = _etCategory.text.toString().toInt(),
-                            image = imageBytes
-                        )
+                    val newMenu = Menu(
+                        name = _etNama.text.toString(),
+                        description = _etDescription.text.toString(),
+                        price = _etPrice.text.toString().toInt(),
+                        categoryId = _etCategory.text.toString().toInt(),
+                        image = imageBytes
                     )
+                    db.menuDao().insertMenu(newMenu)
 
-                    // Setelah proses selesai, tampilkan Toast dan kembali ke activity utama di UI thread
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             this@addMenu,
                             "Menu berhasil ditambahkan",
                             Toast.LENGTH_SHORT
                         ).show()
-                        finish()  // Pastikan finish() dipanggil setelah data masuk
+
+                        setResult(Activity.RESULT_OK)
+                        finish()
                     }
                 }
             }
