@@ -16,19 +16,8 @@ interface CartDAO {
     @Query("DELETE FROM carts WHERE id = :cartId")
     fun deleteItem(cartId: Int)
 
-    @Query("SELECT * FROM carts")
-    fun getCartItems(): List<Cart>
-
     @Query("SELECT * FROM carts WHERE userId = :userId")
     fun getUserCart(userId : Int): List<Cart>
-
-    @Query("""
-    SELECT carts.id, carts.userId, carts.menuId, carts.quantity, 
-           carts.menuNote as menuNote, menus.name as menuName, menus.price as menuPrice
-    FROM carts
-    INNER JOIN menus ON carts.menuId = menus.id
-""")
-    fun getCartWithMenuDetails(): List<CartWithMenu>
 
     @Query("UPDATE carts SET quantity = :quantity, menuNote = :menuNote WHERE id = :id")
     suspend fun updateCart(id: Int, quantity: Int, menuNote: String?)

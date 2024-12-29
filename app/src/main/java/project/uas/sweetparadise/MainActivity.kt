@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        applicationContext.deleteDatabase("app_database")
     }
 
 

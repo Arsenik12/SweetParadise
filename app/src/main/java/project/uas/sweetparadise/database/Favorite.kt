@@ -6,18 +6,18 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "carts",
+    tableName = "favorites",
     foreignKeys = [
         ForeignKey(
-            entity = Menu::class,
-            parentColumns = ["id"],
-            childColumns = ["menuId"],
+            entity = User::class,
+            parentColumns = ["Id"],
+            childColumns = ["userId"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
 
-data class Cart(
+data class Favorite(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Int = 0,
@@ -25,15 +25,21 @@ data class Cart(
     @ColumnInfo(name = "userId")
     val userId: Int,
 
-    @ColumnInfo(name = "menuId")
-    val menuId: Int,
+    @ColumnInfo(name = "menuName")
+    val menuName: String,
+
+    @ColumnInfo(name = "description")
+    val description: String,
 
     @ColumnInfo(name = "price")
     val price: Int,
 
-    @ColumnInfo(name = "quantity")
-    var quantity: Int,
+    @ColumnInfo(name = "image")
+    val image: ByteArray,
 
-    @ColumnInfo(name = "menuNote")
-    val menuNote: String? = null
+    @ColumnInfo(name = "favorite")
+    var favorite: Boolean = false,
+
+    @ColumnInfo(name = "categoryId")
+    val categoryId: Int
 )

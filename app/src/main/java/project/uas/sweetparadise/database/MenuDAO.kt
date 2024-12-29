@@ -20,4 +20,7 @@ interface MenuDAO {
 
     @Query("SELECT image FROM menus WHERE id = :Id")
     suspend fun getImage(Id: Int): ByteArray
+
+    @Query("SELECT * FROM menus WHERE id = :menuId LIMIT 1")
+    suspend fun getMenuById(menuId: Int): Menu?
 }
