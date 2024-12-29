@@ -5,7 +5,411 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="Profile"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
+    <FrameLayout
+        android:id="@+id/btnProfile"
+        android:layout_width="370dp"
+        android:layout_height="70dp"
+        android:background="@drawable/profile_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.102">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center|left"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/profile_picture" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginStart="90dp"
+            android:layout_marginTop="13dp"
+            android:fontFamily="@font/alata_reguler"
+            android:text="Bob Garfield"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|bottom"
+            android:layout_marginStart="90dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/alata_reguler"
+            android:text="+6209876543211"
+            android:textColor="#808080"
+            android:textSize="10sp" />
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center|right"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/arrow" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="@drawable/profile_list_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.267">>
+        <FrameLayout
+            android:id="@+id/btnTransactions"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/profile_list_bg">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/alata_reguler"
+                android:text="Transactions"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="375dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center|bottom"
+                android:background="@drawable/profile_line" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center|right"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/arrow_gray" />
+
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/btnFavorites"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/profile_list_bg"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/alata_reguler"
+                android:text="Favorites"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="375dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center|bottom"
+                android:background="@drawable/profile_line" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center|right"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/arrow_gray" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btnSettings"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/profile_list_bg">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/alata_reguler"
+                android:text="Settings"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="375dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center|bottom"
+                android:background="@drawable/profile_line" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center|right"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/arrow_gray" />
+
+        </FrameLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="@drawable/profile_list_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.572">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/profile_list_bg">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/alata_reguler"
+                android:text="Terms of Service"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="375dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center|bottom"
+                android:background="@drawable/profile_line" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center|right"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/arrow_gray" />
+
+        </FrameLayout>
+        <FrameLayout
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/profile_list_bg"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/alata_reguler"
+                android:text="Privacy &amp; Policy"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="375dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center|bottom"
+                android:background="@drawable/profile_line" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center|right"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/arrow_gray" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/profile_list_bg">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/alata_reguler"
+                android:text="Social Media"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="375dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center|bottom"
+                android:background="@drawable/profile_line" />
+
+            <ImageView
+                android:id="@+id/instagram"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center|right"
+                android:layout_marginEnd="125dp"
+                android:background="@drawable/instagram" />
+
+            <ImageView
+                android:id="@+id/facebook"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center|right"
+                android:layout_marginEnd="88dp"
+                android:background="@drawable/facebook" />
+
+            <ImageView
+                android:id="@+id/youtube"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center|right"
+                android:layout_marginTop="3.5dp"
+                android:layout_marginEnd="50dp"
+                android:background="@drawable/youtube" />
+
+            <ImageView
+                android:id="@+id/twitter"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center|right"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/twitter" />
+
+        </FrameLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/profile_list_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.819">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/alata_reguler"
+            android:text="Need Help?"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <FrameLayout
+            android:id="@+id/btnCustServ"
+            android:layout_width="370dp"
+            android:layout_height="70dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/profile_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.487"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.102">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center|left"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/whatsapp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginStart="90dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/alata_reguler"
+                android:text="Sweets Paradise+ Customer Service"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:layout_marginStart="90dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/alata_reguler"
+                android:text="0898-7654-3211"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center|right"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/arrow" />
+        </FrameLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/profile_list_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.918">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginStart="20dp"
+            android:textColor="#808080"
+            android:fontFamily="@font/alata_reguler"
+            android:text="Version z.z"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/alata_reguler"
+            android:text="Logout"
+            android:textSize="15sp" />
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
