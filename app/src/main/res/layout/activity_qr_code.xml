@@ -68,4 +68,17 @@
         android:fontFamily="@font/alata_reguler"
         android:textColor="#EFEFEF" />
 
+<!--    PopUp-->
+    <ImageView
+        android:id="@+id/paymentSuccessPopup"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        app:layout_constraintBottom_toTopOf="@id/btnDonePayment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/success_popup_background"
+        android:visibility="gone"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

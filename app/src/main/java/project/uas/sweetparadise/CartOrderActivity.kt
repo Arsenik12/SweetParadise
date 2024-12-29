@@ -3,6 +3,7 @@ package project.uas.sweetparadise
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -54,7 +55,7 @@ class CartOrderActivity : AppCompatActivity() {
         val _btnCashier = findViewById<FrameLayout>(R.id.btnCashier)
         val _btnOther = findViewById<FrameLayout>(R.id.btnOther)
         var _totalOrder = findViewById<TextView>(R.id.totalOrder)
-        val _btnOrder = findViewById<FrameLayout>(R.id.btnOrder)
+        val _btnOrder = findViewById<Button>(R.id.btnOrder)
 
         _buttonBack.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)
@@ -67,11 +68,6 @@ class CartOrderActivity : AppCompatActivity() {
             _btnCashier.isSelected = true
             _btnOther.isSelected = false
             highlightSelectedPaymentMethod(_btnCashier, _btnOther)
-
-            // ke BillAfterActivity
-            val intent = Intent(this, BillAfterActivity::class.java)
-            intent.putExtra("USER_ID", userId)
-            startActivity(intent)
         }
         _btnOther.setOnClickListener {
             selectedPaymentMethod = "Other"
@@ -87,6 +83,7 @@ class CartOrderActivity : AppCompatActivity() {
                 when (selectedPaymentMethod) {
                     "Cashier" -> {
                         val intent = Intent(this, BillAfterActivity::class.java)
+                        intent.putExtra("USER_ID", userId)
                         startActivity(intent)
                     }
                     "Other" -> {

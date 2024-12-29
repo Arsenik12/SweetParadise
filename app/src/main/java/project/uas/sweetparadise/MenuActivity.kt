@@ -159,18 +159,9 @@ class MenuActivity : AppCompatActivity() {
         }
 
         _btnCart.setOnClickListener {
-
-            val intent = Intent(this, addMenu::class.java)
+            val intent = Intent(this, CartOrderActivity::class.java)
+            intent.putExtra("USER_ID", userId)
             startActivity(intent)
-
-//            try {
-//                val intent = Intent(this@MenuActivity, CartOrderActivity::class.java)
-//                intent.putExtra("USER_ID", userId)  // Mengirimkan userId ke CartOrderActivity
-//                Log.d("MenuActivity", "Sending USER_ID: $userId")  // Log untuk memastikan userId dikirim
-//                startActivity(intent)
-//            } catch (e: Exception) {
-//                Log.e("MenuActivity", "Error starting activity: ${e.message}")
-//            }
         }
     }
 

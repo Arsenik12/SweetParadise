@@ -44,7 +44,7 @@ class addMenu : AppCompatActivity() {
             if (_etNama.text.isEmpty() || _etDescription.text.isEmpty() || _etPrice.text.isEmpty() || _etCategory.text.isEmpty()) {
                 Toast.makeText(this, "Harap lengkapi semua kolom", Toast.LENGTH_SHORT).show()
             } else {
-                val bitmap = BitmapFactory.decodeResource(resources, R.drawable.red_velvet)
+                val bitmap = BitmapFactory.decodeResource(resources, R.drawable.reese_fudge)
                 val imageBytes = bitmapToByteArray(bitmap)
 
                 CoroutineScope(Dispatchers.IO).launch {

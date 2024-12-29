@@ -29,5 +29,7 @@ interface CartDAO {
     @Query("SELECT id FROM carts WHERE userId = :userId")
     suspend fun getCartIdsByUser(userId: Int): List<Int>
 
+    @Query("DELETE FROM carts WHERE userId = :userId")
+    suspend fun deleteCartItemsAfterPaymentSuccess(userId: Int)
 
 }
