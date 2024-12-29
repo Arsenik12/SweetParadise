@@ -6,10 +6,18 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import project.uas.sweetparadise.database.AppDatabase
+import project.uas.sweetparadise.database.User
 
 class HomeActivity : AppCompatActivity() {
 
@@ -24,16 +32,38 @@ class HomeActivity : AppCompatActivity() {
 
     private var currentPage = 0
 
+    private var userId: Int = -1 // Tambahkan variabel global untuk userId
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homepage)
 
-        // Ambil username dari Intent di LoginActivity
-        val username = intent.getStringExtra("USERNAME") ?: "Guest"
+        val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
+        userId = sharedPreferences.getInt("CURRENT_USER_ID", -1)
 
-        // Setup username ke TextView
-        usernameTextView = findViewById(R.id.tvUsername)
-        usernameTextView.text = "$username"
+        if (userId == -1) {
+            Toast.makeText(this, "No user logged in!", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
+        val db = AppDatabase.getDatabase(this)
+
+        var username: String? = null
+
+        // Coroutine untuk mengambil data dari database di background thread (IO)
+        CoroutineScope(Dispatchers.IO).launch {
+            // Ambil data username dari database
+            val usernameFromDb = db.userDao().getUsernameById(userId)
+
+            // Update UI di thread utama setelah mendapatkan data
+            withContext(Dispatchers.Main) {
+                usernameTextView = findViewById(R.id.tvUsername)
+                usernameTextView.text = usernameFromDb // Menampilkan username di TextView
+            }
+        }
+
 
         // Setup tombol notifikasi
         val _btnNotif = findViewById<ImageView>(R.id.btnNotification)
@@ -62,24 +92,18 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        val btnDelivery = findViewById<ImageView>(R.id.btnDelivery)
-//        btnDelivery.setOnClickListener {
-//            if (isLocationEnabled()) {
-//                // Jika lokasi aktif maka lanjut ke MenuActivity
-//                val intent = Intent(this, MenuActivity::class.java)
-//                startActivity(intent)
-//            } else {
-//                // Jika lokasi tidak aktif maka minta user diminta untuk menyalakan lokasi
-//                Toast.makeText(this, "Harap aktifkan lokasi Anda untuk melanjutkan!", Toast.LENGTH_SHORT).show()
-//                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-//                startActivity(intent)
-//            }
-//        }
-
-        val _btnDelivery = findViewById<ImageView>(R.id.btnDelivery)
-        _btnDelivery.setOnClickListener {
-            val intent = Intent(this, OSMAddressActivity::class.java)
-            startActivity(intent)
+        val btnDelivery = findViewById<ImageView>(R.id.btnDelivery)
+        btnDelivery.setOnClickListener {
+            if (isLocationEnabled()) {
+                // Jika lokasi aktif maka lanjut ke MenuActivity
+                val intent = Intent(this, OSMAddressActivity::class.java)
+                startActivity(intent)
+            } else {
+                // Jika lokasi tidak aktif maka minta user diminta untuk menyalakan lokasi
+                Toast.makeText(this, "Harap aktifkan lokasi Anda untuk melanjutkan!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
         }
     }
 
@@ -110,4 +134,3 @@ class HomeActivity : AppCompatActivity() {
         handler.removeCallbacksAndMessages(null)
     }
 }
-

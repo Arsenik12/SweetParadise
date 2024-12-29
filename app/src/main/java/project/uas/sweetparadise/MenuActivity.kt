@@ -81,7 +81,8 @@ class MenuActivity : AppCompatActivity() {
 
         // Tombol kembali
         _buttonBack.setOnClickListener {
-            finish()
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
         }
 
         // Fungsi pencarian

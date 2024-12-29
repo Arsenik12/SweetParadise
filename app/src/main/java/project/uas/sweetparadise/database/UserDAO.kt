@@ -21,5 +21,8 @@ interface UserDAO {
 
     @Query("SELECT id FROM users WHERE username = :username")
     suspend fun getCurrentUserId(username: String): Int
+
+    @Query("SELECT username FROM users WHERE id = :userId LIMIT 1")
+    suspend fun getUsernameById(userId: Int): String
 }
 

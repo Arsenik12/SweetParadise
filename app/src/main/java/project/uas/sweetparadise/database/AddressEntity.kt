@@ -1,4 +1,4 @@
-package project.uas.sweetparadise.Entity
+package project.uas.sweetparadise.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

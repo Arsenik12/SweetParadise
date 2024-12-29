@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+//        applicationContext.deleteDatabase("app_database")
     }
 
     private fun login(username: String, password: String) {
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                         editor.apply()
                         Toast.makeText(this@MainActivity, "Login Berhasil!", Toast.LENGTH_SHORT).show()
 
-                        val intent = Intent(this@MainActivity, MenuActivity::class.java)
+                        val intent = Intent(this@MainActivity, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {

@@ -23,7 +23,6 @@ import java.util.Locale
 import com.razorpay.Checkout
 import com.razorpay.PaymentResultListener
 import org.json.JSONObject
-import project.uas.sweetparadise.Entity.CartWithMenu
 
 class CartOrderActivity : AppCompatActivity() {
 

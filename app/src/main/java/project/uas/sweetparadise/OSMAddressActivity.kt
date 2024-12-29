@@ -17,8 +17,8 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
-import project.uas.sweetparadise.Database.AddressDatabase
-import project.uas.sweetparadise.Entity.AddressEntity
+import project.uas.sweetparadise.database.AddressDatabase
+import project.uas.sweetparadise.database.AddressEntity
 import java.util.*
 
 class OSMAddressActivity : AppCompatActivity() {
