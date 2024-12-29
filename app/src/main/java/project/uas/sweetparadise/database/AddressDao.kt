@@ -1,9 +1,8 @@
-package project.uas.sweetparadise.DAO
+package project.uas.sweetparadise.database
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import project.uas.sweetparadise.Entity.AddressEntity
 
 @Dao
 interface AddressDao {
