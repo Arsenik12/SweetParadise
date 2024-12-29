@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 
@@ -16,6 +17,7 @@ class EditProfileActivity : AppCompatActivity() {
         val _etNama = findViewById<EditText>(R.id.etNama)
         val _etPhoneNo = findViewById<EditText>(R.id.etPhoneNo)
         val _btnSave = findViewById<Button>(R.id.btnSave)
+        val _btnBack = findViewById<ImageView>(R.id.btnBack)
 
         // terima data
         val name = intent.getStringExtra("PROFILE_NAME")
@@ -34,6 +36,10 @@ class EditProfileActivity : AppCompatActivity() {
                 putExtra("ET_PROFILE_STATUS", "edited") // kirim status
             }
             startActivity(intent)
+        }
+
+        _btnBack.setOnClickListener {
+            finish()
         }
     }
 }

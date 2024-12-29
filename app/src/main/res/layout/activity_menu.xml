@@ -5,238 +5,314 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuActivity"
-    android:padding="24dp">
+    tools:context=".MenuActivity">
 
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.02" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
 
-    <EditText
-        android:id="@+id/search_bar"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border_search"
-        android:hint="Search here"
-        android:textColor="#652B27"
-        android:padding="8dp"
-        android:paddingStart="24dp"
-        android:fontFamily="@font/alata_reguler"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01" />
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.02" />
 
-    <ImageView
-        android:id="@+id/search"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/search_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.97"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+        <EditText
+            android:id="@+id/search_bar"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_search"
+            android:fontFamily="@font/alata_reguler"
+            android:hint="Search here"
+            android:padding="8dp"
+            android:paddingStart="24dp"
+            android:textColor="#652B27"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.01" />
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/menu_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1">
+        <ImageView
+            android:id="@+id/search"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/search_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.97"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.022" />
 
-        <TextView
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dine In"
-            android:textColor="@color/white"
-            android:fontFamily="@font/alata_reguler"
-            android:textSize="32sp"
-            android:layout_gravity="center"
-            android:shadowColor="#652B27"
-            android:shadowDx="4"
-            android:shadowDy="4"
-            android:shadowRadius="1" />
-    </FrameLayout>
+            android:background="@drawable/menu_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.1">
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScroll"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/alata_reguler"
+                android:shadowColor="#652B27"
+                android:shadowDx="4"
+                android:shadowDy="4"
+                android:shadowRadius="1"
+                android:text="Dine In"
+                android:textColor="@color/white"
+                android:textSize="32sp" />
+        </FrameLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.24">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/btnCake"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/border_button_chosen">
+
+                    <TextView
+                        android:id="@+id/tvCake"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/alata_reguler"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:text="Cake"
+                        android:textColor="#652B27"
+                        android:textSize="17sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/btnSnack"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/border_button">
+
+                    <TextView
+                        android:id="@+id/tvSnack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/alata_reguler"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:text="Snack"
+                        android:textColor="#949494"
+                        android:textSize="17sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/btnBeverage"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/border_button">
+
+                    <TextView
+                        android:id="@+id/tvBeverage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/alata_reguler"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:text="Beverage"
+                        android:textColor="#949494"
+                        android:textSize="17sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/btnOther"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/border_button">
+
+                    <TextView
+                        android:id="@+id/tvOther"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/alata_reguler"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:text="Other"
+                        android:textColor="#949494"
+                        android:textSize="17sp" />
+                </FrameLayout>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMenu"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/horizontalScroll"
+            app:layout_constraintTop_toBottomOf="@id/horizontalScroll"></androidx.recyclerview.widget.RecyclerView>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:elevation="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.93">
+
+            <Button
+                android:id="@+id/btnCart"
+                android:layout_width="321dp"
+                android:layout_height="58dp"
+                android:backgroundTint="#652B27" />
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="13dp"
+                android:src="@drawable/icon_bag" />
+
+            <TextView
+                android:id="@+id/tvItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/alata_reguler"
+                android:text="0 Item Selected"
+                android:textColor="#EFEFEF"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/alata_reguler"
+                android:text="0"
+                android:textColor="#EFEFEF"
+                android:textSize="21sp" />
+        </FrameLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="115dp"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:padding="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.24">
-
+        app:layout_constraintVertical_bias="1">
+        <!-- Bottom Navigation -->
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:id="@+id/navHome"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom"
+            android:background="#FFFFFF"
+            android:elevation="8dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-            <FrameLayout
-                android:id="@+id/btnCake"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:background="@drawable/border_button_chosen">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvCake"
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cake"
-                    android:textSize="17sp"
-                    android:textColor="#652B27"
-                    android:fontFamily="@font/alata_reguler"
-                    android:layout_gravity="center"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp" />
-            </FrameLayout>
+                    android:contentDescription="Home"
+                    android:src="@drawable/nav_home2" />
 
-            <FrameLayout
-                android:id="@+id/btnSnack"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:background="@drawable/border_button"
-                android:layout_marginStart="12dp">
+            </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvSnack"
+            <LinearLayout
+                android:id="@+id/navMenu"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Snack"
-                    android:textSize="17sp"
-                    android:textColor="#949494"
-                    android:fontFamily="@font/alata_reguler"
-                    android:layout_gravity="center"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp" />
-            </FrameLayout>
+                    android:contentDescription="Menu"
+                    android:src="@drawable/nav_menu1" />
 
-            <FrameLayout
-                android:id="@+id/btnBeverage"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:background="@drawable/border_button"
-                android:layout_marginStart="12dp">
+            </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvBeverage"
+            <LinearLayout
+                android:id="@+id/navProfile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Beverage"
-                    android:textSize="17sp"
-                    android:textColor="#949494"
-                    android:fontFamily="@font/alata_reguler"
-                    android:layout_gravity="center"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp" />
-            </FrameLayout>
+                    android:contentDescription="Profile"
+                    android:src="@drawable/nav_profile2" />
 
-            <FrameLayout
-                android:id="@+id/btnOther"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:background="@drawable/border_button"
-                android:layout_marginStart="12dp">
-
-                <TextView
-                    android:id="@+id/tvOther"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Other"
-                    android:textSize="17sp"
-                    android:textColor="#949494"
-                    android:fontFamily="@font/alata_reguler"
-                    android:layout_gravity="center"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp" />
-            </FrameLayout>
+            </LinearLayout>
 
         </LinearLayout>
-    </HorizontalScrollView>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMenu"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@id/horizontalScroll"
-        app:layout_constraintTop_toBottomOf="@id/horizontalScroll">
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="16dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9">
-        <Button
-            android:id="@+id/btnCart"
-            android:layout_width="321dp"
-            android:layout_height="58dp"
-            android:backgroundTint="#652B27"/>
-        <ImageView
-            android:layout_width="26dp"
-            android:layout_height="30dp"
-            android:src="@drawable/icon_bag"
-            android:layout_marginTop="13dp"
-            android:layout_marginStart="20dp"/>
-
-        <TextView
-            android:id="@+id/tvItems"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0 Item Selected"
-            android:textSize="16sp"
-            android:fontFamily="@font/alata_reguler"
-            android:textColor="#EFEFEF"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="15dp"/>
-
-        <TextView
-            android:id="@+id/tvAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="#EFEFEF"
-            android:textSize="21sp"
-            android:fontFamily="@font/alata_reguler"
-            android:layout_gravity="end|center"
-            android:layout_marginEnd="24dp"/>
-    </FrameLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

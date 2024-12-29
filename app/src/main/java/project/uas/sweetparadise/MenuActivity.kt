@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -79,6 +80,19 @@ class MenuActivity : AppCompatActivity() {
         val _buttonAdd = findViewById<FloatingActionButton>(R.id.btnAdd)
         val _btnCart = findViewById<Button>(R.id.btnCart)
 
+        val _navHome = findViewById<LinearLayout>(R.id.navHome)
+        val _navProfile = findViewById<LinearLayout>(R.id.navProfile)
+
+
+        _navHome.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+
+        _navProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
 
         // Tombol kembali
         _buttonBack.setOnClickListener {

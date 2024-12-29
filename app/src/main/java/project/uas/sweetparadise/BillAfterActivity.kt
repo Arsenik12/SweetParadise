@@ -101,7 +101,7 @@ class BillAfterActivity : AppCompatActivity() {
                     )
 
                     //insert bill to database
-                    db.billDAO().insertBill(bill)
+                    db.billDao().insertBill(bill)
 
                     withContext(Dispatchers.Main) {
                         billItems.clear()

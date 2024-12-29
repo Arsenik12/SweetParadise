@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -48,6 +49,9 @@ class HomeActivity : AppCompatActivity() {
             return
         }
 
+        val _navMenu = findViewById<LinearLayout>(R.id.navMenu)
+        val _navProfile = findViewById<LinearLayout>(R.id.navProfile)
+
         val db = AppDatabase.getDatabase(this)
 
         var username: String? = null
@@ -64,6 +68,15 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        _navMenu.setOnClickListener {
+            val intent = Intent(this, MenuActivity::class.java)
+            startActivity(intent)
+        }
+
+        _navProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
 
         // Setup tombol notifikasi
         val _btnNotif = findViewById<ImageView>(R.id.btnNotification)

@@ -116,7 +116,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
             android:fillViewport="true">
 
@@ -268,6 +268,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navMenu"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -289,6 +290,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/navProfile"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

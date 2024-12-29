@@ -3,9 +3,9 @@ package project.uas.sweetparadise
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import project.uas.sweetparadise.database.AppDatabase
@@ -37,6 +37,10 @@ class ProfileActivity : AppCompatActivity() {
         var name = _profileName.text.toString()
         var phoneNo = _profilePhoneNo.text.toString()
 
+        val _navMenu = findViewById<LinearLayout>(R.id.navMenu)
+        val _navHome = findViewById<LinearLayout>(R.id.navHome)
+
+
         var edited = "original"
 
         _btnProfile.setOnClickListener {
@@ -58,8 +62,19 @@ class ProfileActivity : AppCompatActivity() {
             _profilePhoneNo.text = phoneNo
         }
 
+
+        _navMenu.setOnClickListener {
+            val intent = Intent(this, MenuActivity::class.java)
+            startActivity(intent)
+        }
+
+        _navHome.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+
         _btnLogout.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
