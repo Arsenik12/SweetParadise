@@ -15,6 +15,12 @@
         android:theme="@style/Theme.SweetParadise"
         tools:targetApi="31">
         <activity
+            android:name=".ProfileFavoritesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileTransactionsActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
         <activity

@@ -28,6 +28,11 @@ class ProfileActivity : AppCompatActivity() {
         val _facebook = findViewById<ImageView>(R.id.facebook)
         val _youtube = findViewById<ImageView>(R.id.youtube)
         val _twitter = findViewById<ImageView>(R.id.twitter)
+        val _btnCustServ = findViewById<FrameLayout>(R.id.btnCustServ)
+
+        val _btnTransactions = findViewById<FrameLayout>(R.id.btnTransactions)
+        val _btnFavorites = findViewById<FrameLayout>(R.id.btnFavorites)
+        val _btnSettings= findViewById<FrameLayout>(R.id.btnSettings)
 
         var name = _profileName.text.toString()
         var phoneNo = _profilePhoneNo.text.toString()
@@ -55,6 +60,16 @@ class ProfileActivity : AppCompatActivity() {
 
         _btnLogout.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        _btnTransactions.setOnClickListener {
+            val intent = Intent(this, ProfileTransactionsActivity::class.java)
+            startActivity(intent)
+        }
+
+        _btnFavorites.setOnClickListener {
+            val intent = Intent(this, ProfileFavoritesActivity::class.java)
             startActivity(intent)
         }
 
@@ -86,6 +101,14 @@ class ProfileActivity : AppCompatActivity() {
         _twitter.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse("https://www.x.com/")
+                setPackage("com.android.chrome")
+            }
+            startActivity(intent)
+        }
+
+        _btnCustServ.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("https://web.whatsapp.com/")
                 setPackage("com.android.chrome")
             }
             startActivity(intent)
