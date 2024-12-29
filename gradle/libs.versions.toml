@@ -8,6 +8,7 @@ espressoCore = "3.6.1"
 appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.9.3"
+qrGenerator = "4.3.0"
 constraintlayout = "2.2.0"
 vroom = "2.6.1"
 
@@ -23,6 +24,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "vroom" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "vroom" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "vroom" }
+qr-generator = { group = "com.journeyapps", name = "zxing-android-embedded", version.ref = "qrGenerator" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

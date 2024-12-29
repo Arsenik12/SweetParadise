@@ -28,6 +28,9 @@
             android:name=".BillAfterActivity"
             android:exported="false" />
         <activity
+            android:name=".QrActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivity"
             android:exported="false" />
         <activity

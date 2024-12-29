@@ -60,7 +60,19 @@ class BillAfterActivity : AppCompatActivity() {
 
         _buttonBack.setOnClickListener {
             val intent = Intent(this, CartOrderActivity::class.java)
+            intent.putExtra("USER_ID", userId)
             startActivity(intent)
+        }
+
+        //ke QrActivity
+        _btnGenerateQR.setOnClickListener {
+            if (userId != -1) {
+                val intent = Intent(this, QrActivity::class.java)
+                intent.putExtra("USER_ID", userId) // Kirim userId ke QrActivity
+                startActivity(intent)
+            } else {
+                Log.e("BillAfterActivity", "Invalid User ID. Cannot generate QR.")
+            }
         }
 
         _date.text = getCurrentDate()
@@ -73,6 +85,24 @@ class BillAfterActivity : AppCompatActivity() {
                     val carts = db.cartDao().getUserCart(userId)
                     val user = db.userDao().getUserById(userId)
 
+                    // Process cart data and calculate amounts
+                    val priceAmount = carts.sumOf { it.price * it.quantity }
+                    val taxAmount = priceAmount * 0.1
+                    val totalAmount = priceAmount + taxAmount
+                    val totalQuantity = carts.sumOf { it.quantity }
+
+                    // buat objek Bill
+                    val bill = Bill(
+                        userId = userId,
+                        date = getCurrentDate(),
+                        time = getCurrentTime(),
+                        quantity = totalQuantity,
+                        totalPrice = totalAmount.toInt()
+                    )
+
+                    //insert bill to database
+                    db.billDAO().insertBill(bill)
+
                     withContext(Dispatchers.Main) {
                         billItems.clear()
                         billItems.addAll(carts)
@@ -84,39 +114,15 @@ class BillAfterActivity : AppCompatActivity() {
                         _locationName.text = "Your Location"
 
                         // Harga total semua item
-                        val priceAmount = carts.sumOf { it.price * it.quantity }
                         _priceAmount.text = formatToRupiah(priceAmount)
 
                         // 10% dari total price
-                        val taxAmount = priceAmount * 0.1
                         _taxAmount.text = formatToRupiah(taxAmount.toInt())
 
                         // Hitung total harga
-                        val totalAmount = priceAmount + taxAmount
                         _totalAmount.text = formatToRupiah(totalAmount.toInt())
-
-                        // Ambil total quantity dari cart
-                        val totalQuantity = carts.sumOf { it.quantity }
-
-                        // buat objek Bill
-                        val bill = Bill(
-                            userId = userId,
-                            date = getCurrentDate(),
-                            time = getCurrentTime(),
-                            quantity = totalQuantity,
-                            totalPrice = totalAmount.toInt()
-                        )
-
-                        // Menyimpan bill ke dalam database
-                        CoroutineScope(Dispatchers.IO).launch {
-                            try {
-                                db.billDAO().insertBill(bill)
-                                Log.d("BillAfterActivity", "Bill saved successfully!")
-                            } catch (e: Exception) {
-                                Log.e("BillAfterActivity", "Error saving bill: ${e.message}")
-                            }
-                        }
                     }
+                    Log.d("BillAfterActivity", "Bill saved successfully!")
                 } catch (e: Exception) {
                     Log.e("BillAfterActivity", "Error fetching data: ${e.message}")
                 }
