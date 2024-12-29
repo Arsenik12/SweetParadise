@@ -3,6 +3,7 @@ package project.uas.sweetparadise
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.util.Log
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -62,12 +63,20 @@ class MenuActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Inisialisasi view
         val _buttonBack = findViewById<ImageView>(R.id.back)
         val _btnSearch = findViewById<ImageView>(R.id.search)
         val _etSearch = findViewById<EditText>(R.id.search_bar)
         val _tvItems = findViewById<TextView>(R.id.tvItems)
         val _tvAmount = findViewById<TextView>(R.id.tvAmount)
+        val _btnSnack = findViewById<FrameLayout>(R.id.btnSnack)
+        val _btnBeverage = findViewById<FrameLayout>(R.id.btnBeverage)
+        val _btnCake = findViewById<FrameLayout>(R.id.btnCake)
+        val _btnOther = findViewById<FrameLayout>(R.id.btnOther)
+        val _tvCake = findViewById<TextView>(R.id.tvCake)
+        val _tvSnack = findViewById<TextView>(R.id.tvSnack)
+        val _tvBeverage = findViewById<TextView>(R.id.tvBeverage)
+        val _tvOther = findViewById<TextView>(R.id.tvOther)
+        val _btnCart = findViewById<FrameLayout>(R.id.btnCart)
         val _buttonAdd = findViewById<FloatingActionButton>(R.id.btnAdd)
         val _btnCart = findViewById<Button>(R.id.btnCart)
         val _btnCake = findViewById<FrameLayout>(R.id.btnCake)
@@ -172,6 +181,12 @@ class MenuActivity : AppCompatActivity() {
                 val _tvAmount = findViewById<TextView>(R.id.tvAmount)
                 updateCartData(db, userId, _tvItems, _tvAmount)
             }
+        }
+
+        _btnCart.setOnClickListener {
+            val intent = Intent(this, CartOrderActivity::class.java)
+            intent.putExtra("USER_ID", userId)
+            startActivity(intent)
         }
     }
 

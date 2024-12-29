@@ -2,6 +2,7 @@ package project.uas.sweetparadise
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -47,6 +48,12 @@ class MainActivity : AppCompatActivity() {
                 val user = AppDatabase.getDatabase(this@MainActivity).userDao().login(username, password)
                 withContext(Dispatchers.Main) {
                     if (user != null) {
+                        Log.d("LoginSuccess", "User ID: ${user.id}")
+                        Toast.makeText(this@MainActivity, "Login Berhasil!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@MainActivity, CartOrderActivity::class.java)
+                        intent.putExtra("USER_ID", user.id)  // utk kirim userId ke MenuActivity
+
+                        
                         val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
                         val editor = sharedPreferences.edit()
                         editor.putInt("CURRENT_USER_ID", user.id)
