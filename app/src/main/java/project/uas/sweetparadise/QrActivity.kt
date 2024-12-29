@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
@@ -25,6 +26,7 @@ private const val QR_SIZE = 1024
 class QrActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityQrCodeBinding
+    private var userId: Int = -1 // Tambahkan variabel global untuk userId
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,21 +34,19 @@ class QrActivity : AppCompatActivity() {
         binding = ActivityQrCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userId = intent.getIntExtra("USER_ID", -1)
-        Log.d(
-            "BillAfterActivity",
-            "Received USER_ID: $userId"
-        )  // Log untuk memastikan userId diterima dengan benar
+        val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
+        userId = sharedPreferences.getInt("CURRENT_USER_ID", -1)
 
-        if (userId != -1) {
-            Log.d("ReceivedUserId", "User ID received: $userId")
-        } else {
-            Log.e("ReceivedUserId", "No User ID found.")
+        if (userId == -1) {
+            Toast.makeText(this, "No user logged in!", Toast.LENGTH_SHORT).show()
+            finish()
+            return
         }
+
         if (userId != -1) {
             generateQRCode(userId)
         } else {
-            Log.e(TAG, "Invalid User ID.")
+            Log.e(TAG, "Invalid User ID. Cannot generate QR.")
         }
 
         val _btnDone = findViewById<Button>(R.id.btnDonePayment)
@@ -114,8 +114,8 @@ class QrActivity : AppCompatActivity() {
                 if (userId != -1) {
                     deleteCartItems(userId)  // Menghapus cart berdasarkan userId
                 }
-                // Navigate back to homepage (MainActivity or whatever the homepage is)
-                val intent = Intent(this@QrActivity, CartOrderActivity::class.java)
+                // Navigate back to homepage
+                val intent = Intent(this@QrActivity, MainActivity::class.java)
                 intent.putExtra("USER_ID", userId)
                 startActivity(intent)
                 finish()  // Optionally call finish() to close the current activity

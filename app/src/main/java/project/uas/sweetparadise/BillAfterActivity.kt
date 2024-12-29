@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ class BillAfterActivity : AppCompatActivity() {
 
     private lateinit var adapter: adapterBill
     private var billItems: MutableList<Cart> = mutableListOf()
+    private var userId: Int = -1 // Tambahkan variabel global untuk userId
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,15 +38,13 @@ class BillAfterActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val userId = intent.getIntExtra("USER_ID", -1)
-        Log.d(
-            "BillAfterActivity",
-            "Received USER_ID: $userId"
-        )  // Log untuk memastikan userId diterima dengan benar
-        if (userId != -1) {
-            Log.d("ReceivedUserId", "User ID received: $userId")
-        } else {
-            Log.e("ReceivedUserId", "No User ID found.")
+        val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
+        userId = sharedPreferences.getInt("CURRENT_USER_ID", -1)
+
+        if (userId == -1) {
+            Toast.makeText(this, "No user logged in!", Toast.LENGTH_SHORT).show()
+            finish()
+            return
         }
 
         val _buttonBack = findViewById<ImageView>(R.id.back)

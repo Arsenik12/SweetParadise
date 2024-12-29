@@ -119,8 +119,7 @@
             android:text="Cashier"
             android:textSize="18sp"
             android:fontFamily="@font/alata_reguler"
-            android:layout_marginTop="25dp"
-            android:layout_marginStart="45dp"/>
+            android:layout_gravity="center"/>
     </FrameLayout>
 
     <FrameLayout
@@ -144,8 +143,7 @@
             android:text="Online"
             android:textSize="18sp"
             android:fontFamily="@font/alata_reguler"
-            android:layout_marginTop="25dp"
-            android:layout_marginStart="50dp"/>
+            android:layout_gravity="center"/>
     </FrameLayout>
 
     <FrameLayout
