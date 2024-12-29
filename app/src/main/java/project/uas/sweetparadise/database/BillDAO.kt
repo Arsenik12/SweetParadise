@@ -12,4 +12,7 @@ interface BillDAO {
 
     @Query("SELECT * FROM bills")
     suspend fun getBillItems(): List<Bill>
+
+    @Query("SELECT * FROM bills WHERE userId = :userId")
+    suspend fun getBillsByUserId(userId: Int): List<Bill>
 }

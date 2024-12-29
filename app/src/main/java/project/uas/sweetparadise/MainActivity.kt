@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                     if (user != null) {
                         Log.d("LoginSuccess", "User ID: ${user.id}")
                         Toast.makeText(this@MainActivity, "Login Berhasil!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@MainActivity, CartOrderActivity::class.java)
+                        val intent = Intent(this@MainActivity, ProfileActivity::class.java)
                         intent.putExtra("USER_ID", user.id)  // utk kirim userId ke MenuActivity
                         startActivity(intent)
                         finish()

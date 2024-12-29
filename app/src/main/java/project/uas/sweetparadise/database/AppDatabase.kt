@@ -17,6 +17,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun cartDao(): CartDAO
     abstract fun menuDao(): MenuDAO
     abstract fun categoryDao(): CategoryDAO
+    abstract fun billDao(): BillDAO
 
     companion object {
         @Volatile
