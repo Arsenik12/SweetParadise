@@ -1,5 +1,6 @@
 package project.uas.sweetparadise
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -14,9 +15,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import project.uas.sweetparadise.Database.AppDatabase
-import project.uas.sweetparadise.Entity.Category
-import project.uas.sweetparadise.Entity.Menu
+import project.uas.sweetparadise.database.AppDatabase
+import project.uas.sweetparadise.database.Category
+import project.uas.sweetparadise.database.Menu
 import java.io.ByteArrayOutputStream
 
 class addMenu : AppCompatActivity() {
@@ -44,28 +45,28 @@ class addMenu : AppCompatActivity() {
             if (_etNama.text.isEmpty() || _etDescription.text.isEmpty() || _etPrice.text.isEmpty() || _etCategory.text.isEmpty()) {
                 Toast.makeText(this, "Harap lengkapi semua kolom", Toast.LENGTH_SHORT).show()
             } else {
-                val bitmap = BitmapFactory.decodeResource(resources, R.drawable.reese_fudge)
+                val bitmap = BitmapFactory.decodeResource(resources, R.drawable.red_velvet)
                 val imageBytes = bitmapToByteArray(bitmap)
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    db.menuDao().insertMenu(
-                        Menu(
-                            name = _etNama.text.toString(),
-                            description = _etDescription.text.toString(),
-                            price = _etPrice.text.toString().toDouble(),
-                            categoryId = _etCategory.text.toString().toInt(),
-                            image = imageBytes
-                        )
+                    val newMenu = Menu(
+                        name = _etNama.text.toString(),
+                        description = _etDescription.text.toString(),
+                        price = _etPrice.text.toString().toInt(),
+                        categoryId = _etCategory.text.toString().toInt(),
+                        image = imageBytes
                     )
+                    db.menuDao().insertMenu(newMenu)
 
-                    // Setelah proses selesai, tampilkan Toast dan kembali ke activity utama di UI thread
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             this@addMenu,
                             "Menu berhasil ditambahkan",
                             Toast.LENGTH_SHORT
                         ).show()
-                        finish()  // Pastikan finish() dipanggil setelah data masuk
+
+                        setResult(Activity.RESULT_OK)
+                        finish()
                     }
                 }
             }

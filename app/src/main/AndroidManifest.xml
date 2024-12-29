@@ -29,7 +29,27 @@
         <activity android:name=".addMenu" android:exported="false"/>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".MenuActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+        <activity
+            android:name=".addMenu"
+            android:exported="false" />
+        <activity
+            android:name=".MenuDetailActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CartOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

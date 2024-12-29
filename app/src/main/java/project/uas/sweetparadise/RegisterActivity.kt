@@ -10,10 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import project.uas.sweetparadise.Database.AppDatabase
-import project.uas.sweetparadise.Entity.User
+import project.uas.sweetparadise.database.AppDatabase
+import project.uas.sweetparadise.database.User
 
-class RegisterActivity : AppCompatActivity(){
+class RegisterActivity : AppCompatActivity() {
 
     private lateinit var inputUsername: EditText
     private lateinit var inputPassword: EditText
@@ -36,7 +36,7 @@ class RegisterActivity : AppCompatActivity(){
         }
 
         btnGoToLogin.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }
@@ -48,7 +48,7 @@ class RegisterActivity : AppCompatActivity(){
                 AppDatabase.getDatabase(this@RegisterActivity).userDao().insertUser(user)
                 runOnUiThread {
                     Toast.makeText(this@RegisterActivity, "Registrasi Berhasil!", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                    val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 }

@@ -75,6 +75,7 @@
     </FrameLayout>
 
     <HorizontalScrollView
+        android:id="@+id/horizontalScroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
@@ -98,6 +99,7 @@
                 android:background="@drawable/border_button_chosen">
 
                 <TextView
+                    android:id="@+id/tvCake"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cake"
@@ -117,6 +119,7 @@
                 android:layout_marginStart="12dp">
 
                 <TextView
+                    android:id="@+id/tvSnack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Snack"
@@ -136,6 +139,7 @@
                 android:layout_marginStart="12dp">
 
                 <TextView
+                    android:id="@+id/tvBeverage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Beverage"
@@ -155,6 +159,7 @@
                 android:layout_marginStart="12dp">
 
                 <TextView
+                    android:id="@+id/tvOther"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Other"
@@ -173,17 +178,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMenu"
         android:layout_width="match_parent"
-        android:layout_height="430dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="450dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9">
+        app:layout_constraintStart_toStartOf="@id/horizontalScroll"
+        app:layout_constraintTop_toBottomOf="@id/horizontalScroll">
     </androidx.recyclerview.widget.RecyclerView>
 
     <FrameLayout
-        android:id="@+id/btnCart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="16dp"
@@ -196,6 +198,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.9">
         <Button
+            android:id="@+id/btnCart"
             android:layout_width="321dp"
             android:layout_height="58dp"
             android:backgroundTint="#652B27"/>
@@ -207,9 +210,10 @@
             android:layout_marginStart="20dp"/>
 
         <TextView
+            android:id="@+id/tvItems"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Item Selected"
+            android:text="0 Item Selected"
             android:textSize="16sp"
             android:fontFamily="@font/alata_reguler"
             android:textColor="#EFEFEF"
@@ -217,10 +221,10 @@
             android:layout_marginTop="15dp"/>
 
         <TextView
-            android:id="@+id/tvCart"
+            android:id="@+id/tvAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="0"
             android:textColor="#EFEFEF"
             android:textSize="21sp"
             android:fontFamily="@font/alata_reguler"

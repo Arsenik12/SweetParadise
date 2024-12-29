@@ -11,9 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import project.uas.sweetparadise.Database.AppDatabase
+import project.uas.sweetparadise.database.AppDatabase
 
-class LoginActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var inputUsername: EditText
     private lateinit var inputPassword: EditText
@@ -44,18 +44,20 @@ class LoginActivity : AppCompatActivity() {
     private fun login(username: String, password: String) {
         if (username.isNotEmpty() && password.isNotEmpty()) {
             lifecycleScope.launch(Dispatchers.IO) {
-                val user = AppDatabase.getDatabase(this@LoginActivity).userDao().login(username, password)
+                val user = AppDatabase.getDatabase(this@MainActivity).userDao().login(username, password)
                 withContext(Dispatchers.Main) {
                     if (user != null) {
-                        Toast.makeText(this@LoginActivity, "Login Berhasil!", Toast.LENGTH_SHORT).show()
+                        val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putInt("CURRENT_USER_ID", user.id)
+                        editor.apply()
+                        Toast.makeText(this@MainActivity, "Login Berhasil!", Toast.LENGTH_SHORT).show()
 
-                        // Kirim username ke HomeActivity
-                        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                        intent.putExtra("USERNAME", username)
+                        val intent = Intent(this@MainActivity, MenuActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(this@LoginActivity, "Username/Password Anda Salah, Coba Lagi!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "Username/Password Anda Salah, Coba Lagi!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

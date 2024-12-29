@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="90dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/order_border">
+    android:background="@drawable/order_border"
+    android:layout_marginBottom="12dp">
 
     <ImageView
         android:id="@+id/menuImage"
@@ -24,17 +25,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:fontFamily="@font/alata_reguler"
         android:textColor="#1E1E1E"
         android:textSize="14sp"
+        app:layout_goneMarginTop="10dp"
         android:text="Nama Menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.12"/>
+        app:layout_constraintTop_toTopOf="@id/menuImage"
+        app:layout_constraintStart_toEndOf="@+id/menuImage" />
 
     <TextView
         android:id="@+id/menuDescription"
