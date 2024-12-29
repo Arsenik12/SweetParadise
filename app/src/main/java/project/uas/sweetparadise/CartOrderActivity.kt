@@ -3,6 +3,7 @@ package project.uas.sweetparadise
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -19,12 +20,16 @@ import project.uas.sweetparadise.database.AppDatabase
 import project.uas.sweetparadise.database.Cart
 import java.text.NumberFormat
 import java.util.Locale
+import com.razorpay.Checkout
+import org.json.JSONObject
 
 class CartOrderActivity : AppCompatActivity() {
 
     private lateinit var adapter: adapterCartOrder
     private var cartItems: MutableList<Cart> = mutableListOf()
     private var selectedPaymentMethod: String? = null
+    private var userId: Int = -1 // Tambahkan variabel global untuk userId
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +42,13 @@ class CartOrderActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val userId = intent.getIntExtra("USER_ID", -1)
-        Log.d(
-            "CartOrderActivity",
-            "Received USER_ID: $userId"
-        )  // Log untuk memastikan userId diterima dengan benar
-        if (userId != -1) {
-            Log.d("ReceivedUserId", "User ID received: $userId")
-        } else {
-            Log.e("ReceivedUserId", "No User ID found.")
+        val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
+        userId = sharedPreferences.getInt("CURRENT_USER_ID", -1)
+
+        if (userId == -1) {
+            Toast.makeText(this, "No user logged in!", Toast.LENGTH_SHORT).show()
+            finish()
+            return
         }
 
         val _buttonBack = findViewById<ImageView>(R.id.back)
@@ -54,10 +57,11 @@ class CartOrderActivity : AppCompatActivity() {
         val _btnCashier = findViewById<FrameLayout>(R.id.btnCashier)
         val _btnOther = findViewById<FrameLayout>(R.id.btnOther)
         var _totalOrder = findViewById<TextView>(R.id.totalOrder)
-        val _btnOrder = findViewById<FrameLayout>(R.id.btnOrder)
+        val _btnOrder = findViewById<Button>(R.id.btnOrder)
 
         _buttonBack.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)
+            intent.putExtra("USER_ID", userId)
             startActivity(intent)
         }
 
@@ -67,10 +71,6 @@ class CartOrderActivity : AppCompatActivity() {
             _btnCashier.isSelected = true
             _btnOther.isSelected = false
             highlightSelectedPaymentMethod(_btnCashier, _btnOther)
-
-            // ke BillAfterActivity
-            val intent = Intent(this, BillAfterActivity::class.java)
-            startActivity(intent)
         }
         _btnOther.setOnClickListener {
             selectedPaymentMethod = "Other"
@@ -86,10 +86,14 @@ class CartOrderActivity : AppCompatActivity() {
                 when (selectedPaymentMethod) {
                     "Cashier" -> {
                         val intent = Intent(this, BillAfterActivity::class.java)
+                        intent.putExtra("USER_ID", userId)
                         startActivity(intent)
                     }
+
                     "Other" -> {
-                        showToast("Other payment method is not implemented yet.")
+                        _btnOther.setOnClickListener {
+                            startPayment()
+                        }
                     }
                 }
             }
@@ -160,6 +164,33 @@ class CartOrderActivity : AppCompatActivity() {
         }
     }
 
+    private fun startPayment() {
+        val checkout = Checkout()
+        checkout.setKeyID("rzp_test_sg_wvZZ1erqsP9kRk") // Ganti dengan Test Key ID dari Razorpay Dashboard
+        try {
+            val options = JSONObject()
+            options.put("name", "Sweet Paradise")
+            options.put("description", "Order Payment")
+            options.put("currency", "IDR")
+            options.put(
+                "amount",
+                calculateTotalOrder() * 100
+            ) // Razorpay memerlukan nilai dalam paise
+
+            checkout.open(this, options)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error in payment: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+
+//    fun onPaymentSuccess(razorpayPaymentID: String?) {
+//        Toast.makeText(this, "Payment Successful: $razorpayPaymentID", Toast.LENGTH_LONG).show()
+//    }
+//    fun onPaymentError(code: Int, response: String?) {
+//        Toast.makeText(this, "Payment Failed: $response", Toast.LENGTH_LONG).show()
+//    }
+
     private fun calculateTotalOrder(): Int {
         var total = 0
         for (item in cartItems) {
@@ -174,7 +205,11 @@ class CartOrderActivity : AppCompatActivity() {
     }
 
     // Fungsi untuk hitung total jika menggunakan poin
-    private fun updateTotalBasedOnPoints(checkboxPoint: CheckBox, _totalOrder: TextView, userPoints: Int) {
+    private fun updateTotalBasedOnPoints(
+        checkboxPoint: CheckBox,
+        _totalOrder: TextView,
+        userPoints: Int
+    ) {
         if (checkboxPoint.isChecked) {
             val totalAfterDiscount = calculateTotalOrder() - userPoints
             _totalOrder.text = "Rp ${formatToRupiah(totalAfterDiscount)}"
@@ -193,4 +228,5 @@ class CartOrderActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/titleQR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:fontFamily="@font/alata_reguler"
+        android:text="QR Code"
+        android:textSize="37sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/qrBG"
+        android:layout_width="347dp"
+        android:layout_height="347dp"
+        android:background="@drawable/bill_background"
+        app:layout_constraintBottom_toTopOf="@id/botBG"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleQR"
+        app:layout_constraintVertical_bias="0.376" />
+
+    <ImageView
+        android:id="@+id/generatedQrImage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/qrBG"
+        app:layout_constraintBottom_toBottomOf="@id/qrBG"
+        app:layout_constraintEnd_toEndOf="@id/qrBG"
+        app:layout_constraintStart_toStartOf="@id/qrBG" />
+
+    <TextView
+        android:id="@+id/botBG"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#D9CCC4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="15dp"/>
+
+    <Button
+        android:id="@+id/btnDonePayment"
+        android:layout_width="321dp"
+        android:layout_height="58dp"
+        app:layout_constraintTop_toTopOf="@id/botBG"
+        app:layout_constraintBottom_toBottomOf="@id/botBG"
+        app:layout_constraintStart_toStartOf="@id/botBG"
+        app:layout_constraintEnd_toEndOf="@id/botBG"
+        android:backgroundTint="#652B27"/>
+
+    <TextView
+        android:id="@+id/tv10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/btnDonePayment"
+        app:layout_constraintStart_toStartOf="@id/btnDonePayment"
+        app:layout_constraintEnd_toEndOf="@id/btnDonePayment"
+        app:layout_constraintBottom_toBottomOf="@id/btnDonePayment"
+        android:gravity="center"
+        android:text="DONE"
+        android:textSize="24sp"
+        android:fontFamily="@font/alata_reguler"
+        android:textColor="#EFEFEF" />
+
+<!--    PopUp-->
+    <ImageView
+        android:id="@+id/paymentSuccessPopup"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        app:layout_constraintBottom_toTopOf="@id/btnDonePayment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/success_popup_background"
+        android:visibility="gone"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

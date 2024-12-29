@@ -22,9 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnGoToRegister: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_login)
 
         inputUsername = findViewById(R.id.inputUsername)
@@ -42,8 +40,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+//        applicationContext.deleteDatabase("app_database")
     }
-
 
     private fun login(username: String, password: String) {
         if (username.isNotEmpty() && password.isNotEmpty()) {
@@ -53,8 +51,14 @@ class MainActivity : AppCompatActivity() {
                     if (user != null) {
                         Log.d("LoginSuccess", "User ID: ${user.id}")
                         Toast.makeText(this@MainActivity, "Login Berhasil!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@MainActivity, ProfileActivity::class.java)
-                        intent.putExtra("USER_ID", user.id)  // utk kirim userId ke MenuActivity
+
+                        val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putInt("CURRENT_USER_ID", user.id)
+                        editor.apply()
+                        Toast.makeText(this@MainActivity, "Login Berhasil!", Toast.LENGTH_SHORT).show()
+
+                        val intent = Intent(this@MainActivity, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {

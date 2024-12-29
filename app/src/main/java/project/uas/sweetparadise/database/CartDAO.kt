@@ -21,9 +21,20 @@ interface CartDAO {
     suspend fun updateCartQuantity(cartId: Int, newQuantity: Int)
 
     @Query("DELETE FROM carts WHERE id = :cartId")
-    suspend fun deleteItem(cartId: Int)
+    fun deleteItem(cartId: Int)
 
     @Query("SELECT * FROM carts WHERE userId = :userId")
     suspend fun getUserCart(userId : Int): List<Cart>
 
+    @Query("SELECT id FROM carts WHERE userId = :userId")
+    suspend fun getCartIdsByUser(userId: Int): List<Int>
+
+    @Query("DELETE FROM carts WHERE userId = :userId")
+    suspend fun deleteCartItemsAfterPaymentSuccess(userId: Int)
+
+    @Query("UPDATE carts SET quantity = :quantity, menuNote = :menuNote WHERE id = :id")
+    suspend fun updateCart(id: Int, quantity: Int, menuNote: String?)
+
+    @Query("SELECT * FROM carts WHERE userId = :userId AND menuId = :menuId LIMIT 1")
+    suspend fun getCartItemByMenuId(userId: Int, menuId: Int): Cart?
 }

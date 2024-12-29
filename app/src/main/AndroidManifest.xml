@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="CoarseFineLocation">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -14,24 +18,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SweetParadise"
         tools:targetApi="31">
-        <activity
-            android:name=".ProfileFavoritesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProfileTransactionsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".EditProfileActivity"
-            android:exported="false" />
+        <activity android:name=".HomeActivity" android:exported="false"/>
+        <activity android:name=".RegisterActivity" android:exported="false"/>
+        <activity android:name=".NotificationActivity" android:exported="false"/>
+        <activity android:name=".OSMAddressActivity" android:exported="false"/>
         <activity
             android:name=".MenuActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".addMenu"
             android:exported="false" />
         <activity
             android:name=".MenuDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".CartOrderActivity"
             android:exported="false" />
@@ -39,16 +40,7 @@
             android:name=".BillAfterActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
+            android:name=".QrActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
