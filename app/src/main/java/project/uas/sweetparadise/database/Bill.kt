@@ -10,7 +10,9 @@ data class Bill(
 
     val userId: Int,
 
-    val dateTime: String,
+    val date: String,
+
+    val time: String,
 
     val quantity: Int,
 

@@ -70,6 +70,7 @@ class CartOrderActivity : AppCompatActivity() {
 
             // ke BillAfterActivity
             val intent = Intent(this, BillAfterActivity::class.java)
+            intent.putExtra("USER_ID", userId)
             startActivity(intent)
         }
         _btnOther.setOnClickListener {

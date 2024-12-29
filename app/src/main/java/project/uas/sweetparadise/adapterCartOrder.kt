@@ -90,7 +90,4 @@ class adapterCartOrder(private val daftarOrder : MutableList<Cart>, private val 
             notifyItemChanged(position) // Notify adapter for UI update
         }
     }
-
-
-
 }
