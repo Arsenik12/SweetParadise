@@ -21,7 +21,6 @@ import project.uas.sweetparadise.database.Cart
 import java.text.NumberFormat
 import java.util.Locale
 import com.razorpay.Checkout
-import com.razorpay.PaymentResultListener
 import org.json.JSONObject
 
 class CartOrderActivity : AppCompatActivity() {
