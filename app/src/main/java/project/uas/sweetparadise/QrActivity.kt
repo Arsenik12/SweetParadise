@@ -67,7 +67,7 @@ class QrActivity : AppCompatActivity() {
                     // Gabungkan semua cart id menjadi string untuk QR
                     val cartIdString = cartId.joinToString(separator = ",")
 
-                    // Generate QR code di thread utama
+                    // Generate QR code
                     withContext(Dispatchers.Main) {
                         try {
                             val encoder = BarcodeEncoder()
@@ -95,17 +95,15 @@ class QrActivity : AppCompatActivity() {
     }
 
     private fun showPaymentSuccessPopup() {
-        // Create the animation (e.g., fade-in animation)
+        // create animation
         val fadeInAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
 
-        // Show the popup (make it visible)
+        // PopUp
         val paymentSuccessPopup = findViewById<View>(R.id.paymentSuccessPopup)
         paymentSuccessPopup.visibility = View.VISIBLE
-
-        // Apply the animation
         paymentSuccessPopup.startAnimation(fadeInAnimation)
 
-        // Once the animation ends, navigate back to the homepage
+        // animation selesai, kembali ke main
         fadeInAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationEnd(animation: Animation?) {
@@ -114,11 +112,11 @@ class QrActivity : AppCompatActivity() {
                 if (userId != -1) {
                     deleteCartItems(userId)  // Menghapus cart berdasarkan userId
                 }
-                // Navigate back to homepage
+
                 val intent = Intent(this@QrActivity, MainActivity::class.java)
                 intent.putExtra("USER_ID", userId)
                 startActivity(intent)
-                finish()  // Optionally call finish() to close the current activity
+                finish()
             }
             override fun onAnimationRepeat(animation: Animation?) {}
         })
