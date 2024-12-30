@@ -29,7 +29,7 @@ class ProfileTransactionsActivity : AppCompatActivity() {
 
         val db = AppDatabase.getDatabase(this)
 
-        adapter = adapterTransactions(billItems)
+        adapter = adapterTransactions(billItems, this)
         _rvTHistory.adapter = adapter
         _rvTHistory.layoutManager = LinearLayoutManager(this)
 

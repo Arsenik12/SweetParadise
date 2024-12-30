@@ -1,14 +1,18 @@
 package project.uas.sweetparadise
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import project.uas.sweetparadise.database.Bill
 
 class adapterTransactions(
-    private val daftarBills: MutableList<Bill>
+    private val daftarBills: MutableList<Bill>,
+    private val activity: Activity
 ) : RecyclerView.Adapter<adapterTransactions.ListViewHolder>() {
 
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -16,11 +20,14 @@ class adapterTransactions(
         val tTime: TextView = itemView.findViewById(R.id.tTime)
         val tQuantity: TextView = itemView.findViewById(R.id.tQuantity)
         val tPrice: TextView = itemView.findViewById(R.id.tPrice)
+        val transDetail: ConstraintLayout = itemView.findViewById(R.id.transDetail)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.rec_transactions, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.rec_transactions, parent, false)
         return ListViewHolder(view)
+
     }
 
     override fun getItemCount(): Int = daftarBills.size
@@ -31,5 +38,9 @@ class adapterTransactions(
         holder.tTime.text = bill.time
         holder.tQuantity.text = bill.quantity.toString()
         holder.tPrice.text = "Rp ${bill.totalPrice}"
+        holder.transDetail.setOnClickListener {
+            val intent = Intent(holder.itemView.context, ProfileTransactionsDetail::class.java)
+            activity.startActivity(intent)
     }
+}
 }

@@ -37,4 +37,7 @@ interface CartDAO {
 
     @Query("SELECT * FROM carts WHERE userId = :userId AND menuId = :menuId LIMIT 1")
     suspend fun getCartItemByMenuId(userId: Int, menuId: Int): Cart?
+
+    @Query("SELECT * FROM carts WHERE userId = :userId")
+    suspend fun getCartByUserId(userId: Int): List<Cart>
 }
