@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FAF9F9"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -12,24 +13,15 @@
         android:fontFamily="@font/alata_reguler"
         android:text="Profile"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"/>
 
     <FrameLayout
         android:id="@+id/btnProfile"
         android:layout_width="370dp"
         android:layout_height="70dp"
         android:background="@drawable/profile_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.102">
+        android:layout_gravity="center">
 
         <ImageView
             android:id="@+id/profilePicture"
@@ -82,21 +74,27 @@
             android:background="@drawable/arrow" />
     </FrameLayout>
 
-    <FrameLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="20sp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:id="@+id/firstList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/profile_list_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.267">>
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:weightSum="3">
         <FrameLayout
             android:id="@+id/btnTransactions"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="@drawable/profile_list_bg">
+            android:background="@drawable/profile_list_bg"
+            android:layout_weight="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -127,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="@drawable/profile_list_bg"
-            android:layout_marginBottom="5dp">
+            android:layout_weight="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -159,7 +157,8 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/profile_list_bg">
+            android:background="@drawable/profile_list_bg"
+            android:layout_weight="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -184,23 +183,29 @@
                 android:background="@drawable/arrow_gray" />
 
         </FrameLayout>
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="20sp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:background="@drawable/profile_list_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.614">
+        app:layout_constraintTop_toBottomOf="@id/firstList"
+        android:weightSum="3"
+        android:orientation="vertical">
 
         <FrameLayout
+            android:id="@+id/terms"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="@drawable/profile_list_bg">
+            android:background="@drawable/profile_list_bg"
+            android:layout_weight="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -227,11 +232,12 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/privaryPol"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/profile_list_bg">
+            android:background="@drawable/profile_list_bg"
+            android:layout_weight="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -262,7 +268,8 @@
             android:layout_height="70dp"
             android:layout_gravity="bottom"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/profile_list_bg">
+            android:background="@drawable/profile_list_bg"
+            android:layout_weight="1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -313,9 +320,16 @@
                 android:background="@drawable/twitter" />
 
         </FrameLayout>
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="20sp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:background="@drawable/profile_list_bg"
@@ -324,7 +338,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.839">
+        app:layout_constraintVertical_bias="0.839"
+        android:orientation="vertical"
+        android:weightSum="3">
 
         <TextView
             android:layout_width="wrap_content"
@@ -335,7 +351,8 @@
             android:fontFamily="@font/alata_reguler"
             android:text="Need Help?"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_weight="1"/>
 
         <FrameLayout
             android:id="@+id/btnCustServ"
@@ -349,7 +366,8 @@
             app:layout_constraintHorizontal_bias="0.487"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.102">
+            app:layout_constraintVertical_bias="0.102"
+            android:layout_weight="2">
 
             <ImageView
                 android:layout_width="50dp"
@@ -388,7 +406,14 @@
                 android:background="@drawable/arrow" />
         </FrameLayout>
 
-    </FrameLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="20sp"
+        android:layout_weight="1"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -399,7 +424,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.918">
+        app:layout_constraintVertical_bias="0.918"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -422,14 +448,6 @@
             android:textSize="15sp" />
     </FrameLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1">
     <!-- Bottom Navigation -->
     <LinearLayout
         android:id="@+id/navHome"
@@ -489,7 +507,6 @@
         </LinearLayout>
 
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

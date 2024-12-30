@@ -18,25 +18,47 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SweetParadise"
         tools:targetApi="31">
-        <activity android:name=".ProfileActivity" android:exported="false"/>
-        <activity android:name=".EditProfileActivity" android:exported="false"/>
-        <activity android:name=".ProfileTransactionsActivity" android:exported="false"/>
-        <activity android:name=".ProfileFavoritesActivity" android:exported="false"/>
-        <activity android:name=".HomeActivity" android:exported="false"/>
-        <activity android:name=".RegisterActivity" android:exported="false"/>
-        <activity android:name=".NotificationActivity" android:exported="false"/>
-        <activity android:name=".OSMAddressActivity" android:exported="false"/>
+        <activity
+            android:name=".ProfilePrivacyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileTermsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileTransactionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileFavoritesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OSMAddressActivity"
+            android:exported="false" />
         <activity
             android:name=".MenuActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".addMenu"
             android:exported="false" />
         <activity
             android:name=".MenuDetailActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".CartOrderActivity"
             android:exported="false" />

@@ -33,6 +33,8 @@ class ProfileActivity : AppCompatActivity() {
         val _btnTransactions = findViewById<FrameLayout>(R.id.btnTransactions)
         val _btnFavorites = findViewById<FrameLayout>(R.id.btnFavorites)
         val _btnSettings= findViewById<FrameLayout>(R.id.btnSettings)
+        val _terms = findViewById<FrameLayout>(R.id.terms)
+        val _privacyPol = findViewById<FrameLayout>(R.id.privaryPol)
 
         var name = _profileName.text.toString()
         var phoneNo = _profilePhoneNo.text.toString()
@@ -85,6 +87,16 @@ class ProfileActivity : AppCompatActivity() {
 
         _btnFavorites.setOnClickListener {
             val intent = Intent(this, ProfileFavoritesActivity::class.java)
+            startActivity(intent)
+        }
+
+        _terms.setOnClickListener {
+            val intent = Intent(this, ProfileTermsActivity::class.java)
+            startActivity(intent)
+        }
+
+        _privacyPol.setOnClickListener {
+            val intent = Intent(this, ProfilePrivacyActivity::class.java)
             startActivity(intent)
         }
 

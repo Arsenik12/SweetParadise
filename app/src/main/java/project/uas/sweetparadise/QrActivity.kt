@@ -115,7 +115,7 @@ class QrActivity : AppCompatActivity() {
                     deleteCartItems(userId)  // Menghapus cart berdasarkan userId
                 }
                 // Navigate back to homepage
-                val intent = Intent(this@QrActivity, MainActivity::class.java)
+                val intent = Intent(this@QrActivity, MenuActivity::class.java)
                 intent.putExtra("USER_ID", userId)
                 startActivity(intent)
                 finish()  // Optionally call finish() to close the current activity

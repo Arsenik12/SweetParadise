@@ -106,6 +106,7 @@
                     android:textSize="12sp" />
 
                 <ImageView
+                    android:id="@+id/btnPoints"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="330dp"
@@ -227,9 +228,17 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
+                    android:layout_marginBottom="8dp"
                     android:contentDescription="Valentine's Day Event"
                     android:scaleType="centerCrop"
                     android:src="@drawable/event2" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:contentDescription="Valentine's Day Event"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/event3" />
 
             </LinearLayout>
         </ScrollView>

@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import project.uas.sweetparadise.database.AppDatabase
-import project.uas.sweetparadise.database.User
 
 class HomeActivity : AppCompatActivity() {
 
@@ -51,6 +50,7 @@ class HomeActivity : AppCompatActivity() {
 
         val _navMenu = findViewById<LinearLayout>(R.id.navMenu)
         val _navProfile = findViewById<LinearLayout>(R.id.navProfile)
+        val _btnPoints = findViewById<ImageView>(R.id.btnPoints)
 
         val db = AppDatabase.getDatabase(this)
 
@@ -75,6 +75,11 @@ class HomeActivity : AppCompatActivity() {
 
         _navProfile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        _btnPoints.setOnClickListener {
+            val intent = Intent(this, CartOrderActivity::class.java)
             startActivity(intent)
         }
 
