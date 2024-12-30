@@ -65,7 +65,7 @@ class adapterCartOrder(private val daftarOrder : MutableList<Cart>, private val 
                 val bitmap = byteArrayToBitmap(menu.image)
 
                 withContext(Dispatchers.Main) {
-                    // Pastikan menuImage tidak null sebelum memuat gambar
+                    // cek menuImage tidak null sebelum memuat gambar
                     if (holder._menuImage != null) {
                         Glide.with(holder.itemView.context).load(bitmap).into(holder._menuImage)
                     } else {
@@ -75,8 +75,8 @@ class adapterCartOrder(private val daftarOrder : MutableList<Cart>, private val 
                 }
             } else {
                 withContext(Dispatchers.Main) {
-                    // Jika tidak ada gambar, set gambar default atau kosong
-                    holder._menuImage.setImageResource(R.drawable.red_velvet)  // Gambar placeholder jika tidak ada gambar
+                    // Jika tidak ada gambar, set gambar default
+                    holder._menuImage.setImageResource(R.drawable.red_velvet)
                 }
             }
 
@@ -103,7 +103,7 @@ class adapterCartOrder(private val daftarOrder : MutableList<Cart>, private val 
                 val newQuantity = dtOrder.quantity - 1
                 dtOrder.quantity = newQuantity
                 onItemClickCallback.minData(dtOrder, newQuantity) // Update data
-                notifyItemChanged(position) // Notify adapter for UI update
+                notifyItemChanged(position) // Notify adapter utk UI update
             }
         }
 
@@ -111,7 +111,7 @@ class adapterCartOrder(private val daftarOrder : MutableList<Cart>, private val 
             val newQuantity = dtOrder.quantity + 1
             dtOrder.quantity = newQuantity
             onItemClickCallback.plusData(dtOrder, newQuantity) // Update data
-            notifyItemChanged(position) // Notify adapter for UI update
+            notifyItemChanged(position) // Notify adapter utk UI update
         }
     }
 
