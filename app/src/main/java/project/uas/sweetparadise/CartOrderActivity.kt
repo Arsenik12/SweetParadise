@@ -110,36 +110,36 @@ class CartOrderActivity : AppCompatActivity() {
         initUiKitApi()
 
         // Load data dari database
-//        if (userId != -1) {
-//            CoroutineScope(Dispatchers.IO).launch {
-//                try {
-//                    val carts = db.cartDao().getUserCart(userId)
-//                    val user = db.userDao().getUserById(userId)
-//
-//                    withContext(Dispatchers.Main) {
-//                        cartItems.clear()
-//                        cartItems.addAll(carts)
-//                        adapter.notifyDataSetChanged()
-//
-//                        val userPoints = user?.point ?: 0
-//                        _point.text = formatToRupiah(userPoints)
-//                        updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
-//                    }
-//                } catch (e: Exception) {
-//                    Log.e("CartOrderActivity", "Error loading cart: ${e.message}", e)
-//                }
-//            }
-//        }
+        if (userId != -1) {
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val carts = db.cartDao().getUserCart(userId)
+                    val user = db.userDao().getUserById(userId)
 
-//        //utk checkbox point
-//        checkboxPoint.setOnCheckedChangeListener { _, isChecked ->
-//            CoroutineScope(Dispatchers.IO).launch {
-//                val userPoints = db.userDao().getUserById(userId)?.point ?: 0
-//                withContext(Dispatchers.Main) {
-//                    updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
-//                }
-//            }
-//        }
+                    withContext(Dispatchers.Main) {
+                        cartItems.clear()
+                        cartItems.addAll(carts)
+                        adapter.notifyDataSetChanged()
+
+                        val userPoints = user?.point ?: 0
+                        _point.text = formatToRupiah(userPoints)
+                        updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
+                    }
+                } catch (e: Exception) {
+                    Log.e("CartOrderActivity", "Error loading cart: ${e.message}", e)
+                }
+            }
+        }
+
+        //utk checkbox point
+        checkboxPoint.setOnCheckedChangeListener { _, isChecked ->
+            CoroutineScope(Dispatchers.IO).launch {
+                val userPoints = db.userDao().getUserById(userId)?.point ?: 0
+                withContext(Dispatchers.Main) {
+                    updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
+                }
+            }
+        }
 
         //utk button tambah dan kurang
         adapter.setOnItemClickCallBack(object : adapterCartOrder.OnItemClickCallback {
@@ -181,56 +181,79 @@ class CartOrderActivity : AppCompatActivity() {
         }
         return total
     }
-//
-//    // Fungsi untuk hitung total jika menggunakan poin
-//    private fun updateTotalBasedOnPoints(
-//        checkboxPoint: CheckBox,
-//        _totalOrder: TextView,
-//        userPoints: Int
-//    ) {
-//        if (checkboxPoint.isChecked) {
-//            val totalAfterDiscount = calculateTotalOrder() - userPoints
-//            _totalOrder.text = "Rp ${formatToRupiah(totalAfterDiscount)}"
-//        } else {
-//            _totalOrder.text = "Rp ${formatToRupiah(calculateTotalOrder())}"
-//        }
-//    }
 
+    //    // Fungsi untuk hitung total jika menggunakan poin
+    private fun updateTotalBasedOnPoints(
+        checkboxPoint: CheckBox,
+        _totalOrder: TextView,
+        userPoints: Int
+    ) {
+        if (checkboxPoint.isChecked) {
+            val totalAfterDiscount = calculateTotalOrder() - userPoints
+            _totalOrder.text = "Rp ${formatToRupiah(totalAfterDiscount)}"
+        } else {
+            _totalOrder.text = "Rp ${formatToRupiah(calculateTotalOrder())}"
+        }
+    }
+
+    private fun formatToRupiah(value: Int): String {
+        val formatter = java.text.NumberFormat.getCurrencyInstance(java.util.Locale("id", "ID"))
+        return formatter.format(value).replace("Rp", "Rp ").replace(",00", "")
+    }
 
     private fun initLauncher() {
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val transactionResult = result.data?.getParcelableExtra<com.midtrans.sdk.uikit.api.model.TransactionResult>(
-                    UiKitConstants.KEY_TRANSACTION_RESULT
-                )
-                if (transactionResult != null) {
-                    when (transactionResult.status) {
-                        UiKitConstants.STATUS_SUCCESS -> {
-                            Toast.makeText(this, "Transaction Successful: ${transactionResult.transactionId}", Toast.LENGTH_LONG).show()
+        launcher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val transactionResult =
+                        result.data?.getParcelableExtra<com.midtrans.sdk.uikit.api.model.TransactionResult>(
+                            UiKitConstants.KEY_TRANSACTION_RESULT
+                        )
+                    if (transactionResult != null) {
+                        when (transactionResult.status) {
+                            UiKitConstants.STATUS_SUCCESS -> {
+                                Toast.makeText(
+                                    this,
+                                    "Transaction Successful: ${transactionResult.transactionId}",
+                                    Toast.LENGTH_LONG
+                                ).show()
 
-                            // Hapus isi keranjang
-                            clearCart()
+                                // Hapus isi keranjang
+                                clearCart()
 
-                            // Arahkan ke HomeActivity
-                            val intent = Intent(this, HomeActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                                // Arahkan ke HomeActivity
+                                val intent = Intent(this, HomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
+
+                            UiKitConstants.STATUS_PENDING -> {
+                                Toast.makeText(
+                                    this,
+                                    "Transaction Pending: ${transactionResult.transactionId}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+
+                            UiKitConstants.STATUS_FAILED -> {
+                                Toast.makeText(
+                                    this,
+                                    "Transaction Failed: ${transactionResult.transactionId}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+
+                            else -> {
+                                Toast.makeText(this, "Transaction Cancelled", Toast.LENGTH_LONG)
+                                    .show()
+                            }
                         }
-                        UiKitConstants.STATUS_PENDING -> {
-                            Toast.makeText(this, "Transaction Pending: ${transactionResult.transactionId}", Toast.LENGTH_LONG).show()
-                        }
-                        UiKitConstants.STATUS_FAILED -> {
-                            Toast.makeText(this, "Transaction Failed: ${transactionResult.transactionId}", Toast.LENGTH_LONG).show()
-                        }
-                        else -> {
-                            Toast.makeText(this, "Transaction Cancelled", Toast.LENGTH_LONG).show()
-                        }
+                    } else {
+                        Toast.makeText(this, "No transaction result found", Toast.LENGTH_LONG)
+                            .show()
                     }
-                } else {
-                    Toast.makeText(this, "No transaction result found", Toast.LENGTH_LONG).show()
                 }
             }
-        }
     }
 
 
@@ -256,7 +279,11 @@ class CartOrderActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@CartOrderActivity, "Failed to load cart data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@CartOrderActivity,
+                        "Failed to load cart data",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -314,7 +341,11 @@ class CartOrderActivity : AppCompatActivity() {
                 override fun onFailure(call: Call, e: IOException) {
                     e.printStackTrace()
                     runOnUiThread {
-                        Toast.makeText(this@CartOrderActivity, "Failed to connect to server", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@CartOrderActivity,
+                            "Failed to connect to server",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -330,12 +361,20 @@ class CartOrderActivity : AppCompatActivity() {
                                     snapResponse.token
                                 )
                             } else {
-                                Toast.makeText(this@CartOrderActivity, "Invalid Snap Token", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this@CartOrderActivity,
+                                    "Invalid Snap Token",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     } else {
                         runOnUiThread {
-                            Toast.makeText(this@CartOrderActivity, "Error: ${response.code}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@CartOrderActivity,
+                                "Error: ${response.code}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }
@@ -356,12 +395,20 @@ class CartOrderActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     cartItems.clear()
                     adapter.notifyDataSetChanged()
-                    Toast.makeText(this@CartOrderActivity, "Cart cleared successfully.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@CartOrderActivity,
+                        "Cart cleared successfully.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@CartOrderActivity, "Failed to clear cart.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@CartOrderActivity,
+                        "Failed to clear cart.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
