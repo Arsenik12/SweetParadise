@@ -9,27 +9,32 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.midtrans.sdk.uikit.api.model.CustomColorTheme
+import com.midtrans.sdk.uikit.external.UiKitApi
+import com.midtrans.sdk.uikit.internal.util.UiKitConstants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import project.uas.sweetparadise.database.AppDatabase
 import project.uas.sweetparadise.database.Cart
-import java.text.NumberFormat
-import java.util.Locale
-import com.razorpay.Checkout
-import org.json.JSONObject
+import java.io.IOException
 
 class CartOrderActivity : AppCompatActivity() {
 
     private lateinit var adapter: adapterCartOrder
     private var cartItems: MutableList<Cart> = mutableListOf()
     private var selectedPaymentMethod: String? = null
-    private var userId: Int = -1 // Tambahkan variabel global untuk userId
-
+    private var userId: Int = -1
+    private lateinit var launcher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,12 +57,13 @@ class CartOrderActivity : AppCompatActivity() {
         }
 
         val _buttonBack = findViewById<ImageView>(R.id.back)
-        var _point = findViewById<TextView>(R.id.textView3)
-        val checkboxPoint = findViewById<CheckBox>(R.id.checkbox)
         val _btnCashier = findViewById<FrameLayout>(R.id.btnCashier)
         val _btnOther = findViewById<FrameLayout>(R.id.btnOther)
-        var _totalOrder = findViewById<TextView>(R.id.totalOrder)
+        val _totalOrder = findViewById<TextView>(R.id.totalOrder)
         val _btnOrder = findViewById<Button>(R.id.btnOrder)
+        var _point = findViewById<TextView>(R.id.textView3)
+        val checkboxPoint = findViewById<CheckBox>(R.id.checkbox)
+
 
         _buttonBack.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)
@@ -65,13 +71,13 @@ class CartOrderActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Listener untuk memilih metode pembayaran
         _btnCashier.setOnClickListener {
             selectedPaymentMethod = "Cashier"
             _btnCashier.isSelected = true
             _btnOther.isSelected = false
             highlightSelectedPaymentMethod(_btnCashier, _btnOther)
         }
+
         _btnOther.setOnClickListener {
             selectedPaymentMethod = "Other"
             _btnCashier.isSelected = false
@@ -99,37 +105,41 @@ class CartOrderActivity : AppCompatActivity() {
             }
         }
 
+        initLauncher()
+        loadCartData(db)
+        initUiKitApi()
+
         // Load data dari database
-        if (userId != -1) {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val carts = db.cartDao().getUserCart(userId)
-                    val user = db.userDao().getUserById(userId)
+//        if (userId != -1) {
+//            CoroutineScope(Dispatchers.IO).launch {
+//                try {
+//                    val carts = db.cartDao().getUserCart(userId)
+//                    val user = db.userDao().getUserById(userId)
+//
+//                    withContext(Dispatchers.Main) {
+//                        cartItems.clear()
+//                        cartItems.addAll(carts)
+//                        adapter.notifyDataSetChanged()
+//
+//                        val userPoints = user?.point ?: 0
+//                        _point.text = formatToRupiah(userPoints)
+//                        updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
+//                    }
+//                } catch (e: Exception) {
+//                    Log.e("CartOrderActivity", "Error loading cart: ${e.message}", e)
+//                }
+//            }
+//        }
 
-                    withContext(Dispatchers.Main) {
-                        cartItems.clear()
-                        cartItems.addAll(carts)
-                        adapter.notifyDataSetChanged()
-
-                        val userPoints = user?.point ?: 0
-                        _point.text = formatToRupiah(userPoints)
-                        updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
-                    }
-                } catch (e: Exception) {
-                    Log.e("CartOrderActivity", "Error loading cart: ${e.message}", e)
-                }
-            }
-        }
-
-        //utk checkbox point
-        checkboxPoint.setOnCheckedChangeListener { _, isChecked ->
-            CoroutineScope(Dispatchers.IO).launch {
-                val userPoints = db.userDao().getUserById(userId)?.point ?: 0
-                withContext(Dispatchers.Main) {
-                    updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
-                }
-            }
-        }
+//        //utk checkbox point
+//        checkboxPoint.setOnCheckedChangeListener { _, isChecked ->
+//            CoroutineScope(Dispatchers.IO).launch {
+//                val userPoints = db.userDao().getUserById(userId)?.point ?: 0
+//                withContext(Dispatchers.Main) {
+//                    updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
+//                }
+//            }
+//        }
 
         //utk button tambah dan kurang
         adapter.setOnItemClickCallBack(object : adapterCartOrder.OnItemClickCallback {
@@ -159,37 +169,10 @@ class CartOrderActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 dtOrder.quantity = quantity
                 adapter.notifyItemChanged(cartItems.indexOf(dtOrder))
-                updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
+//                updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
             }
         }
     }
-
-    private fun startPayment() {
-        val checkout = Checkout()
-        checkout.setKeyID("rzp_test_sg_wvZZ1erqsP9kRk") // Ganti dengan Test Key ID dari Razorpay Dashboard
-        try {
-            val options = JSONObject()
-            options.put("name", "Sweet Paradise")
-            options.put("description", "Order Payment")
-            options.put("currency", "IDR")
-            options.put(
-                "amount",
-                calculateTotalOrder() * 100
-            ) // Razorpay memerlukan nilai dalam paise
-
-            checkout.open(this, options)
-        } catch (e: Exception) {
-            Toast.makeText(this, "Error in payment: ${e.message}", Toast.LENGTH_LONG).show()
-        }
-    }
-
-
-//    fun onPaymentSuccess(razorpayPaymentID: String?) {
-//        Toast.makeText(this, "Payment Successful: $razorpayPaymentID", Toast.LENGTH_LONG).show()
-//    }
-//    fun onPaymentError(code: Int, response: String?) {
-//        Toast.makeText(this, "Payment Failed: $response", Toast.LENGTH_LONG).show()
-//    }
 
     private fun calculateTotalOrder(): Int {
         var total = 0
@@ -198,23 +181,189 @@ class CartOrderActivity : AppCompatActivity() {
         }
         return total
     }
+//
+//    // Fungsi untuk hitung total jika menggunakan poin
+//    private fun updateTotalBasedOnPoints(
+//        checkboxPoint: CheckBox,
+//        _totalOrder: TextView,
+//        userPoints: Int
+//    ) {
+//        if (checkboxPoint.isChecked) {
+//            val totalAfterDiscount = calculateTotalOrder() - userPoints
+//            _totalOrder.text = "Rp ${formatToRupiah(totalAfterDiscount)}"
+//        } else {
+//            _totalOrder.text = "Rp ${formatToRupiah(calculateTotalOrder())}"
+//        }
+//    }
 
-    private fun formatToRupiah(amount: Int): String {
-        val format = NumberFormat.getInstance(Locale("id", "ID")) // Format Rupiah
-        return format.format(amount)
+
+    private fun initLauncher() {
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val transactionResult = result.data?.getParcelableExtra<com.midtrans.sdk.uikit.api.model.TransactionResult>(
+                    UiKitConstants.KEY_TRANSACTION_RESULT
+                )
+                if (transactionResult != null) {
+                    when (transactionResult.status) {
+                        UiKitConstants.STATUS_SUCCESS -> {
+                            Toast.makeText(this, "Transaction Successful: ${transactionResult.transactionId}", Toast.LENGTH_LONG).show()
+
+                            // Hapus isi keranjang
+                            clearCart()
+
+                            // Arahkan ke HomeActivity
+                            val intent = Intent(this, HomeActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        UiKitConstants.STATUS_PENDING -> {
+                            Toast.makeText(this, "Transaction Pending: ${transactionResult.transactionId}", Toast.LENGTH_LONG).show()
+                        }
+                        UiKitConstants.STATUS_FAILED -> {
+                            Toast.makeText(this, "Transaction Failed: ${transactionResult.transactionId}", Toast.LENGTH_LONG).show()
+                        }
+                        else -> {
+                            Toast.makeText(this, "Transaction Cancelled", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(this, "No transaction result found", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
-    // Fungsi untuk hitung total jika menggunakan poin
-    private fun updateTotalBasedOnPoints(
-        checkboxPoint: CheckBox,
-        _totalOrder: TextView,
-        userPoints: Int
-    ) {
-        if (checkboxPoint.isChecked) {
-            val totalAfterDiscount = calculateTotalOrder() - userPoints
-            _totalOrder.text = "Rp ${formatToRupiah(totalAfterDiscount)}"
-        } else {
-            _totalOrder.text = "Rp ${formatToRupiah(calculateTotalOrder())}"
+
+    private fun initUiKitApi() {
+        UiKitApi.Builder()
+            .withMerchantClientKey("SB-Mid-client-SmiD5AWIUxMTweiU") // Client Key Midtrans
+            .withContext(applicationContext)
+            .withMerchantUrl("https://merchant-server-drab.vercel.app/api/charge/") // URL Server Backend Integration
+            .withColorTheme(CustomColorTheme("#652B27", "#4B1D18", "#FFE51255"))
+            .enableLog(true)
+            .build()
+    }
+
+    private fun loadCartData(db: AppDatabase) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val carts = db.cartDao().getUserCart(userId)
+                withContext(Dispatchers.Main) {
+                    cartItems.clear()
+                    cartItems.addAll(carts)
+                    adapter.notifyDataSetChanged()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@CartOrderActivity, "Failed to load cart data", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun startPayment() {
+        val gson = Gson()
+        val db = AppDatabase.getDatabase(this)
+
+        // Ambil detail keranjang dan menu
+        CoroutineScope(Dispatchers.IO).launch {
+            val cartItems = db.cartDao().getUserCart(userId)
+            val itemDetails = cartItems.map { cartItem ->
+                val menu = db.menuDao().getMenuById(cartItem.menuId)
+                mapOf(
+                    "id" to cartItem.menuId.toString(),
+                    "price" to cartItem.price,
+                    "quantity" to cartItem.quantity,
+                    "name" to (menu?.name ?: "Unknown Item"),
+                    "notes" to (cartItem.menuNote ?: "")
+                )
+            }
+
+            val totalAmount = itemDetails.sumOf {
+                it["price"].toString().toInt() * it["quantity"].toString().toInt()
+            }
+
+            // Payload untuk Midtrans
+            val payload = mapOf(
+                "transaction_details" to mapOf(
+                    "order_id" to "order-${System.currentTimeMillis()}",
+                    "gross_amount" to totalAmount
+                ),
+                "item_details" to itemDetails,
+                "customer_details" to mapOf(
+                    "first_name" to "Default",
+                    "last_name" to "Customer",
+                    "email" to "default.customer@example.com",
+                    "phone" to "08123456789"
+                )
+            )
+
+            val requestBody = RequestBody.create(
+                "application/json; charset=utf-8".toMediaTypeOrNull(),
+                gson.toJson(payload)
+            )
+
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url("https://merchant-server-drab.vercel.app/api/charge/") // URL Server Backend Integration
+                .post(requestBody)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                    runOnUiThread {
+                        Toast.makeText(this@CartOrderActivity, "Failed to connect to server", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body?.string()
+                        val snapResponse = gson.fromJson(responseBody, SnapResponse::class.java)
+                        runOnUiThread {
+                            if (!snapResponse.token.isNullOrEmpty()) {
+                                UiKitApi.getDefaultInstance().startPaymentUiFlow(
+                                    this@CartOrderActivity,
+                                    launcher,
+                                    snapResponse.token
+                                )
+                            } else {
+                                Toast.makeText(this@CartOrderActivity, "Invalid Snap Token", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(this@CartOrderActivity, "Error: ${response.code}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
+        }
+    }
+
+    data class SnapResponse(
+        val token: String,
+        val redirect_url: String
+    )
+
+    private fun clearCart() {
+        val db = AppDatabase.getDatabase(this)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                db.cartDao().deleteCartItemsAfterPaymentSuccess(userId)
+                withContext(Dispatchers.Main) {
+                    cartItems.clear()
+                    adapter.notifyDataSetChanged()
+                    Toast.makeText(this@CartOrderActivity, "Cart cleared successfully.", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@CartOrderActivity, "Failed to clear cart.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -228,5 +377,6 @@ class CartOrderActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
 
 }
