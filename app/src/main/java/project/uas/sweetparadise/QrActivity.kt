@@ -40,7 +40,7 @@ class QrActivity : AppCompatActivity() {
         Log.d(
             "BillAfterActivity",
             "Received USER_ID: $userId"
-        )  // Log untuk memastikan userId diterima dengan benar
+        )  // utk memastikan userId diterima dengan benar
         
         if (userId != -1) {
             generateQRCode(userId)
@@ -66,7 +66,7 @@ class QrActivity : AppCompatActivity() {
                     // Gabungkan semua cart id menjadi string untuk QR
                     val cartIdString = cartId.joinToString(separator = ", ")
 
-                    // Generate QR code di thread utama
+                    // Generate QR code
                     withContext(Dispatchers.Main) {
                         try {
                             val encoder = BarcodeEncoder()
@@ -94,7 +94,6 @@ class QrActivity : AppCompatActivity() {
     }
 
     private fun showPaymentSuccessPopup() {
-        // utk animation
         val fadeInAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
 
         // Popup animation
@@ -118,7 +117,6 @@ class QrActivity : AppCompatActivity() {
                             // Poin tambahan hanya diperbarui jika ada tambahan
                             updateUserPoints(userId, additionalPoints, isPointsUsed)
                         }
-
                         // Hapus item keranjang setelah pembayaran sukses
                         deleteCartItems(userId)
                     }

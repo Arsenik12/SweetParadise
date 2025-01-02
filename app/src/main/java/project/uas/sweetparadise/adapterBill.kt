@@ -55,7 +55,6 @@ class adapterBill(private val daftarBill: MutableList<Cart>, private val db: App
         }
     }
 
-
     private fun formatToRupiah(amount: Int): String {
         val format = NumberFormat.getInstance(Locale("id", "ID")) // Format Rupiah
         return format.format(amount)

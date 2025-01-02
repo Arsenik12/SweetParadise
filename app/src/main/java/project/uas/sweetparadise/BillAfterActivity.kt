@@ -71,8 +71,6 @@ class BillAfterActivity : AppCompatActivity() {
             if (userId != -1) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val user = db.userDao().getUserById(userId)
-//                    val otherAmount = user?.point
-//                    val isPointsUsed = otherAmount != null && otherAmount > 0
 
                     withContext(Dispatchers.Main) {
                         val intent = Intent(this@BillAfterActivity, QrActivity::class.java)
@@ -152,7 +150,6 @@ class BillAfterActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     private fun formatToRupiah(amount: Int): String {

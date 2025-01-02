@@ -102,9 +102,7 @@ class CartOrderActivity : AppCompatActivity() {
                     }
 
                     "Other" -> {
-                        _btnOther.setOnClickListener {
-                            startPayment()
-                        }
+                        startPayment()
                     }
                 }
             }
