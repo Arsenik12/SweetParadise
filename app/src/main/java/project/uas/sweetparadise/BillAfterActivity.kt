@@ -40,6 +40,8 @@ class BillAfterActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
         userId = sharedPreferences.getInt("CURRENT_USER_ID", -1)
+        val isPointsUsed = intent.getBooleanExtra("IS_POINT_USED", false)
+
 
         if (userId == -1) {
             Toast.makeText(this, "No user logged in!", Toast.LENGTH_SHORT).show()
@@ -69,8 +71,8 @@ class BillAfterActivity : AppCompatActivity() {
             if (userId != -1) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val user = db.userDao().getUserById(userId)
-                    val otherAmount = user?.point
-                    val isPointsUsed = otherAmount != null && otherAmount > 0
+//                    val otherAmount = user?.point
+//                    val isPointsUsed = otherAmount != null && otherAmount > 0
 
                     withContext(Dispatchers.Main) {
                         val intent = Intent(this@BillAfterActivity, QrActivity::class.java)
@@ -98,8 +100,8 @@ class BillAfterActivity : AppCompatActivity() {
                     val priceAmount = carts.sumOf { it.price * it.quantity }
                     val taxAmount = priceAmount * 0.1
                     val otherAmount = user?.point
-                    val totalAmount = if (otherAmount != null) {
-                        priceAmount + taxAmount - otherAmount
+                    val totalAmount = if (isPointsUsed != false) {
+                        priceAmount + taxAmount - otherAmount!!
                     } else {
                         priceAmount + taxAmount
                     }
@@ -135,7 +137,11 @@ class BillAfterActivity : AppCompatActivity() {
                         _taxAmount.text = formatToRupiah(taxAmount.toInt())
 
                         // utk points user
-                        _otherAmount.text = "- ${otherAmount?.let { formatToRupiah(it) }}"
+                        _otherAmount.text = if (isPointsUsed && otherAmount != null) {
+                            "- ${formatToRupiah(otherAmount)}"
+                        } else {
+                            "0"
+                        }
 
                         // Hitung total harga
                         _totalAmount.text = formatToRupiah(totalAmount.toInt())

@@ -41,12 +41,7 @@ class QrActivity : AppCompatActivity() {
             "BillAfterActivity",
             "Received USER_ID: $userId"
         )  // Log untuk memastikan userId diterima dengan benar
-
-        if (userId != -1) {
-            Log.d("ReceivedUserId", "User ID received: $userId")
-        } else {
-            Log.e("ReceivedUserId", "No User ID found.")
-        }
+        
         if (userId != -1) {
             generateQRCode(userId)
         } else {
@@ -171,6 +166,7 @@ class QrActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                Log.d(TAG, "Updating points. isPointsUsed: $isPointsUsed")
                 if (isPointsUsed) {
                     db.userDao().updateUserPoints(userId, 0)
                     withContext(Dispatchers.Main) {

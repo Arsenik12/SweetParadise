@@ -97,6 +97,7 @@ class CartOrderActivity : AppCompatActivity() {
                     "Cashier" -> {
                         val intent = Intent(this, BillAfterActivity::class.java)
                         intent.putExtra("USER_ID", userId)
+                        intent.putExtra("IS_POINT_USED", checkboxPoint.isChecked)
                         startActivity(intent)
                     }
 
