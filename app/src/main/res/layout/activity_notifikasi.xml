@@ -34,127 +34,13 @@
                 android:textSize="24sp" />
         </FrameLayout>
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notificationRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/input_border"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <View
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/baseline_circle_notification" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Exclusive Offer Alert!"
-                        android:textColor="#000000"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Don't miss out! Get 20% off your favorite menu items today. Available until 8 PM."
-                        android:textColor="#666666"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/input_border"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <View
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/baseline_circle_notification" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Try Something New"
-                        android:textColor="#000000"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Discover our Chef's Special! Check out the menu for this week's recommendations."
-                        android:textColor="#666666"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/input_border"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <View
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/baseline_circle_notification" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Welcome to Sweets Paradise+!"
-                        android:textColor="#000000"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Thank you for joining us! Explore our menu, save your favorites, and enjoy seamless orders and payments."
-                        android:textColor="#666666"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="8dp" />
     </LinearLayout>
 </FrameLayout>
+
+

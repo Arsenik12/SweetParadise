@@ -26,7 +26,11 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import project.uas.sweetparadise.database.AppDatabase
 import project.uas.sweetparadise.database.Cart
+import project.uas.sweetparadise.database.Notification
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class CartOrderActivity : AppCompatActivity() {
 
@@ -159,7 +163,7 @@ class CartOrderActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 dtOrder.quantity = quantity
                 adapter.notifyItemChanged(cartItems.indexOf(dtOrder))
-//                updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
+                updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
             }
         }
     }
@@ -172,7 +176,7 @@ class CartOrderActivity : AppCompatActivity() {
         return total
     }
 
-    //    // Fungsi untuk hitung total jika menggunakan poin
+    // Fungsi untuk hitung total jika menggunakan poin
     private fun updateTotalBasedOnPoints(
         checkboxPoint: CheckBox,
         _totalOrder: TextView,
@@ -210,6 +214,15 @@ class CartOrderActivity : AppCompatActivity() {
                                     Toast.LENGTH_LONG
                                 ).show()
 
+                                val totalOrder = calculateTotalOrder() // Total transaksi
+                                val pointsEarned = calculatePointsEarned(totalOrder) // Hitung poin baru
+
+                                // Perbarui poin pengguna di tabel users
+                                updateUserPoints(userId, pointsEarned, false)
+
+                                // Tambahkan notifikasi
+                                addNotification(userId, pointsEarned)
+
                                 // Hapus isi keranjang
                                 clearCart()
 
@@ -236,18 +249,15 @@ class CartOrderActivity : AppCompatActivity() {
                             }
 
                             else -> {
-                                Toast.makeText(this, "Transaction Cancelled", Toast.LENGTH_LONG)
-                                    .show()
+                                Toast.makeText(this, "Transaction Cancelled", Toast.LENGTH_LONG).show()
                             }
                         }
                     } else {
-                        Toast.makeText(this, "No transaction result found", Toast.LENGTH_LONG)
-                            .show()
+                        Toast.makeText(this, "No transaction result found", Toast.LENGTH_LONG).show()
                     }
                 }
             }
     }
-
 
     private fun initUiKitApi() {
         UiKitApi.Builder()
@@ -404,6 +414,65 @@ class CartOrderActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun updateUserPoints(userId: Int, additionalPoints: Int, isPointsUsed: Boolean) {
+        val db = AppDatabase.getDatabase(this)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                if (isPointsUsed) {
+                    db.userDao().updateUserPoints(userId, 0)
+                    withContext(Dispatchers.Main) {
+                        Log.d("CartOrderActivity", "User points reset to 0 after usage.")
+                    }
+                } else {
+                    val currentPoints = db.userDao().getUserPoints(userId) ?: 0
+                    val updatedPoints = currentPoints + additionalPoints
+
+                    // Perbarui poin di database
+                    db.userDao().updateUserPoints(userId, updatedPoints)
+
+                    // Tambahkan notifikasi ke database
+                    addNotification(userId, additionalPoints)
+
+                    withContext(Dispatchers.Main) {
+                        Log.d("CartOrderActivity", "User points updated successfully. New points: $updatedPoints")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("CartOrderActivity", "Error updating user points: ${e.message}")
+            }
+        }
+    }
+
+    private fun addNotification(userId: Int, pointsEarned: Int) {
+        val db = AppDatabase.getDatabase(this)
+        val message = "You earned $pointsEarned points from your last transaction!"
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                db.notificationDao().insertNotification(
+                    Notification(
+                        userId = userId,
+                        message = message,
+                        date = getCurrentDate()
+                    )
+                )
+                Log.d("CartOrderActivity", "Notification added for user ID: $userId")
+            } catch (e: Exception) {
+                Log.e("CartOrderActivity", "Error adding notification: ${e.message}")
+            }
+        }
+    }
+
+    private fun getCurrentDate(): String {
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        return formatter.format(Date())
+    }
+
+    private fun calculatePointsEarned(totalOrder: Int): Int {
+        return (totalOrder * 0.03).toInt()
     }
 
     // utk toggle selected payment

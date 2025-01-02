@@ -17,7 +17,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import project.uas.sweetparadise.database.AppDatabase
+import project.uas.sweetparadise.database.Notification
 import project.uas.sweetparadise.databinding.ActivityQrCodeBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private const val TAG = "QrActivity"
 private const val QR_SIZE = 1024
@@ -179,6 +183,9 @@ class QrActivity : AppCompatActivity() {
                     // Perbarui poin di database
                     db.userDao().updateUserPoints(userId, updatedPoints)
 
+                    // Tambahkan notifikasi ke database
+                    addNotification(userId, additionalPoints)
+
                     withContext(Dispatchers.Main) {
                         Log.d(TAG, "User points updated successfully. New points: $updatedPoints")
                     }
@@ -187,5 +194,30 @@ class QrActivity : AppCompatActivity() {
                 Log.e(TAG, "Error updating user points: ${e.message}")
             }
         }
+    }
+
+    private fun addNotification(userId: Int, pointsEarned: Int) {
+        val db = AppDatabase.getDatabase(this)
+        val message = "You earned $pointsEarned points from your last transaction!"
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                db.notificationDao().insertNotification(
+                    Notification(
+                        userId = userId,
+                        message = message,
+                        date = getCurrentDate()
+                    )
+                )
+                Log.d(TAG, "Notification added for user ID: $userId")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error adding notification: ${e.message}")
+            }
+        }
+    }
+
+    private fun getCurrentDate(): String {
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        return formatter.format(Date())
     }
 }
