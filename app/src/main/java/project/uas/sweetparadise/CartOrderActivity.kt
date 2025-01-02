@@ -131,16 +131,6 @@ class CartOrderActivity : AppCompatActivity() {
             }
         }
 
-        //utk checkbox point
-        checkboxPoint.setOnCheckedChangeListener { _, isChecked ->
-            CoroutineScope(Dispatchers.IO).launch {
-                val userPoints = db.userDao().getUserById(userId)?.point ?: 0
-                withContext(Dispatchers.Main) {
-                    updateTotalBasedOnPoints(checkboxPoint, _totalOrder, userPoints)
-                }
-            }
-        }
-
         //utk button tambah dan kurang
         adapter.setOnItemClickCallBack(object : adapterCartOrder.OnItemClickCallback {
             override fun minData(dtOrder: Cart, quantity: Int) {
@@ -188,12 +178,14 @@ class CartOrderActivity : AppCompatActivity() {
         _totalOrder: TextView,
         userPoints: Int
     ) {
-        if (checkboxPoint.isChecked) {
-            val totalAfterDiscount = calculateTotalOrder() - userPoints
-            _totalOrder.text = "Rp ${formatToRupiah(totalAfterDiscount)}"
+        val totalOrder = calculateTotalOrder()
+        val totalAfterDiscount = if (checkboxPoint.isChecked) {
+            totalOrder - userPoints
         } else {
-            _totalOrder.text = "Rp ${formatToRupiah(calculateTotalOrder())}"
+            totalOrder
         }
+
+        _totalOrder.text = "Rp ${formatToRupiah(totalAfterDiscount)}"
     }
 
     private fun formatToRupiah(value: Int): String {

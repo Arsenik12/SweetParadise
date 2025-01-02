@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
@@ -26,7 +25,6 @@ private const val QR_SIZE = 1024
 class QrActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityQrCodeBinding
-    private var userId: Int = -1 // Tambahkan variabel global untuk userId
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,19 +32,21 @@ class QrActivity : AppCompatActivity() {
         binding = ActivityQrCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
-        userId = sharedPreferences.getInt("CURRENT_USER_ID", -1)
+        val userId = intent.getIntExtra("USER_ID", -1)
+        Log.d(
+            "BillAfterActivity",
+            "Received USER_ID: $userId"
+        )  // Log untuk memastikan userId diterima dengan benar
 
-        if (userId == -1) {
-            Toast.makeText(this, "No user logged in!", Toast.LENGTH_SHORT).show()
-            finish()
-            return
+        if (userId != -1) {
+            Log.d("ReceivedUserId", "User ID received: $userId")
+        } else {
+            Log.e("ReceivedUserId", "No User ID found.")
         }
-
         if (userId != -1) {
             generateQRCode(userId)
         } else {
-            Log.e(TAG, "Invalid User ID. Cannot generate QR.")
+            Log.e(TAG, "Invalid User ID.")
         }
 
         val _btnDone = findViewById<Button>(R.id.btnDonePayment)
@@ -65,7 +65,7 @@ class QrActivity : AppCompatActivity() {
 
                 if (cartId.isNotEmpty()) {
                     // Gabungkan semua cart id menjadi string untuk QR
-                    val cartIdString = cartId.joinToString(separator = ",")
+                    val cartIdString = cartId.joinToString(separator = ", ")
 
                     // Generate QR code di thread utama
                     withContext(Dispatchers.Main) {
@@ -95,34 +95,57 @@ class QrActivity : AppCompatActivity() {
     }
 
     private fun showPaymentSuccessPopup() {
-        // create animation
+        // utk animation
         val fadeInAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
 
-        // PopUp
+        // Popup animation
         val paymentSuccessPopup = findViewById<View>(R.id.paymentSuccessPopup)
         paymentSuccessPopup.visibility = View.VISIBLE
 
         // Apply the animation
         paymentSuccessPopup.startAnimation(fadeInAnimation)
 
-        // animation selesai, kembali ke main
+        // Once the animation ends, navigate back to the homepage
         fadeInAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
+
             override fun onAnimationEnd(animation: Animation?) {
-                // Hapus cart ID dari database setelah pembayaran sukses
                 val userId = intent.getIntExtra("USER_ID", -1)
+                val isPointsUsed = intent.getBooleanExtra("IS_POINTS_USED", false)
                 if (userId != -1) {
-                    saveCartToHistory(userId)
-                    deleteCartItems(userId)  // Menghapus cart berdasarkan userId
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val additionalPoints = calculateAdditionalPoints(userId)
+                        if (additionalPoints > 0) {
+                            // Poin tambahan hanya diperbarui jika ada tambahan
+                            updateUserPoints(userId, additionalPoints, isPointsUsed)
+                        }
+
+                        // Hapus item keranjang setelah pembayaran sukses
+                        deleteCartItems(userId)
+                    }
                 }
-                // Navigate back to homepage
-                val intent = Intent(this@QrActivity, HomeActivity::class.java)
+
+                val intent = Intent(this@QrActivity, MenuActivity::class.java)
                 intent.putExtra("USER_ID", userId)
                 startActivity(intent)
                 finish()
             }
             override fun onAnimationRepeat(animation: Animation?) {}
         })
+    }
+
+    private suspend fun calculateAdditionalPoints(userId: Int): Int {
+        val db = AppDatabase.getDatabase(this)
+        return withContext(Dispatchers.IO) {
+            try {
+                val carts = db.cartDao().getUserCart(userId)
+                val priceAmount = carts.sumOf { it.price * it.quantity }
+                (priceAmount * 0.03).toInt()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error calculating additional points: ${e.message}")
+                0
+            }
+        }
     }
 
     private fun deleteCartItems(userId: Int) {
@@ -139,23 +162,30 @@ class QrActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveCartToHistory(userId: Int) {
+    private fun updateUserPoints(userId: Int, additionalPoints: Int, isPointsUsed: Boolean) {
         val db = AppDatabase.getDatabase(this)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val cartItems = db.cartDao().getCartByUserId(userId)
-            for (item in cartItems) {
-                db.historyDao().insertHistory(
-                    History(
-                        userId = userId,
-                        menuId = item.menuId,
-                        price = item.price,
-                        quantity = item.quantity,
-                        menuNote = item.menuNote
-                    )
-                )
-            }
+            try {
+                if (isPointsUsed) {
+                    db.userDao().updateUserPoints(userId, 0)
+                    withContext(Dispatchers.Main) {
+                        Log.d(TAG, "User points reset to 0 after usage.")
+                    }
+                } else {
+                    val currentPoints = db.userDao().getUserPoints(userId) ?: 0
+                    val updatedPoints = currentPoints + additionalPoints
 
+                    // Perbarui poin di database
+                    db.userDao().updateUserPoints(userId, updatedPoints)
+
+                    withContext(Dispatchers.Main) {
+                        Log.d(TAG, "User points updated successfully. New points: $updatedPoints")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error updating user points: ${e.message}")
+            }
         }
     }
 }

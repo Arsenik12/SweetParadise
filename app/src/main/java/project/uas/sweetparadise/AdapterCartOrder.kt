@@ -16,6 +16,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import project.uas.sweetparadise.database.AppDatabase
 import project.uas.sweetparadise.database.Cart
+import java.text.NumberFormat
+import java.util.Locale
 
 class adapterCartOrder(private val daftarOrder : MutableList<Cart>, private val db: AppDatabase) :
     RecyclerView.Adapter<adapterCartOrder.ListViewHolder>() {
@@ -95,7 +97,9 @@ class adapterCartOrder(private val daftarOrder : MutableList<Cart>, private val 
             }
         }
 
-        holder._menuPrice.text = "Rp ${dtOrder.price * dtOrder.quantity}"
+        var menuPrice = dtOrder.price * dtOrder.quantity
+
+        holder._menuPrice.text = "Rp ${formatToRupiah(menuPrice)}"
         holder._menuQuantity.text = dtOrder.quantity.toString()
 
         holder._btnMin.setOnClickListener {
@@ -117,5 +121,10 @@ class adapterCartOrder(private val daftarOrder : MutableList<Cart>, private val 
 
     fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
+
+    fun formatToRupiah(amount: Int): String {
+        val format = NumberFormat.getInstance(Locale("id", "ID")) // Format Rupiah
+        return format.format(amount)
     }
 }

@@ -67,9 +67,18 @@ class BillAfterActivity : AppCompatActivity() {
         //ke QrActivity
         _btnGenerateQR.setOnClickListener {
             if (userId != -1) {
-                val intent = Intent(this, QrActivity::class.java)
-                intent.putExtra("USER_ID", userId) // Kirim userId ke QrActivity
-                startActivity(intent)
+                CoroutineScope(Dispatchers.IO).launch {
+                    val user = db.userDao().getUserById(userId)
+                    val otherAmount = user?.point
+                    val isPointsUsed = otherAmount != null && otherAmount > 0
+
+                    withContext(Dispatchers.Main) {
+                        val intent = Intent(this@BillAfterActivity, QrActivity::class.java)
+                        intent.putExtra("USER_ID", userId) // Kirim userId ke QrActivity
+                        intent.putExtra("IS_POINTS_USED", isPointsUsed) // Kirim status poin digunakan
+                        startActivity(intent)
+                    }
+                }
             } else {
                 Log.e("BillAfterActivity", "Invalid User ID. Cannot generate QR.")
             }
@@ -88,7 +97,13 @@ class BillAfterActivity : AppCompatActivity() {
                     // Process cart data and calculate amounts
                     val priceAmount = carts.sumOf { it.price * it.quantity }
                     val taxAmount = priceAmount * 0.1
-                    val totalAmount = priceAmount + taxAmount
+                    val otherAmount = user?.point
+                    val totalAmount = if (otherAmount != null) {
+                        priceAmount + taxAmount - otherAmount
+                    } else {
+                        priceAmount + taxAmount
+                    }
+
                     val totalQuantity = carts.sumOf { it.quantity }
 
                     // buat objek Bill
@@ -119,6 +134,9 @@ class BillAfterActivity : AppCompatActivity() {
                         // 10% dari total price
                         _taxAmount.text = formatToRupiah(taxAmount.toInt())
 
+                        // utk points user
+                        _otherAmount.text = "- ${otherAmount?.let { formatToRupiah(it) }}"
+
                         // Hitung total harga
                         _totalAmount.text = formatToRupiah(totalAmount.toInt())
                     }
@@ -128,11 +146,6 @@ class BillAfterActivity : AppCompatActivity() {
                 }
             }
         }
-
-
-
-
-
 
     }
 

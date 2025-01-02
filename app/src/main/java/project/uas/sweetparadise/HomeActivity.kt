@@ -22,6 +22,7 @@ import project.uas.sweetparadise.database.AppDatabase
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var usernameTextView: TextView
+    private lateinit var userPointsTextView: TextView
     private lateinit var viewPager: ViewPager2
     private val handler = Handler(Looper.getMainLooper())
     private val images = listOf(
@@ -60,11 +61,17 @@ class HomeActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             // Ambil data username dari database
             val usernameFromDb = db.userDao().getUsernameById(userId)
+            val userPointsFromDb = db.userDao().getUserById(userId)
 
             // Update UI di thread utama setelah mendapatkan data
             withContext(Dispatchers.Main) {
                 usernameTextView = findViewById(R.id.tvUsername)
                 usernameTextView.text = usernameFromDb // Menampilkan username di TextView
+
+                userPointsTextView = findViewById(R.id.userPoints)
+                if (userPointsFromDb != null) {
+                    userPointsTextView.text = "Rp " + userPointsFromDb.point.toString()
+                }
             }
         }
 
