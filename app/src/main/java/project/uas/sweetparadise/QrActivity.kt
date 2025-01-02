@@ -95,30 +95,31 @@ class QrActivity : AppCompatActivity() {
     }
 
     private fun showPaymentSuccessPopup() {
-        // Create the animation (e.g., fade-in animation)
+        // create animation
         val fadeInAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
 
-        // Show the popup (make it visible)
+        // PopUp
         val paymentSuccessPopup = findViewById<View>(R.id.paymentSuccessPopup)
         paymentSuccessPopup.visibility = View.VISIBLE
 
         // Apply the animation
         paymentSuccessPopup.startAnimation(fadeInAnimation)
 
-        // Once the animation ends, navigate back to the homepage
+        // animation selesai, kembali ke main
         fadeInAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationEnd(animation: Animation?) {
                 // Hapus cart ID dari database setelah pembayaran sukses
                 val userId = intent.getIntExtra("USER_ID", -1)
                 if (userId != -1) {
+                    saveCartToHistory(userId)
                     deleteCartItems(userId)  // Menghapus cart berdasarkan userId
                 }
                 // Navigate back to homepage
                 val intent = Intent(this@QrActivity, HomeActivity::class.java)
                 intent.putExtra("USER_ID", userId)
                 startActivity(intent)
-                finish()  // Optionally call finish() to close the current activity
+                finish()
             }
             override fun onAnimationRepeat(animation: Animation?) {}
         })
@@ -135,6 +136,26 @@ class QrActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.e(TAG, "Error deleting cart items: ${e.message}")
             }
+        }
+    }
+
+    private fun saveCartToHistory(userId: Int) {
+        val db = AppDatabase.getDatabase(this)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val cartItems = db.cartDao().getCartByUserId(userId)
+            for (item in cartItems) {
+                db.historyDao().insertHistory(
+                    History(
+                        userId = userId,
+                        menuId = item.menuId,
+                        price = item.price,
+                        quantity = item.quantity,
+                        menuNote = item.menuNote
+                    )
+                )
+            }
+
         }
     }
 }

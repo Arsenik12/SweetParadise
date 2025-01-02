@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import project.uas.sweetparadise.database.AppDatabase
-import project.uas.sweetparadise.database.User
 
 class HomeActivity : AppCompatActivity() {
 
@@ -48,6 +48,10 @@ class HomeActivity : AppCompatActivity() {
             return
         }
 
+        val _navMenu = findViewById<LinearLayout>(R.id.navMenu)
+        val _navProfile = findViewById<LinearLayout>(R.id.navProfile)
+        val _btnPoints = findViewById<ImageView>(R.id.btnPoints)
+
         val db = AppDatabase.getDatabase(this)
 
         var username: String? = null
@@ -64,6 +68,20 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        _navMenu.setOnClickListener {
+            val intent = Intent(this, MenuActivity::class.java)
+            startActivity(intent)
+        }
+
+        _navProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        _btnPoints.setOnClickListener {
+            val intent = Intent(this, CartOrderActivity::class.java)
+            startActivity(intent)
+        }
 
         // Setup tombol notifikasi
         val _btnNotif = findViewById<ImageView>(R.id.btnNotification)

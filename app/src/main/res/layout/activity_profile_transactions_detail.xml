@@ -305,44 +305,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/botBG"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="#D9CCC4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="15dp"/>
-
-    <Button
-        android:id="@+id/btnGenerateQR"
-        android:layout_width="321dp"
-        android:layout_height="58dp"
-        app:layout_constraintTop_toTopOf="@id/botBG"
-        app:layout_constraintBottom_toBottomOf="@id/botBG"
-        app:layout_constraintStart_toStartOf="@id/botBG"
-        app:layout_constraintEnd_toEndOf="@id/botBG"
-        android:backgroundTint="#652B27"/>
-
-    <ImageView
-        android:id="@+id/iv1"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/icon_barcode"
-        app:layout_constraintTop_toTopOf="@id/btnGenerateQR"
-        app:layout_constraintStart_toStartOf="@id/btnGenerateQR"
-        app:layout_constraintBottom_toBottomOf="@id/btnGenerateQR"
-        android:layout_marginStart="25dp"/>
-
-    <TextView
-        android:id="@+id/tv10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/iv1"
-        app:layout_constraintStart_toEndOf="@id/iv1"
-        android:layout_marginStart="15dp"
-        android:text="Generate QR Code"
-        android:textSize="24sp"
-        android:fontFamily="@font/alata_reguler"
-        android:textColor="#EFEFEF" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

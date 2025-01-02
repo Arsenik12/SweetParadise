@@ -367,7 +367,7 @@ class CartOrderActivity : AppCompatActivity() {
         }
     }
 
-    // Fungsi untuk memberikan efek visual pada metode pembayaran yang dipilih
+    // utk toggle selected payment
     private fun highlightSelectedPaymentMethod(selected: FrameLayout, other: FrameLayout) {
         selected.setBackgroundResource(R.drawable.payment_selected_border)
         other.setBackgroundResource(R.drawable.payment_border)

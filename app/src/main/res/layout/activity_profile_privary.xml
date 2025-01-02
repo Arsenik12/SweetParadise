@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileTermsActivity"
+    android:paddingTop="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="#FAF9F9">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="Privacy Policy"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/arrow_back"
+        app:layout_constraintEnd_toStartOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title"
+        app:layout_constraintBottom_toBottomOf="@id/title"/>
+
+    <TextView
+        android:id="@+id/firstPara"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="Welcome to the Sweets Paradise application, operated by Sweets Paradise Dessert Café. In our establishment, we value your privacy and prefer to keep things as transparent as possible. Below is how we handle your information."
+        android:textColor="#808080"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="365dp"
+        android:layout_height="1dp"
+        android:src="@drawable/profile_line"
+        app:layout_constraintTop_toBottomOf="@id/firstPara"
+        android:layout_marginTop="12dp"/>
+
+    <TextView
+        android:id="@+id/num1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="1. Data We Collect: Name, contact info, location (if allowed), and app usage."
+        android:textColor="#808080"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/line"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/num2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="2. Usage: To process orders, deliver items, improve services, and send updates."
+        android:textColor="#808080"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/num1"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/num3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="3. Protection: Your data is encrypted and only accessible to authorized personnel."
+        android:textColor="#808080"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/num2"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/num4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="4. Sharing: We share data only with payment processors and delivery partners. Never sold."
+        android:textColor="#808080"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/num3"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/num5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="5. Your Choices: Update or delete your info anytime. Opt-out of promotions as desired."
+        android:textColor="#808080"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/num4"
+        android:layout_marginTop="10dp"/>
+
+
+    <TextView
+        android:id="@+id/num6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="6. Retention: We keep data as long as needed for services or legal purposes."
+        android:textColor="#808080"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/num5"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/num7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="7. Children: App not for users under 13."
+        android:textColor="#808080"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/num6"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/num8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="8. Changes: Policy updates will be posted in the app."
+        android:textColor="#808080"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/num7"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata_reguler"
+        android:text="Thank you for using Sweets Paradise!"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/num8"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
