@@ -101,6 +101,8 @@ class ProfileTransactionsDetail : AppCompatActivity() {
                     _orderType.text = orderTypeText
 
                     // Display user information and calculated amounts
+                    _date.text = billDate
+                    _time.text = billTime
                     _username.text = user?.username ?: "Unknown"
                     _locationName.text = "Your Location"
                     _priceAmount.text = formatToRupiah(priceAmount)

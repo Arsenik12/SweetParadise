@@ -18,15 +18,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import project.uas.sweetparadise.database.AppDatabase
+import project.uas.sweetparadise.database.Bill
 import project.uas.sweetparadise.database.History
 import project.uas.sweetparadise.databinding.ActivityQrCodeBinding
+import project.uas.sweetparadise.helper.DateHelper.getCurrentDate
+import project.uas.sweetparadise.helper.TimeHelper.getCurrentTime
 
 private const val TAG = "QrActivity"
 private const val QR_SIZE = 1024
 
 class QrActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityQrCodeBinding
+    private lateinit var binding: ActivityQrCodeBinding
     private var userId: Int = -1 // Tambahkan variabel global untuk userId
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,18 +114,43 @@ class QrActivity : AppCompatActivity() {
                 // Hapus cart ID dari database setelah pembayaran sukses
                 val userId = intent.getIntExtra("USER_ID", -1)
                 if (userId != -1) {
+                    saveBillToDatabase(userId) // Move this function here
                     saveCartToHistory(userId)
                     deleteCartItems(userId)  // Menghapus cart berdasarkan userId
                 }
                 // Navigate back to homepage
-
                 val intent = Intent(this@QrActivity, MenuTypeActivity::class.java)
                 intent.putExtra("USER_ID", userId)
                 startActivity(intent)
                 finish()
             }
+
             override fun onAnimationRepeat(animation: Animation?) {}
         })
+    }
+
+    private fun saveBillToDatabase(userId: Int) {
+        val db = AppDatabase.getDatabase(this)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val carts = db.cartDao().getUserCart(userId)
+                val totalQuantity = carts.sumOf { it.quantity }
+                val priceAmount = carts.sumOf { it.price * it.quantity }
+                val taxAmount = priceAmount * 0.1
+                val totalAmount = priceAmount + taxAmount
+                val bill = Bill(
+                    userId = userId,
+                    date = getCurrentDate(),
+                    time = getCurrentTime(),
+                    quantity = totalQuantity,
+                    totalPrice = totalAmount.toInt()
+                )
+                db.billDao().insertBill(bill)
+                Log.d(TAG, "Bill saved successfully!")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error saving bill: ${e.message}")
+            }
+        }
     }
 
     private fun deleteCartItems(userId: Int) {
@@ -145,23 +173,20 @@ class QrActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val cartItems = db.cartDao().getCartByUserId(userId)
-            val mostRecentBill = db.billDao().getMostRecentBillByUserId(userId)
 
-            if (mostRecentBill != null) {
-                cartItems.forEach { item ->
-                    db.historyDao().insertHistory(
-                        History(
-                            userId = userId,
-                            menuId = item.menuId,
-                            price = item.price,
-                            quantity = item.quantity,
-                            menuNote = item.menuNote,
-                            date = mostRecentBill.date,
-                            time = mostRecentBill.time,
-                            status = status
-                        )
+            cartItems.forEach { item ->
+                db.historyDao().insertHistory(
+                    History(
+                        userId = userId,
+                        menuId = item.menuId,
+                        price = item.price,
+                        quantity = item.quantity,
+                        menuNote = item.menuNote,
+                        date = getCurrentDate(),
+                        time = getCurrentTime(),
+                        status = status
                     )
-                }
+                )
             }
         }
     }
