@@ -36,4 +36,10 @@ data class History(
 
     @ColumnInfo(name = "menuNote")
     val menuNote: String? = null,
+
+    @ColumnInfo(name = "date")
+    val date: String? = null,
+
+    @ColumnInfo(name = "time")
+    val time: String? = null
 )

@@ -63,51 +63,47 @@ class ProfileTransactionsDetail : AppCompatActivity() {
 
         _buttonBack.setOnClickListener {
             val intent = Intent(this, ProfileTransactionsActivity::class.java)
-            intent.putExtra("USER_ID", userId)
             startActivity(intent)
         }
 
+        // Retrieve the selected bill's date and time from the Intent
+        val billDate = intent.getStringExtra("BILL_DATE") ?: ""
+        val billTime = intent.getStringExtra("BILL_TIME") ?: ""
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val historys = db.historyDao().getHistoryByUserId(userId)
+                // Get history items matching the selected bill's date and time
+                val allHistoryItems = db.historyDao().getHistoryByUserId(userId)
+                val filteredHistoryItems = allHistoryItems.filter { historyItem ->
+                    historyItem.date == billDate && historyItem.time == billTime
+                }
+
                 val user = db.userDao().getUserById(userId)
 
                 withContext(Dispatchers.Main) {
+                    // Update the RecyclerView with the filtered history items
                     historyItems.clear()
-                    historyItems.addAll(historys)
+                    historyItems.addAll(filteredHistoryItems)
                     adapter.notifyDataSetChanged()
 
-                    // Process cart data and calculate amounts
-                    val priceAmount = historys.sumOf { it.price * it.quantity }
+                    // Calculate amounts based on the filtered history
+                    val priceAmount = filteredHistoryItems.sumOf { it.price * it.quantity }
                     val taxAmount = priceAmount * 0.1
                     val totalAmount = priceAmount + taxAmount
 
-
-                    withContext(Dispatchers.Main) {
-                        historyItems.clear()
-                        historyItems.addAll(historys)
-                        adapter.notifyDataSetChanged()
-
-                        // Menampilkan username dan lokasi
-                        _username.text = user?.username ?: "Unknown"
-                        _locationName.text = "Your Location"
-
-                        // Harga total semua item
-                        _priceAmount.text = formatToRupiah(priceAmount)
-
-                        // 10% dari total price
-                        _taxAmount.text = formatToRupiah(taxAmount.toInt())
-
-                        // Hitung total harga
-                        _totalAmount.text = formatToRupiah(totalAmount.toInt())
-                    }
+                    // Display user information and calculated amounts
+                    _username.text = user?.username ?: "Unknown"
+                    _locationName.text = "Your Location"
+                    _priceAmount.text = formatToRupiah(priceAmount)
+                    _taxAmount.text = formatToRupiah(taxAmount.toInt())
+                    _totalAmount.text = formatToRupiah(totalAmount.toInt())
                 }
-                } catch (e: Exception) {
-                    Log.e("ProfileTransactions", "Error loading transaction: ${e.message}", e)
-                }
-
+            } catch (e: Exception) {
+                Log.e("ProfileTransactions", "Error loading transaction: ${e.message}", e)
             }
         }
+    }
+
         private fun formatToRupiah(amount: Int): String {
             val format = NumberFormat.getInstance(Locale("id", "ID")) // Format Rupiah
             return format.format(amount)

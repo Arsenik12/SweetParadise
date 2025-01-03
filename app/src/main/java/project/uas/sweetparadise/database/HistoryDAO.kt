@@ -23,4 +23,7 @@ interface HistoryDAO {
 
     @Query("SELECT * FROM history WHERE userId = :userId")
     suspend fun getHistoryByUserId(userId: Int): List<Cart>
+
+    @Query("SELECT * FROM history WHERE date = :date AND time = :time")
+    fun getHistoryByDateTime(date: String, time: String): List<History>
 }

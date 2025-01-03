@@ -144,18 +144,24 @@ class QrActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val cartItems = db.cartDao().getCartByUserId(userId)
-            for (item in cartItems) {
-                db.historyDao().insertHistory(
-                    History(
-                        userId = userId,
-                        menuId = item.menuId,
-                        price = item.price,
-                        quantity = item.quantity,
-                        menuNote = item.menuNote
-                    )
-                )
-            }
+            val mostRecentBill = db.billDao().getMostRecentBillByUserId(userId)
 
+            if (mostRecentBill != null) {
+                cartItems.forEach { item ->
+                    db.historyDao().insertHistory(
+                        History(
+                            userId = userId,
+                            menuId = item.menuId,
+                            price = item.price,
+                            quantity = item.quantity,
+                            menuNote = item.menuNote,
+                            date = mostRecentBill.date,
+                            time = mostRecentBill.time
+                        )
+                    )
+                }
+            }
         }
     }
+
 }
