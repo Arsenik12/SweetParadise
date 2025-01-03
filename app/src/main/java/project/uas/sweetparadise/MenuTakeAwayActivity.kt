@@ -1,11 +1,9 @@
 package project.uas.sweetparadise
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.util.Log
-import android.view.Gravity
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -13,37 +11,30 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.marginRight
-import androidx.core.view.marginTop
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import project.uas.sweetparadise.database.AppDatabase
 import project.uas.sweetparadise.database.Menu
-import java.util.Locale
 
-class MenuActivity : AppCompatActivity() {
+class MenuTakeAwayActivity : AppCompatActivity() {
 
     private lateinit var adapter: adapterMenu
     private var menus: MutableList<Menu> = mutableListOf()
     private var filteredMenus: MutableList<Menu> = mutableListOf()
-    private var userId: Int = -1
-    private val db by lazy { AppDatabase.getDatabase(this) }
+    private var userId: Int = -1 // Tambahkan variabel global untuk userId
 
     companion object {
         const val REQUEST_CODE_ADD_TO_CART = 1
-        const val REQUEST_CODE_ADD_MENU = 2
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_menu)
+        setContentView(R.layout.activity_menu_take_away)
 
         // Mendapatkan userId dari SharedPreferences
         val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
@@ -69,11 +60,9 @@ class MenuActivity : AppCompatActivity() {
         }
 
         // Inisialisasi adapter dan RecyclerView
-        adapter = adapterMenu(filteredMenus, this, db.favoriteDao(), userId, 1)
+        adapter = adapterMenu(filteredMenus, this, db.favoriteDao(), userId, 2)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        loadCategories()
 
         val _buttonBack = findViewById<ImageView>(R.id.back)
         val _btnSearch = findViewById<ImageView>(R.id.search)
@@ -129,7 +118,7 @@ class MenuActivity : AppCompatActivity() {
         // Tombol tambah menu
         _buttonAdd.setOnClickListener {
             val intent = Intent(this, addMenu::class.java)
-            startActivityForResult(intent, REQUEST_CODE_ADD_MENU)
+            startActivity(intent)
         }
 
         // Update data keranjang
@@ -140,7 +129,7 @@ class MenuActivity : AppCompatActivity() {
         _btnCart.setOnClickListener {
             //kirim status
             val intent = Intent(this, CartOrderActivity::class.java)
-            intent.putExtra("STATUS", 1)
+            intent.putExtra("STATUS", 2)
             startActivity(intent)
         }
 
@@ -208,31 +197,12 @@ class MenuActivity : AppCompatActivity() {
                 updateCartData(db, userId, _tvItems, _tvAmount)
             }
         }
-        if (requestCode == REQUEST_CODE_ADD_MENU && resultCode == Activity.RESULT_OK) {
-            loadMenus()
-            loadCategories()
-        }
+
+
     }
 
-    private fun loadMenus() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val menuList = db.menuDao().getAllMenus()
-            withContext(Dispatchers.Main) {
-                menus.clear()
-                menus.addAll(menuList)
-                filteredMenus.clear()
-                filteredMenus.addAll(menuList.filter { it.categoryId == 1 })
-                adapter.notifyDataSetChanged()
-            }
-        }
-    }
-
-    private suspend fun updateCartData(
-        db: AppDatabase,
-        userId: Int,
-        _tvItems: TextView,
-        _tvAmount: TextView
-    ) {
+    // Mengupdate data keranjang
+    private suspend fun updateCartData(db: AppDatabase, userId: Int, _tvItems: TextView, _tvAmount: TextView) {
         val userCartList = withContext(Dispatchers.IO) { db.cartDao().getUserCart(userId) }
         if (userCartList.isNotEmpty()) {
             val totalQuantity = userCartList.sumOf { it.quantity }
@@ -248,85 +218,6 @@ class MenuActivity : AppCompatActivity() {
     private fun filterMenuByCategory(categoryId: Int) {
         filteredMenus.clear()
         filteredMenus.addAll(menus.filter { it.categoryId == categoryId })
-        adapter.notifyDataSetChanged()
-
-        updateCategoryButtonStyle(categoryId)
-    }
-
-    private fun loadCategories() {
-        val categoryContainer = findViewById<LinearLayout>(R.id.categoryContainer)
-        lifecycleScope.launch(Dispatchers.IO) {
-            val categories = db.categoryDao().getAllCategories()
-            withContext(Dispatchers.Main) {
-                categoryContainer.removeAllViews()
-
-                categories.forEach { category ->
-                    val categoryFrameLayout = FrameLayout(this@MenuActivity).apply {
-                        layoutParams = LinearLayout.LayoutParams(
-                            dpToPx(100),
-                            dpToPx(40)
-                        ).apply {
-                            setMargins(0, 0, dpToPx(12), 0)
-                        }
-
-                        setPadding(dpToPx(8), dpToPx(6), dpToPx(8), dpToPx(8))
-
-                        val categoryTextView = TextView(this@MenuActivity).apply {
-                            text = category.name.lowercase(Locale.getDefault())
-                                .capitalize(Locale.getDefault())
-                            setTextColor(getColor(R.color.gray))
-                            textSize = 17f
-                            setPadding(dpToPx(8), 0, dpToPx(8), 0)
-                            gravity = Gravity.CENTER
-                            typeface = ResourcesCompat.getFont(
-                                context,
-                                R.font.alata_reguler
-                            )
-                        }
-
-                        this@apply.addView(categoryTextView)
-
-                        setBackgroundResource(R.drawable.border_button)
-
-                        if (category.id == 1) {
-                            setBackgroundResource(R.drawable.border_button_chosen)
-                            categoryTextView.setTextColor(getColor(R.color.brown))
-                        }
-
-                        setOnClickListener {
-                            filterMenuByCategory(category.id)
-                            updateCategoryButtonStyle(category.id)
-                        }
-                    }
-                    categoryContainer.addView(categoryFrameLayout)
-                }
-            }
-        }
-    }
-
-    private fun dpToPx(dp: Int): Int {
-        return (dp * resources.displayMetrics.density).toInt()
-    }
-
-    private fun updateCategoryButtonStyle(selectedCategoryId: Int) {
-        val categoryContainer = findViewById<LinearLayout>(R.id.categoryContainer)
-        lifecycleScope.launch(Dispatchers.IO) {
-            for (i in 0 until categoryContainer.childCount) {
-                val categoryFrameLayout = categoryContainer.getChildAt(i) as FrameLayout
-                val category = db.categoryDao().getCategoryById(i + 1)
-
-                withContext(Dispatchers.Main) {
-                    val categoryTextView = categoryFrameLayout.getChildAt(0) as TextView
-
-                    if (category?.id == selectedCategoryId) {
-                        categoryFrameLayout.setBackgroundResource(R.drawable.border_button_chosen)
-                        categoryTextView.setTextColor(getColor(R.color.brown))
-                    } else {
-                        categoryFrameLayout.setBackgroundResource(R.drawable.border_button)
-                        categoryTextView.setTextColor(getColor(R.color.gray))
-                    }
-                }
-            }
-        }
+        adapter.notifyDataSetChanged() // Perbarui RecyclerView dengan menu yang difilter
     }
 }

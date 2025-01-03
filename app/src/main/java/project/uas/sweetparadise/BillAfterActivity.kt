@@ -60,9 +60,12 @@ class BillAfterActivity : AppCompatActivity() {
         val _totalAmount = findViewById<TextView>(R.id.totalAmount)
         val _btnGenerateQR = findViewById<TextView>(R.id.btnGenerateQR)
 
+        val status = intent.getIntExtra("STATUS", -1) // Default to -1 if STATUS is not provided
+
         _buttonBack.setOnClickListener {
             val intent = Intent(this, CartOrderActivity::class.java)
             intent.putExtra("USER_ID", userId)
+            intent.putExtra("STATUS", status)
             startActivity(intent)
         }
 
@@ -76,6 +79,7 @@ class BillAfterActivity : AppCompatActivity() {
                         val intent = Intent(this@BillAfterActivity, QrActivity::class.java)
                         intent.putExtra("USER_ID", userId) // Kirim userId ke QrActivity
                         intent.putExtra("IS_POINTS_USED", isPointsUsed) // Kirim status poin digunakan
+                        intent.putExtra("STATUS", status)
                         startActivity(intent)
                     }
                 }
@@ -103,20 +107,6 @@ class BillAfterActivity : AppCompatActivity() {
                     } else {
                         priceAmount + taxAmount
                     }
-
-                    val totalQuantity = carts.sumOf { it.quantity }
-
-                    // buat objek Bill
-                    val bill = Bill(
-                        userId = userId,
-                        date = getCurrentDate(),
-                        time = getCurrentTime(),
-                        quantity = totalQuantity,
-                        totalPrice = totalAmount.toInt()
-                    )
-
-                    //insert bill to database
-                    db.billDao().insertBill(bill)
 
                     withContext(Dispatchers.Main) {
                         billItems.clear()

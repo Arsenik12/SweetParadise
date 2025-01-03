@@ -15,4 +15,8 @@ interface BillDAO {
 
     @Query("SELECT * FROM bills WHERE userId = :userId")
     suspend fun getBillsByUserId(userId: Int): List<Bill>
+
+    @Query("SELECT * FROM bills WHERE userId = :userId ORDER BY date DESC, time DESC LIMIT 1")
+    suspend fun getMostRecentBillByUserId(userId: Int): Bill?
+
 }

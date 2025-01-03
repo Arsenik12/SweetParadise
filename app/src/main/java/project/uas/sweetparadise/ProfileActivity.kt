@@ -66,7 +66,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
         _navMenu.setOnClickListener {
-            val intent = Intent(this, MenuActivity::class.java)
+            val intent = Intent(this, MenuTypeActivity::class.java)
             startActivity(intent)
         }
 

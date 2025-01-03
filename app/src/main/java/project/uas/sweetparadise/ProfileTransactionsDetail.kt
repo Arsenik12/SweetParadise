@@ -60,54 +60,61 @@ class ProfileTransactionsDetail : AppCompatActivity() {
         val _taxAmount = findViewById<TextView>(R.id.taxAmount)
         val _otherAmount = findViewById<TextView>(R.id.otherAmount)
         val _totalAmount = findViewById<TextView>(R.id.totalAmount)
+        val _orderType = findViewById<TextView>(R.id.orderType)
 
         _buttonBack.setOnClickListener {
             val intent = Intent(this, ProfileTransactionsActivity::class.java)
-            intent.putExtra("USER_ID", userId)
             startActivity(intent)
         }
 
+        // Retrieve the selected bill's date and time from the Intent
+        val billDate = intent.getStringExtra("BILL_DATE") ?: ""
+        val billTime = intent.getStringExtra("BILL_TIME") ?: ""
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val historys = db.historyDao().getHistoryByUserId(userId)
+                // Get history items matching the selected bill's date and time
+                val filteredHistoryItems = db.historyDao().getHistoryByUserId(userId).filter { historyItem ->
+                    historyItem.date == billDate && historyItem.time == billTime
+                }
+
                 val user = db.userDao().getUserById(userId)
 
                 withContext(Dispatchers.Main) {
+                    // Update the RecyclerView with the filtered history items
                     historyItems.clear()
-                    historyItems.addAll(historys)
+                    historyItems.addAll(filteredHistoryItems)
                     adapter.notifyDataSetChanged()
 
-                    // Process cart data and calculate amounts
-                    val priceAmount = historys.sumOf { it.price * it.quantity }
+                    // Calculate amounts based on the filtered history
+                    val priceAmount = filteredHistoryItems.sumOf { it.price * it.quantity }
                     val taxAmount = priceAmount * 0.1
                     val totalAmount = priceAmount + taxAmount
 
-
-                    withContext(Dispatchers.Main) {
-                        historyItems.clear()
-                        historyItems.addAll(historys)
-                        adapter.notifyDataSetChanged()
-
-                        // Menampilkan username dan lokasi
-                        _username.text = user?.username ?: "Unknown"
-                        _locationName.text = "Your Location"
-
-                        // Harga total semua item
-                        _priceAmount.text = formatToRupiah(priceAmount)
-
-                        // 10% dari total price
-                        _taxAmount.text = formatToRupiah(taxAmount.toInt())
-
-                        // Hitung total harga
-                        _totalAmount.text = formatToRupiah(totalAmount.toInt())
+                    // Get the status from the first filtered history item (assuming uniform status)
+                    val orderTypeText = when (filteredHistoryItems.firstOrNull()?.status) {
+                        1 -> "Dine In"
+                        2 -> "Take Away"
+                        3 -> "Delivery"
+                        else -> "Unknown"
                     }
-                }
-                } catch (e: Exception) {
-                    Log.e("ProfileTransactions", "Error loading transaction: ${e.message}", e)
-                }
+                    _orderType.text = orderTypeText
 
+                    // Display user information and calculated amounts
+                    _date.text = billDate
+                    _time.text = billTime
+                    _username.text = user?.username ?: "Unknown"
+                    _locationName.text = "Your Location"
+                    _priceAmount.text = formatToRupiah(priceAmount)
+                    _taxAmount.text = formatToRupiah(taxAmount.toInt())
+                    _totalAmount.text = formatToRupiah(totalAmount.toInt())
+                }
+            } catch (e: Exception) {
+                Log.e("ProfileTransactions", "Error loading transaction: ${e.message}", e)
             }
         }
+    }
+
         private fun formatToRupiah(amount: Int): String {
             val format = NumberFormat.getInstance(Locale("id", "ID")) // Format Rupiah
             return format.format(amount)

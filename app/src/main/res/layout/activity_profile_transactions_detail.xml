@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:fontFamily="@font/alata_reguler"
-        android:text="Bill"
+        android:text="History Bill"
         android:textSize="27sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -52,7 +52,7 @@
             app:layout_constraintTop_toTopOf="@id/billBG"
             app:layout_constraintStart_toStartOf="@id/billBG"
             android:layout_marginTop="14dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="25dp"
             android:text="Hi, "
             android:textStyle="bold"
             android:fontFamily="@font/alata_reguler"
@@ -65,6 +65,27 @@
             app:layout_constraintTop_toTopOf="@id/tv1"
             app:layout_constraintStart_toEndOf="@id/tv1"
             android:text="Bob Garfield"
+            android:textStyle="bold"
+            android:fontFamily="@font/alata_reguler"
+            android:textSize="20sp"/>
+
+        <ImageView
+            android:id="@+id/line0"
+            android:layout_width="2dp"
+            android:layout_height="51dp"
+            android:src="@drawable/menu_type_border"
+            app:layout_constraintStart_toEndOf="@id/username"
+            app:layout_constraintEnd_toStartOf="@id/orderType"
+            />
+
+        <TextView
+            android:id="@+id/orderType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/tv1"
+            app:layout_constraintEnd_toEndOf="@id/billBG"
+            android:layout_marginEnd="20dp"
+            android:text="Dine In"
             android:textStyle="bold"
             android:fontFamily="@font/alata_reguler"
             android:textSize="20sp"/>

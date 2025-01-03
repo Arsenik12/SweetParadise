@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
@@ -18,10 +19,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import project.uas.sweetparadise.database.AppDatabase
 import project.uas.sweetparadise.database.Notification
+import project.uas.sweetparadise.database.Bill
+import project.uas.sweetparadise.database.History
 import project.uas.sweetparadise.databinding.ActivityQrCodeBinding
+import project.uas.sweetparadise.helper.DateHelper
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import project.uas.sweetparadise.helper.DateHelper.getCurrentDate
+import project.uas.sweetparadise.helper.TimeHelper.getCurrentTime
 
 private const val TAG = "QrActivity"
 private const val QR_SIZE = 1024
@@ -29,6 +35,7 @@ private const val QR_SIZE = 1024
 class QrActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityQrCodeBinding
+    private var userId: Int = -1 // Tambahkan variabel global untuk userId
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +48,7 @@ class QrActivity : AppCompatActivity() {
             "BillAfterActivity",
             "Received USER_ID: $userId"
         )  // utk memastikan userId diterima dengan benar
-        
+
         if (userId != -1) {
             generateQRCode(userId)
         } else {
@@ -94,6 +101,7 @@ class QrActivity : AppCompatActivity() {
     }
 
     private fun showPaymentSuccessPopup() {
+        // create animation
         val fadeInAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
 
         // Popup animation
@@ -103,11 +111,11 @@ class QrActivity : AppCompatActivity() {
         // Apply the animation
         paymentSuccessPopup.startAnimation(fadeInAnimation)
 
-        // Once the animation ends, navigate back to the homepage
+        // animation selesai, kembali ke main
         fadeInAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
-
             override fun onAnimationEnd(animation: Animation?) {
+                // Hapus cart ID dari database setelah pembayaran sukses
                 val userId = intent.getIntExtra("USER_ID", -1)
                 val isPointsUsed = intent.getBooleanExtra("IS_POINTS_USED", false)
                 if (userId != -1) {
@@ -120,9 +128,12 @@ class QrActivity : AppCompatActivity() {
                         // Hapus item keranjang setelah pembayaran sukses
                         deleteCartItems(userId)
                     }
+                    saveBillToDatabase(userId) // Move this function here
+                    saveCartToHistory(userId)
+                    deleteCartItems(userId)  // Menghapus cart berdasarkan userId
                 }
 
-                val intent = Intent(this@QrActivity, MenuActivity::class.java)
+                val intent = Intent(this@QrActivity, MenuTypeActivity::class.java)
                 intent.putExtra("USER_ID", userId)
                 startActivity(intent)
                 finish()
@@ -141,6 +152,30 @@ class QrActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.e(TAG, "Error calculating additional points: ${e.message}")
                 0
+            }
+        }
+    }
+
+    private fun saveBillToDatabase(userId: Int) {
+        val db = AppDatabase.getDatabase(this)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val carts = db.cartDao().getUserCart(userId)
+                val totalQuantity = carts.sumOf { it.quantity }
+                val priceAmount = carts.sumOf { it.price * it.quantity }
+                val taxAmount = priceAmount * 0.1
+                val totalAmount = priceAmount + taxAmount
+                val bill = Bill(
+                    userId = userId,
+                    date = getCurrentDate(),
+                    time = getCurrentTime(),
+                    quantity = totalQuantity,
+                    totalPrice = totalAmount.toInt()
+                )
+                db.billDao().insertBill(bill)
+                Log.d(TAG, "Bill saved successfully!")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error saving bill: ${e.message}")
             }
         }
     }
@@ -213,5 +248,29 @@ class QrActivity : AppCompatActivity() {
     private fun getCurrentDate(): String {
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         return formatter.format(Date())
+    }
+
+    private fun saveCartToHistory(userId: Int) {
+        val db = AppDatabase.getDatabase(this)
+        val status = intent.getIntExtra("STATUS", 0) // Default to 0 if STATUS is not provided
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val cartItems = db.cartDao().getCartByUserId(userId)
+
+            cartItems.forEach { item ->
+                db.historyDao().insertHistory(
+                    History(
+                        userId = userId,
+                        menuId = item.menuId,
+                        price = item.price,
+                        quantity = item.quantity,
+                        menuNote = item.menuNote,
+                        date = DateHelper.getCurrentDate(),
+                        time = getCurrentTime(),
+                        status = status
+                    )
+                )
+            }
+        }
     }
 }

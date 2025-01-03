@@ -27,7 +27,8 @@ class adapterMenu(
     private val daftarMenu: MutableList<Menu>,
     private val activity: Activity,
     private val favoriteDao: FavoriteDAO,
-    private val userId: Int
+    private val userId: Int,
+    private val status : Int
 ) : RecyclerView.Adapter<adapterMenu.ListViewHolder>() {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
@@ -106,6 +107,7 @@ class adapterMenu(
                 putExtra("name", menu.name)
                 putExtra("description", menu.description)
                 putExtra("price", menu.price)
+                putExtra("STATUS", status)
             }
             activity.startActivityForResult(intent, MenuActivity.REQUEST_CODE_ADD_TO_CART)
         }

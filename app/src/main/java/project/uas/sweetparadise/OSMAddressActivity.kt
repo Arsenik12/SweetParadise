@@ -80,7 +80,7 @@ class OSMAddressActivity : AppCompatActivity() {
             val address = addressInput.text.toString()
             if (address.isNotEmpty()) {
                 saveAddressToDatabase(address) {
-                    val intent = Intent(this@OSMAddressActivity, MenuActivity::class.java)
+                    val intent = Intent(this@OSMAddressActivity, MenuDeliveryActivity::class.java)
                     startActivity(intent)
                     finish()
                 }

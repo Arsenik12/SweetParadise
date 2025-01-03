@@ -65,6 +65,9 @@ class MenuDetailActivity : AppCompatActivity() {
             finish()
         }
 
+        val status = intent.getIntExtra("STATUS", 0) // Default to 0 if STATUS is not provided
+
+
         _btnAddCart.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 val existingCartItem = db.cartDao().getCartItemByMenuId(userId, menuId)
@@ -94,7 +97,8 @@ class MenuDetailActivity : AppCompatActivity() {
                             menuId = menuId,
                             price = menuPrice,
                             quantity = _tvQuantity.text.toString().toInt(),
-                            menuNote = _etNote.text.toString()
+                            menuNote = _etNote.text.toString(),
+                            status = status
                         )
                     )
 

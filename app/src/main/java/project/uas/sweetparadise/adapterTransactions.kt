@@ -40,7 +40,9 @@ class adapterTransactions(
         holder.tPrice.text = "Rp ${bill.totalPrice}"
         holder.transDetail.setOnClickListener {
             val intent = Intent(holder.itemView.context, ProfileTransactionsDetail::class.java)
+            intent.putExtra("BILL_DATE", bill.date) // Pass the selected bill's date
+            intent.putExtra("BILL_TIME", bill.time) // Pass the selected bill's time
             activity.startActivity(intent)
+        }
     }
-}
 }

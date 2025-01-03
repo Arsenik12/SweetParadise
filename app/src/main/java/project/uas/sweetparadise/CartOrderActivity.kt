@@ -69,12 +69,24 @@ class CartOrderActivity : AppCompatActivity() {
         val checkboxPoint = findViewById<CheckBox>(R.id.checkbox)
 
 
+        // Receive the status from the intent
+        val status = intent.getIntExtra("STATUS", -1) // Default to -1 if STATUS is not provided
+
         _buttonBack.setOnClickListener {
-            val intent = Intent(this, MenuActivity::class.java)
+            val targetClass = when (status) {
+                1 -> MenuActivity::class.java
+                2 -> MenuTakeAwayActivity::class.java
+                3 -> MenuDeliveryActivity::class.java
+                else -> MenuTypeActivity::class.java // Default ke Homepage kalau status invalid
+            }
+
+            val intent = Intent(this, targetClass)
             intent.putExtra("USER_ID", userId)
             startActivity(intent)
         }
 
+
+        // Listener untuk memilih metode pembayaran
         _btnCashier.setOnClickListener {
             selectedPaymentMethod = "Cashier"
             _btnCashier.isSelected = true
@@ -98,6 +110,7 @@ class CartOrderActivity : AppCompatActivity() {
                         val intent = Intent(this, BillAfterActivity::class.java)
                         intent.putExtra("USER_ID", userId)
                         intent.putExtra("IS_POINT_USED", checkboxPoint.isChecked)
+                        intent.putExtra("STATUS", status)
                         startActivity(intent)
                     }
 
