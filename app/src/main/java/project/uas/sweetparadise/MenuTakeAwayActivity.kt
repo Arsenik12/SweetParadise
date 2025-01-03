@@ -81,11 +81,17 @@ class MenuTakeAwayActivity : AppCompatActivity() {
         val _btnCart = findViewById<Button>(R.id.btnCart)
 
         val _navHome = findViewById<LinearLayout>(R.id.navHome)
+        val _navMenu = findViewById<LinearLayout>(R.id.navMenu)
         val _navProfile = findViewById<LinearLayout>(R.id.navProfile)
 
 
         _navHome.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+
+        _navMenu.setOnClickListener {
+            val intent = Intent(this, MenuTypeActivity::class.java)
             startActivity(intent)
         }
 

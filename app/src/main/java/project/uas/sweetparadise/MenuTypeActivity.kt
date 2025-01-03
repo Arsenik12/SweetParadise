@@ -1,9 +1,13 @@
 package project.uas.sweetparadise
 
+import android.content.Context
 import android.content.Intent
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -33,8 +37,16 @@ class MenuTypeActivity : AppCompatActivity() {
         }
 
         _btnDelivery.setOnClickListener {
-            val intent = Intent(this, MenuDeliveryActivity::class.java)
-            startActivity(intent)
+            if (isLocationEnabled()) {
+                // Jika lokasi aktif maka lanjut ke MenuActivity
+                val intent = Intent(this, OSMAddressActivity::class.java)
+                startActivity(intent)
+            } else {
+                // Jika lokasi tidak aktif maka minta user diminta untuk menyalakan lokasi
+                Toast.makeText(this, "Harap aktifkan lokasi Anda untuk melanjutkan!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
         }
 
         _navHome.setOnClickListener {
@@ -42,15 +54,14 @@ class MenuTypeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        _navMenu.setOnClickListener {
-            val intent = Intent(this, MenuActivity::class.java)
-            startActivity(intent)
-        }
-
         _navProfile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
-
+    }
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 }

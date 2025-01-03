@@ -95,17 +95,20 @@ class BillAfterActivity : AppCompatActivity() {
                     val totalAmount = priceAmount + taxAmount
                     val totalQuantity = carts.sumOf { it.quantity }
 
-                    // buat objek Bill
-                    val bill = Bill(
-                        userId = userId,
-                        date = getCurrentDate(),
-                        time = getCurrentTime(),
-                        quantity = totalQuantity,
-                        totalPrice = totalAmount.toInt()
-                    )
+                    if (totalQuantity != 0) {
+                        // buat objek Bill
+                        val bill = Bill(
+                            userId = userId,
+                            date = getCurrentDate(),
+                            time = getCurrentTime(),
+                            quantity = totalQuantity,
+                            totalPrice = totalAmount.toInt()
+                        )
+                        //insert bill to database
+                        db.billDao().insertBill(bill)
+                    }
 
-                    //insert bill to database
-                    db.billDao().insertBill(bill)
+
 
                     withContext(Dispatchers.Main) {
                         billItems.clear()
