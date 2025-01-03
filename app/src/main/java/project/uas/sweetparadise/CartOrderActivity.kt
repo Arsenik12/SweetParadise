@@ -31,8 +31,8 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import com.razorpay.Checkout
 import org.json.JSONObject
+import java.text.NumberFormat
 
 class CartOrderActivity : AppCompatActivity() {
 
@@ -72,7 +72,7 @@ class CartOrderActivity : AppCompatActivity() {
 
 
         // Receive the status from the intent
-        val status = intent.getIntExtra("STATUS", -1) // Default to -1 if STATUS is not provided
+        val status = intent.getIntExtra("STATUS", 0) // Default to 0 if STATUS is not provided
 
         _buttonBack.setOnClickListener {
             val targetClass = when (status) {
@@ -112,11 +112,14 @@ class CartOrderActivity : AppCompatActivity() {
                         val intent = Intent(this, BillAfterActivity::class.java)
                         intent.putExtra("USER_ID", userId)
                         intent.putExtra("IS_POINT_USED", checkboxPoint.isChecked)
+                        intent.putExtra("STATUS", status)
                         startActivity(intent)
                     }
 
                     "Other" -> {
-                        startPayment()
+                        _btnOrder.setOnClickListener {
+                            startPayment()
+                        }
                     }
                 }
             }
@@ -191,25 +194,6 @@ class CartOrderActivity : AppCompatActivity() {
         }
     }
 
-    private fun startPayment() {
-        val checkout = Checkout()
-        checkout.setKeyID("rzp_test_sg_wvZZ1erqsP9kRk") // Ganti dengan Test Key ID dari Razorpay Dashboard
-        try {
-            val options = JSONObject()
-            options.put("name", "Sweet Paradise")
-            options.put("description", "Order Payment")
-            options.put("currency", "IDR")
-            options.put(
-                "amount",
-                calculateTotalOrder() * 100
-            ) // Razorpay memerlukan nilai dalam paise
-
-            checkout.open(this, options)
-        } catch (e: Exception) {
-            Toast.makeText(this, "Error in payment: ${e.message}", Toast.LENGTH_LONG).show()
-        }
-    }
-
 
 //    fun onPaymentSuccess(razorpayPaymentID: String?) {
 //        Toast.makeText(this, "Payment Successful: $razorpayPaymentID", Toast.LENGTH_LONG).show()
@@ -224,11 +208,6 @@ class CartOrderActivity : AppCompatActivity() {
             total += item.price * item.quantity
         }
         return total
-    }
-
-    private fun formatToRupiah(amount: Int): String {
-        val format = NumberFormat.getInstance(Locale("id", "ID")) // Format Rupiah
-        return format.format(amount)
     }
 
     // Fungsi untuk hitung total jika menggunakan poin
@@ -470,6 +449,8 @@ class CartOrderActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
     private fun updateUserPoints(userId: Int, additionalPoints: Int, isPointsUsed: Boolean) {
         val db = AppDatabase.getDatabase(this)

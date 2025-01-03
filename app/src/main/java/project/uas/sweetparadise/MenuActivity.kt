@@ -69,7 +69,7 @@ class MenuActivity : AppCompatActivity() {
             }
         }
 
-        adapter = adapterMenu(filteredMenus, this, db.favoriteDao(), userId)
+        adapter = adapterMenu(filteredMenus, this, db.favoriteDao(), userId, 1)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
