@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import project.uas.sweetparadise.database.AppDatabase
-import project.uas.sweetparadise.database.Bill
 import project.uas.sweetparadise.database.Cart
 import project.uas.sweetparadise.helper.DateHelper.getCurrentDate
 import project.uas.sweetparadise.helper.TimeHelper.getCurrentTime
@@ -25,7 +24,7 @@ class BillAfterActivity : AppCompatActivity() {
 
     private lateinit var adapter: adapterBill
     private var billItems: MutableList<Cart> = mutableListOf()
-    private var userId: Int = -1 // Tambahkan variabel global untuk userId
+    private var userId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,77 +53,45 @@ class BillAfterActivity : AppCompatActivity() {
         val _time = findViewById<TextView>(R.id.time)
         val _priceAmount = findViewById<TextView>(R.id.priceAmount)
         val _taxAmount = findViewById<TextView>(R.id.taxAmount)
-        val _otherAmount = findViewById<TextView>(R.id.otherAmount)
         val _totalAmount = findViewById<TextView>(R.id.totalAmount)
-        val _btnGenerateQR = findViewById<TextView>(R.id.btnGenerateQR)
-
-        val status = intent.getIntExtra("STATUS", -1) // Default to -1 if STATUS is not provided
 
         _buttonBack.setOnClickListener {
             val intent = Intent(this, CartOrderActivity::class.java)
-            intent.putExtra("USER_ID", userId)
-            intent.putExtra("STATUS", status)
             startActivity(intent)
-        }
-
-        //ke QrActivity
-        _btnGenerateQR.setOnClickListener {
-            if (userId != -1) {
-                val intent = Intent(this, QrActivity::class.java)
-                intent.putExtra("USER_ID", userId) // Kirim userId ke QrActivity
-                intent.putExtra("STATUS", status)
-                startActivity(intent)
-            } else {
-                Log.e("BillAfterActivity", "Invalid User ID. Cannot generate QR.")
-            }
         }
 
         _date.text = getCurrentDate()
         _time.text = getCurrentTime()
 
-        // Mengambil data dari cart ke billItems
-        if (userId != -1) {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val carts = db.cartDao().getUserCart(userId)
-                    val user = db.userDao().getUserById(userId)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val carts = db.cartDao().getUserCart(userId)
+                val user = db.userDao().getUserById(userId)
+                val address = db.addressDao().getAddressByUserId(userId)?.address ?: "Unknown Location"
 
-                    // Process cart data and calculate amounts
-                    val priceAmount = carts.sumOf { it.price * it.quantity }
-                    val taxAmount = priceAmount * 0.1
-                    val totalAmount = priceAmount + taxAmount
+                val priceAmount = carts.sumOf { it.price * it.quantity }
+                val taxAmount = priceAmount * 0.1
+                val totalAmount = priceAmount + taxAmount
 
-                    withContext(Dispatchers.Main) {
-                        billItems.clear()
-                        billItems.addAll(carts)
-                        Log.d("BillAfterActivity", "Cart items loaded: ${carts.size} items.")
-                        adapter.notifyDataSetChanged()
+                withContext(Dispatchers.Main) {
+                    billItems.clear()
+                    billItems.addAll(carts)
+                    adapter.notifyDataSetChanged()
 
-                        // Menampilkan username dan lokasi
-                        _username.text = user?.username ?: "Unknown"
-                        _locationName.text = "Your Location"
-
-                        // Harga total semua item
-                        _priceAmount.text = formatToRupiah(priceAmount)
-
-                        // 10% dari total price
-                        _taxAmount.text = formatToRupiah(taxAmount.toInt())
-
-                        // Hitung total harga
-                        _totalAmount.text = formatToRupiah(totalAmount.toInt())
-                    }
-                    Log.d("BillAfterActivity", "Bill saved successfully!")
-                } catch (e: Exception) {
-                    Log.e("BillAfterActivity", "Error fetching data: ${e.message}")
+                    _username.text = user?.username ?: "Unknown"
+                    _locationName.text = address
+                    _priceAmount.text = formatToRupiah(priceAmount)
+                    _taxAmount.text = formatToRupiah(taxAmount.toInt())
+                    _totalAmount.text = formatToRupiah(totalAmount.toInt())
                 }
+            } catch (e: Exception) {
+                Log.e("BillAfterActivity", "Error fetching data: ${e.message}")
             }
         }
-
     }
 
     private fun formatToRupiah(amount: Int): String {
-        val format = NumberFormat.getInstance(Locale("id", "ID")) // Format Rupiah
+        val format = NumberFormat.getInstance(Locale("id", "ID"))
         return format.format(amount)
     }
-
 }

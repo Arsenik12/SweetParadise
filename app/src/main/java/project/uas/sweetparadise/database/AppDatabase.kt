@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [User::class, Cart::class, Menu::class, Category::class, Favorite::class, Bill::class, History::class],
+    entities = [User::class, Cart::class, Menu::class, Category::class, Favorite::class, Bill::class, History::class, AddressEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -20,6 +20,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun favoriteDao(): FavoriteDAO
     abstract fun billDao(): BillDAO
     abstract fun historyDao(): HistoryDAO
+    abstract fun addressDao(): AddressDao
 
     companion object {
         @Volatile

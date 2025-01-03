@@ -17,8 +17,8 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
-import project.uas.sweetparadise.database.AddressDatabase
 import project.uas.sweetparadise.database.AddressEntity
+import project.uas.sweetparadise.database.AppDatabase
 import java.util.*
 
 class OSMAddressActivity : AppCompatActivity() {
@@ -79,10 +79,16 @@ class OSMAddressActivity : AppCompatActivity() {
         confirmButton.setOnClickListener {
             val address = addressInput.text.toString()
             if (address.isNotEmpty()) {
-                saveAddressToDatabase(address) {
-                    val intent = Intent(this@OSMAddressActivity, MenuDeliveryActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
+                val userId = sharedPreferences.getInt("CURRENT_USER_ID", -1)
+                if (userId != -1) {
+                    saveAddressToDatabase(address, userId) {
+                        val intent = Intent(this@OSMAddressActivity, MenuDeliveryActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                } else {
+                    Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 Toast.makeText(this, "Alamat kosong!", Toast.LENGTH_SHORT).show()
@@ -119,10 +125,10 @@ class OSMAddressActivity : AppCompatActivity() {
     }
 
     // Fungsi untuk menyimpan alamat ke Room Database
-    private fun saveAddressToDatabase(address: String, onComplete: () -> Unit) {
-        val database = AddressDatabase.getDatabase(this)
+    private fun saveAddressToDatabase(address: String, userId: Int, onComplete: () -> Unit) {
+        val database = AppDatabase.getDatabase(this)
         lifecycleScope.launch {
-            database.addressDao().insertAddress(AddressEntity(address = address))
+            database.addressDao().insertAddress(AddressEntity(userId = userId, address = address))
             runOnUiThread {
                 onComplete()
             }

@@ -6,10 +6,7 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -17,11 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import project.uas.sweetparadise.database.AppDatabase
-import project.uas.sweetparadise.database.Bill
 import project.uas.sweetparadise.database.Cart
-import project.uas.sweetparadise.database.History
-import project.uas.sweetparadise.helper.DateHelper.getCurrentDate
-import project.uas.sweetparadise.helper.TimeHelper.getCurrentTime
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -110,13 +103,21 @@ class ProfileTransactionsDetail : AppCompatActivity() {
                     _totalAmount.text = formatToRupiah(totalAmount.toInt())
                 }
             } catch (e: Exception) {
-                Log.e("ProfileTransactions", "Error loading transaction: ${e.message}", e)
+                Log.e("ProfileTransactions", "Error loading transaction: ${e.message}")
+            }
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = AppDatabase.getDatabase(this@ProfileTransactionsDetail)
+            val address = db.addressDao().getAddressByUserId(userId)?.address ?: "Unknown Address"
+            withContext(Dispatchers.Main) {
+                _locationName.text = address
             }
         }
     }
 
-        private fun formatToRupiah(amount: Int): String {
-            val format = NumberFormat.getInstance(Locale("id", "ID")) // Format Rupiah
-            return format.format(amount)
-        }
+    private fun formatToRupiah(amount: Int): String {
+        val format = NumberFormat.getInstance(Locale("id", "ID")) // Format Rupiah
+        return format.format(amount)
     }
+}

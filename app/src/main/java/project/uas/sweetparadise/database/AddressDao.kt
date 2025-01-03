@@ -11,4 +11,9 @@ interface AddressDao {
 
     @Query("SELECT * FROM address_table")
     suspend fun getAllAddresses(): List<AddressEntity>
+
+    @Query("SELECT * FROM address_table WHERE userId = :userId LIMIT 1")
+    suspend fun getAddressByUserId(userId: Int): AddressEntity?
+
+
 }
