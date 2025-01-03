@@ -78,7 +78,6 @@ class addMenu : AppCompatActivity() {
                         image = imageBytes
                     )
 
-                    // Menambahkan menu baru ke database
                     db.menuDao().insertMenu(newMenu)
 
                     withContext(Dispatchers.Main) {
@@ -120,7 +119,7 @@ class addMenu : AppCompatActivity() {
 
     private fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
         val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 20, stream)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 5, stream)
         return stream.toByteArray()
     }
 }
