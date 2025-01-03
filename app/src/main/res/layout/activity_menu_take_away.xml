@@ -93,6 +93,7 @@
             app:layout_constraintVertical_bias="0.24">
 
             <LinearLayout
+                android:id="@+id/categoryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -242,9 +243,9 @@
             android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="115dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="115dp"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+            app:layout_constraintEnd_toEndOf="parent"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
