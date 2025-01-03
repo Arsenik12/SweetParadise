@@ -21,7 +21,7 @@ import kotlinx.coroutines.withContext
 import project.uas.sweetparadise.database.AppDatabase
 import project.uas.sweetparadise.database.Menu
 
-class MenuActivity : AppCompatActivity() {
+class MenuTakeAwayActivity : AppCompatActivity() {
 
     private lateinit var adapter: adapterMenu
     private var menus: MutableList<Menu> = mutableListOf()
@@ -34,12 +34,11 @@ class MenuActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_menu)
+        setContentView(R.layout.activity_menu_take_away)
 
         // Mendapatkan userId dari SharedPreferences
         val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
         userId = sharedPreferences.getInt("CURRENT_USER_ID", -1)
-
 
         if (userId == -1) {
             Toast.makeText(this, "No user logged in!", Toast.LENGTH_SHORT).show()
@@ -61,7 +60,7 @@ class MenuActivity : AppCompatActivity() {
         }
 
         // Inisialisasi adapter dan RecyclerView
-        adapter = adapterMenu(filteredMenus, this, db.favoriteDao(), userId, 1)
+        adapter = adapterMenu(filteredMenus, this, db.favoriteDao(), userId, 2)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -124,7 +123,7 @@ class MenuActivity : AppCompatActivity() {
         _btnCart.setOnClickListener {
             //kirim status
             val intent = Intent(this, CartOrderActivity::class.java)
-            intent.putExtra("STATUS", 1)
+            intent.putExtra("STATUS", 2)
             startActivity(intent)
         }
 

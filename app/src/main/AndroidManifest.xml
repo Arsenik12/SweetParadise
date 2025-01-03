@@ -19,6 +19,15 @@
         android:theme="@style/Theme.SweetParadise"
         tools:targetApi="31">
         <activity
+            android:name=".MenuDeliveryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuTakeAwayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuTypeActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileTransactionsDetail"
             android:exported="false" />
         <activity

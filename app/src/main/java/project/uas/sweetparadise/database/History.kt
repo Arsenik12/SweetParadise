@@ -41,5 +41,8 @@ data class History(
     val date: String? = null,
 
     @ColumnInfo(name = "time")
-    val time: String? = null
+    val time: String? = null,
+
+    @ColumnInfo(name= "status")
+    val status: Int
 )

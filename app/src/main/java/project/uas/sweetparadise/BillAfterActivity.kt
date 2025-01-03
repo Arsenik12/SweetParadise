@@ -58,9 +58,12 @@ class BillAfterActivity : AppCompatActivity() {
         val _totalAmount = findViewById<TextView>(R.id.totalAmount)
         val _btnGenerateQR = findViewById<TextView>(R.id.btnGenerateQR)
 
+        val status = intent.getIntExtra("STATUS", -1) // Default to -1 if STATUS is not provided
+
         _buttonBack.setOnClickListener {
             val intent = Intent(this, CartOrderActivity::class.java)
             intent.putExtra("USER_ID", userId)
+            intent.putExtra("STATUS", status)
             startActivity(intent)
         }
 
@@ -69,6 +72,7 @@ class BillAfterActivity : AppCompatActivity() {
             if (userId != -1) {
                 val intent = Intent(this, QrActivity::class.java)
                 intent.putExtra("USER_ID", userId) // Kirim userId ke QrActivity
+                intent.putExtra("STATUS", status)
                 startActivity(intent)
             } else {
                 Log.e("BillAfterActivity", "Invalid User ID. Cannot generate QR.")

@@ -116,7 +116,7 @@ class QrActivity : AppCompatActivity() {
                 }
                 // Navigate back to homepage
 
-                val intent = Intent(this@QrActivity, MenuActivity::class.java)
+                val intent = Intent(this@QrActivity, MenuTypeActivity::class.java)
                 intent.putExtra("USER_ID", userId)
                 startActivity(intent)
                 finish()
@@ -141,6 +141,7 @@ class QrActivity : AppCompatActivity() {
 
     private fun saveCartToHistory(userId: Int) {
         val db = AppDatabase.getDatabase(this)
+        val status = intent.getIntExtra("STATUS", 0) // Default to 0 if STATUS is not provided
 
         CoroutineScope(Dispatchers.IO).launch {
             val cartItems = db.cartDao().getCartByUserId(userId)
@@ -156,7 +157,8 @@ class QrActivity : AppCompatActivity() {
                             quantity = item.quantity,
                             menuNote = item.menuNote,
                             date = mostRecentBill.date,
-                            time = mostRecentBill.time
+                            time = mostRecentBill.time,
+                            status = status
                         )
                     )
                 }

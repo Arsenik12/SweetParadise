@@ -60,6 +60,7 @@ class ProfileTransactionsDetail : AppCompatActivity() {
         val _taxAmount = findViewById<TextView>(R.id.taxAmount)
         val _otherAmount = findViewById<TextView>(R.id.otherAmount)
         val _totalAmount = findViewById<TextView>(R.id.totalAmount)
+        val _orderType = findViewById<TextView>(R.id.orderType)
 
         _buttonBack.setOnClickListener {
             val intent = Intent(this, ProfileTransactionsActivity::class.java)
@@ -73,8 +74,7 @@ class ProfileTransactionsDetail : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 // Get history items matching the selected bill's date and time
-                val allHistoryItems = db.historyDao().getHistoryByUserId(userId)
-                val filteredHistoryItems = allHistoryItems.filter { historyItem ->
+                val filteredHistoryItems = db.historyDao().getHistoryByUserId(userId).filter { historyItem ->
                     historyItem.date == billDate && historyItem.time == billTime
                 }
 
@@ -90,6 +90,15 @@ class ProfileTransactionsDetail : AppCompatActivity() {
                     val priceAmount = filteredHistoryItems.sumOf { it.price * it.quantity }
                     val taxAmount = priceAmount * 0.1
                     val totalAmount = priceAmount + taxAmount
+
+                    // Get the status from the first filtered history item (assuming uniform status)
+                    val orderTypeText = when (filteredHistoryItems.firstOrNull()?.status) {
+                        1 -> "Dine In"
+                        2 -> "Take Away"
+                        3 -> "Delivery"
+                        else -> "Unknown"
+                    }
+                    _orderType.text = orderTypeText
 
                     // Display user information and calculated amounts
                     _username.text = user?.username ?: "Unknown"

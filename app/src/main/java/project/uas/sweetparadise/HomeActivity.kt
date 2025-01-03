@@ -69,7 +69,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         _navMenu.setOnClickListener {
-            val intent = Intent(this, MenuActivity::class.java)
+            val intent = Intent(this, MenuTypeActivity::class.java)
             startActivity(intent)
         }
 
@@ -106,12 +106,12 @@ class HomeActivity : AppCompatActivity() {
 
         val _btnTakeAway = findViewById<ImageView>(R.id.btnTakeAway)
         _btnTakeAway.setOnClickListener {
-            val intent = Intent(this, CartOrderActivity::class.java)
+            val intent = Intent(this, MenuTakeAwayActivity::class.java)
             startActivity(intent)
         }
 
-        val btnDelivery = findViewById<ImageView>(R.id.btnDelivery)
-        btnDelivery.setOnClickListener {
+        val _btnDelivery = findViewById<ImageView>(R.id.btnDelivery)
+        _btnDelivery.setOnClickListener {
             if (isLocationEnabled()) {
                 // Jika lokasi aktif maka lanjut ke MenuActivity
                 val intent = Intent(this, OSMAddressActivity::class.java)
