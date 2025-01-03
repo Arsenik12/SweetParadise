@@ -20,7 +20,7 @@ data class User(
     val telnumber: String? = null,
 
     @ColumnInfo(name = "point")
-    val point : Int? = null
+    val point : Int = 0
 )
 
 

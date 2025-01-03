@@ -11,4 +11,10 @@ interface CategoryDAO {
 
     @Query("SELECT * FROM category")
     fun getAllCategories(): List<Category>
+
+    @Query("SELECT * FROM category WHERE id = :categoryId LIMIT 1")
+    fun getCategoryById(categoryId: Int): Category?
+
+    @Query("SELECT * FROM category WHERE name = :name LIMIT 1")
+    suspend fun getCategoryByName(name: String): Category?
 }

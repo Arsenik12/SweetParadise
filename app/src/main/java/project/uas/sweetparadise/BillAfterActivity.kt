@@ -40,6 +40,8 @@ class BillAfterActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("SweetParadisePrefs", MODE_PRIVATE)
         userId = sharedPreferences.getInt("CURRENT_USER_ID", -1)
+        val isPointsUsed = intent.getBooleanExtra("IS_POINT_USED", false)
+
 
         if (userId == -1) {
             Toast.makeText(this, "No user logged in!", Toast.LENGTH_SHORT).show()
@@ -70,10 +72,17 @@ class BillAfterActivity : AppCompatActivity() {
         //ke QrActivity
         _btnGenerateQR.setOnClickListener {
             if (userId != -1) {
-                val intent = Intent(this, QrActivity::class.java)
-                intent.putExtra("USER_ID", userId) // Kirim userId ke QrActivity
-                intent.putExtra("STATUS", status)
-                startActivity(intent)
+                CoroutineScope(Dispatchers.IO).launch {
+                    val user = db.userDao().getUserById(userId)
+
+                    withContext(Dispatchers.Main) {
+                        val intent = Intent(this@BillAfterActivity, QrActivity::class.java)
+                        intent.putExtra("USER_ID", userId) // Kirim userId ke QrActivity
+                        intent.putExtra("IS_POINTS_USED", isPointsUsed) // Kirim status poin digunakan
+                        intent.putExtra("STATUS", status)
+                        startActivity(intent)
+                    }
+                }
             } else {
                 Log.e("BillAfterActivity", "Invalid User ID. Cannot generate QR.")
             }
@@ -92,7 +101,12 @@ class BillAfterActivity : AppCompatActivity() {
                     // Process cart data and calculate amounts
                     val priceAmount = carts.sumOf { it.price * it.quantity }
                     val taxAmount = priceAmount * 0.1
-                    val totalAmount = priceAmount + taxAmount
+                    val otherAmount = user?.point
+                    val totalAmount = if (isPointsUsed != false) {
+                        priceAmount + taxAmount - otherAmount!!
+                    } else {
+                        priceAmount + taxAmount
+                    }
 
                     withContext(Dispatchers.Main) {
                         billItems.clear()
@@ -109,6 +123,13 @@ class BillAfterActivity : AppCompatActivity() {
 
                         // 10% dari total price
                         _taxAmount.text = formatToRupiah(taxAmount.toInt())
+
+                        // utk points user
+                        _otherAmount.text = if (isPointsUsed && otherAmount != null) {
+                            "- ${formatToRupiah(otherAmount)}"
+                        } else {
+                            "0"
+                        }
 
                         // Hitung total harga
                         _totalAmount.text = formatToRupiah(totalAmount.toInt())
